@@ -1,0 +1,40 @@
+- repo: git@github.com:pre-commit/pre-commit-hooks
+  sha: v0.7.1
+  hooks:
+  - id: check-json
+    stages: [commit]
+  - id: check-merge-conflict
+    stages: [commit]
+  - id: check-yaml
+    stages: [commit]
+  - id: end-of-file-fixer
+    stages: [commit]
+  - id: trailing-whitespace
+    stages: [commit]
+  - id: detect-private-key
+    stages: [commit]
+  - id: detect-aws-credentials
+    stages: [commit]
+  - id: check-added-large-files
+    stages: [commit]
+- repo: git@github.com:hootsuite/pre-commit-php.git
+  sha: 1.2.0
+  hooks:
+  - id: php-lint-all
+    stages: [commit,push]
+  - id: php-unit
+    stages: [commit,push]
+  - id: php-cs
+    stages: [commit]
+    files: \.(php)$
+    args: ["--ignore=tests", "--standard=PSR2", "-p"]
+  - id: php-cbf
+    files: \.(php)$
+    args: ["--ignore=tests", "--standard=PSR2", "-p"]
+- repo: git://github.com/Lucas-C/pre-commit-hooks
+  sha: v1.0.1
+  hooks:
+  - id: remove-crlf
+    stages: [commit]
+  - id: remove-tabs
+    stages: [commit]
