@@ -65,6 +65,22 @@ class Registry
     protected $views;
 
     /**
+     * Replace all properties with an
+     * array of properties
+     *
+     * @param array $properties
+     */
+    public function fill(array $properties)
+    {
+        $keys = $this->properties()->keys();
+
+        foreach ($keys as $property) {
+            $values = array_get($properties, $property, []);
+            $this->{$property} = collect($values);
+        }
+    }
+
+    /**
      * Get a property as an array
      *
      * @param $property

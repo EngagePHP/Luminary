@@ -6,6 +6,7 @@ use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Scheduling\Schedule;
 use Luminary\Application;
 use Luminary\Contracts\Console\Kernel;
+use Luminary\Services\ApiLoader\Helpers\Cache;
 use Luminary\Services\ApiLoader\Helpers\Directory;
 use Luminary\Services\ApiLoader\Registry\Registrar;
 use Luminary\Services\ApiLoader\Registry\Registry;
@@ -62,14 +63,34 @@ class ApiLoader
      */
     public function load(array $loaders) :ApiLoader
     {
-        foreach ($loaders as $loader) {
-            $loader = new $loader($this->registrar);
-            $path = $this->basePath($loader->path());
+        if (! $this->loadCached()) {
+            foreach ($loaders as $loader) {
+                $loader = new $loader($this->registrar);
+                $path = $this->basePath($loader->path());
 
-            $loader->load($path);
+                $loader->load($path);
+            }
         }
 
         return $this;
+    }
+
+    /**
+     * Load the API Loader cache
+     * if exists
+     *
+     * @return bool
+     */
+    public function loadCached()
+    {
+        if (! Cache::exists()) {
+            return false;
+        }
+
+        $cached = Cache::get();
+        $this->registry->fill($cached);
+
+        return true;
     }
 
     /**

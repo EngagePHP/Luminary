@@ -84,14 +84,12 @@ class Registrar
      */
     public function registerConsole(string $path) :void
     {
-        $path = $this->path($path);
-        $kernel = $path.'/Kernel';
-        $commands = $path.'/Commands';
+        $kernel = $this->path($path).'/Kernel.php';
 
         if ($this->isFile($kernel)) {
-            $this->registerConsoleKernel($kernel);
-        } elseif ($this->isDirectory($commands)) {
-            $this->registerCommands($commands);
+            $this->registerConsoleKernel($path.'/Kernel.php');
+        } else {
+            $this->registerCommands($path.'/Commands');
         }
     }
 
@@ -103,6 +101,8 @@ class Registrar
      */
     public function registerConsoleKernel(string $kernel) :void
     {
+        $kernel = $this->path($kernel);
+
         $dir = dirname($kernel);
         $basename = basename($kernel, ".php");
         $kernel = $this->directory->make($dir)->class($basename);
@@ -128,7 +128,7 @@ class Registrar
             return;
         }
 
-        $this->registry->consoleKernels = $this->directory->make($path)->classes();
+        $this->registry->commands = $this->directory->make($path)->classes();
     }
 
     /**

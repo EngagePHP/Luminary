@@ -4,6 +4,7 @@ namespace Luminary\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
+use Luminary\Services\ApiLoader\Console\Commands\LuminaryCache;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        LuminaryCache::class
     ];
 
     /**

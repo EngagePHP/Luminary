@@ -38,22 +38,6 @@ $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
-| Load the Api Registry
-|--------------------------------------------------------------------------
-|
-| Now we will load the API registry class for autoloading the API folder
-| structure.
-|
-*/
-
-$api = $app->loadApi([
-    \Luminary\Services\ApiLoader\Loaders\EntityLoader::class,
-    \Luminary\Services\ApiLoader\Loaders\ResourceLoader::class,
-    \Luminary\Services\ApiLoader\Loaders\ServiceLoader::class
-]);
-
-/*
-|--------------------------------------------------------------------------
 | Register Container Bindings
 |--------------------------------------------------------------------------
 |
@@ -107,13 +91,19 @@ $app->register(Luminary\Providers\LuminaryServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
-| Register Api Classes, Kernels Middleware, etc
+| Load the Api
 |--------------------------------------------------------------------------
 |
-| Next, we will register the api console kernels, Commands, Middleware,
-| routes, etc,,, with the Luminary Console
+| Now we will load the API registry class for autoloading the API folder
+| structure.
 |
 */
+
+$api = $app->loadApi([
+    \Luminary\Services\ApiLoader\Loaders\EntityLoader::class,
+    \Luminary\Services\ApiLoader\Loaders\ResourceLoader::class,
+    \Luminary\Services\ApiLoader\Loaders\ServiceLoader::class
+]);
 
 $api->registerConsole();
 $api->registerMiddleware();
