@@ -1,0 +1,39 @@
+{
+    "name": "mcuyar/luminary",
+    "description": "An api service based on laravel lumen",
+    "require": {
+        "laravel/lumen": "^5.4",
+        "wikimedia/composer-merge-plugin": "^1.4",
+        "league/flysystem-aws-s3-v3": "~1.0",
+        "eddturtle/direct-upload": "^1.6"
+    },
+    "extra": {
+        "merge-plugin": {
+            "include": [
+                "api/composer.json"
+            ],
+            "recurse": true,
+            "replace": true,
+            "ignore-duplicates": true,
+            "merge-dev": true,
+            "merge-extra": false,
+            "merge-extra-deep": false,
+            "merge-scripts": false
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Api\\": "api/",
+            "Luminary\\": "luminary/"
+        },
+        "files": [
+            "luminary/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Matthew Cuyar",
+            "email": "matt@enctypeapparel.com"
+        }
+    ]
+}
