@@ -107,6 +107,23 @@ $app->register(Luminary\Providers\LuminaryServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
+| Register Api Classes, Kernels Middleware, etc
+|--------------------------------------------------------------------------
+|
+| Next, we will register the api console kernels, Commands, Middleware,
+| routes, etc,,, with the Luminary Console
+|
+*/
+
+$api->registerConsole();
+$api->registerMiddleware();
+$api->registerMigrations();
+$api->registerProviders();
+$api->registerRoutes();
+$api->registerRouteMiddleware();
+
+/*
+|--------------------------------------------------------------------------
 | Load The Application Routes
 |--------------------------------------------------------------------------
 |
