@@ -4,7 +4,7 @@ namespace Luminary\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Luminary\Services\Filesystem\FilesystemServiceProvider;
-use Luminary\Services\ApiLoader\ApiLoaderServiceProvider;
+use Luminary\Services\FormRequests\ServiceProvider as FormReqeustsServiceProvider;
 
 class LuminaryServiceProvider extends ServiceProvider
 {
@@ -16,6 +16,7 @@ class LuminaryServiceProvider extends ServiceProvider
      */
     protected $providers = [
         FilesystemServiceProvider::class,
+        FormReqeustsServiceProvider::class
     ];
 
     /**

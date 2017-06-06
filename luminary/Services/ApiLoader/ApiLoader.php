@@ -10,6 +10,7 @@ use Luminary\Services\ApiLoader\Helpers\Cache;
 use Luminary\Services\ApiLoader\Helpers\Directory;
 use Luminary\Services\ApiLoader\Registry\Registrar;
 use Luminary\Services\ApiLoader\Registry\Registry;
+use Luminary\Services\Filesystem\App\Storage;
 
 class ApiLoader
 {
@@ -68,7 +69,9 @@ class ApiLoader
                 $loader = new $loader($this->registrar);
                 $path = $this->basePath($loader->path());
 
-                $loader->load($path);
+                if (Storage::isDirectory($path)) {
+                    $loader->load($path);
+                }
             }
         }
 

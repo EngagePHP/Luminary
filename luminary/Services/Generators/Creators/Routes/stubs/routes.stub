@@ -1,0 +1,47 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| DummyClass Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register all of the routes for DummyClass.
+| It is a breeze. Simply tell Lumen the URIs it should respond to
+| and give it the Closure to call when that URI is requested.
+|
+*/
+
+$app->group(['namespace' => 'DummyNamespace', 'prefix' => '{{slug}}'],
+    function ($app) {
+
+        // Retrieve a list for {{slug}}
+        $app->get('/', [
+            'as' => '{{slug}}',
+            'uses' => '{{controller}}@index'
+        ]);
+
+        // Create a new entity for {{slug}}
+        $app->post('/', [
+            'as' => '{{slug}}.store',
+            'uses' => '{{controller}}@store'
+        ]);
+
+        // Show an entity for {{slug}}
+        $app->get('/{id}', [
+            'as' => '{{slug}}.show',
+            'uses' => '{{controller}}@show'
+        ]);
+
+        // Update an entity for {{slug}}
+        $app->patch('/{id}', [
+            'as' => '{{slug}}.update',
+            'uses' => '{{controller}}@update'
+        ]);
+
+        // Delte an entity for {{slug}}
+        $app->delete('/{id}', [
+            'as' => '{{slug}}.delete',
+            'uses' => '{{controller}}@delete'
+        ]);
+    }
+);

@@ -1,0 +1,15 @@
+<?php
+
+namespace DummyNamespace;
+
+use Closure;
+
+class DummyClass
+{
+    public function handle($request, Closure $next)
+    {
+        // Perform action
+
+        return $next($request);
+    }
+}
