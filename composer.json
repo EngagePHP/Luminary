@@ -41,5 +41,6 @@
             "name": "Matthew Cuyar",
             "email": "matt@enctypeapparel.com"
         }
-    ]
+    ],
+    "minimum-stability" : "dev"
 }
