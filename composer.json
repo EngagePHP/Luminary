@@ -1,5 +1,5 @@
 {
-    "name": "mcuyar/luminary",
+    "name": "engage-php/luminary",
     "description": "An api service based on laravel lumen",
     "require": {
         "laravel/lumen": "^5.4",
