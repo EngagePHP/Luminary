@@ -2,8 +2,10 @@
 
 namespace Luminary\Services\ApiLoader;
 
+use Faker\Generator;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Database\Eloquent\Factory as ModelFactory;
 use Luminary\Application;
 use Luminary\Contracts\Console\Kernel;
 use Luminary\Services\ApiLoader\Helpers\Cache;
@@ -155,6 +157,27 @@ class ApiLoader
     }
 
     /**
+     * Register The Api Model Factories
+     *
+     * @return void
+     */
+    public function registerModelFactories() :void
+    {
+        $paths = $this->registry('modelFactories')->toArray();
+
+        $this->app->singleton(ModelFactory::class, function ($app) use ($paths) {
+            $faker = $app->make(Generator::class);
+            $factory = new ModelFactory($faker);
+
+            foreach ($paths as $path) {
+                $factory->load($path);
+            }
+
+            return $factory;
+        });
+    }
+
+    /**
      * Register The Api Application Middleware
      *
      * @return void
@@ -220,6 +243,20 @@ class ApiLoader
                 $this->loadRoutesFrom($route);
             }
         );
+    }
+
+    /**
+     * Register the seeders and bind
+     * the DatabaseSeeder
+     *
+     * @return void
+     */
+    public function registerSeeders() :void
+    {
+        $this->app->bind('DatabaseSeeder', function ($app) {
+            $seeders = $this->registry('seeders')->toArray();
+            return new Database\DatabaseSeeder($seeders);
+        });
     }
 
     /**

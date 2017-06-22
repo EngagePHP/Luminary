@@ -1,15 +1,62 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace DummyNamespace;
 
-class DummyClass extends Seeder
+use Luminary\Database\EnvironmentSeeder;
+
+class DummyClass extends EnvironmentSeeder
 {
     /**
-     * Run the database seeds.
+     * Run the local environment
+     * database seeds.
      *
      * @return void
      */
-    public function run()
+    public function local()
+    {
+        //
+    }
+
+    /**
+     * Run the development environment
+     * database seeds.
+     *
+     * @return void
+     */
+    public function development()
+    {
+        //
+    }
+
+    /**
+     * Run the staging environment
+     * database seeds.
+     *
+     * @return void
+     */
+    public function staging()
+    {
+        //
+    }
+
+    /**
+     * Run the production environment
+     * database seeds.
+     *
+     * @return void
+     */
+    public function production()
+    {
+        //
+    }
+
+    /**
+     * Run the testing environment
+     * database seeds.
+     *
+     * @return void
+     */
+    public function testing()
     {
         //
     }

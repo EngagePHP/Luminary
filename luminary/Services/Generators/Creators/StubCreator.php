@@ -57,14 +57,14 @@ abstract class StubCreator implements CreatorInterface
      * @param string $name
      * @param string $path
      * @param array $attributes
-     * @return void
+     * @return StubCreator
      */
-    public static function create(string $name, string $path, array $attributes = []) :void
+    public static function create(string $name, string $path, array $attributes = []) :StubCreator
     {
         $self = new static($name, $path);
 
         if ($self->alreadyExists()) {
-            return;
+            return $self;
         }
 
         $self->setAttributes($attributes);
@@ -72,6 +72,8 @@ abstract class StubCreator implements CreatorInterface
 
         Storage::makeDirectory($self->getPath(), true);
         Storage::put($path, $self->buildClass());
+
+        return $self;
     }
 
     /**
@@ -100,7 +102,7 @@ abstract class StubCreator implements CreatorInterface
      *
      * @return string
      */
-    protected function rootNamespace() :string
+    public function rootNamespace() :string
     {
         return $this->rootNamespace;
     }
@@ -136,9 +138,15 @@ abstract class StubCreator implements CreatorInterface
      */
     public function setAttribute(string $name, $value) :void
     {
-        if (array_key_exists($name, $this->attributes)) {
-            $this->attributes[$name] = $value;
+        if (! array_key_exists($name, $this->attributes)) {
+            return;
         }
+
+        $method = camel_case('set_'.$name.'_attribute');
+
+        $this->attributes[$name] = method_exists($this, $method)
+            ? $this->{$method}($name, $value)
+            : $value;
     }
 
     /**
@@ -186,7 +194,7 @@ abstract class StubCreator implements CreatorInterface
      */
     protected function getPath($name = null) :string
     {
-        $file = $name ? '/'.$name.'.php' : '';
+        $file = $name ? '/'.$this->name.'.php' : '';
         return $this->path.$file;
     }
 

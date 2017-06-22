@@ -15,6 +15,7 @@ class Structure implements StructureInterface
      */
     public static function create($path)
     {
+        Storage::makeDirectory($path.'/Database/Factories', true);
         Storage::makeDirectory($path.'/Database/Migrations', true);
         Storage::makeDirectory($path.'/Database/Seeds', true);
     }

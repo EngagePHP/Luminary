@@ -4,6 +4,9 @@ namespace Luminary\Services\Generators\Console\Commands;
 
 use Illuminate\Console\Command;
 use Luminary\Services\Filesystem\App\Storage;
+use Luminary\Services\Generators\Creators\Routes\DefaultRoutes;
+use Luminary\Services\Generators\Creators\Tests\Test;
+use Luminary\Services\Generators\Creators\Tests\TestCase;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -37,9 +40,6 @@ class LuminaryScaffold extends Command
      */
     public function handle()
     {
-        $this->createPreCommit();
-        $this->createReadme();
-
         $args = [
             $this->ask("Package name (<luminary>/<api>)"),
             $this->ask("please provide a brief description of the api", " "),
@@ -48,7 +48,13 @@ class LuminaryScaffold extends Command
         ];
 
         $this->composerInit(...$args);
+        $this->composerAutoloadDev();
         $this->createDirectories();
+        $this->createPreCommit();
+        $this->createReadme();
+        $this->createTests();
+        $this->createDefault();
+        $this->createDefaultTests();
     }
 
     /**
@@ -99,6 +105,27 @@ class LuminaryScaffold extends Command
     }
 
     /**
+     * Add the AutoloadDev requirements for testing
+     *
+     * @return void
+     */
+    protected function composerAutoloadDev() :void
+    {
+        $file = app_path('composer.json');
+        $contents = Storage::get($file);
+
+        $json = json_decode($contents, true);
+        $json['autoload-dev'] = [
+            'classmap' => [
+                'tests/'
+            ]
+        ];
+        $json = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+        Storage::put($file, $json);
+    }
+
+    /**
      * Create default directory structure
      *
      * @return void
@@ -110,9 +137,22 @@ class LuminaryScaffold extends Command
         foreach ($directories as $directory) {
             $directory = app_path($directory);
 
-            Storage::makeDirectory($directory);
+            Storage::makeDirectory($directory, true);
             Storage::put($directory . '/' . '.gitkeep', "");
         }
+    }
+
+    /**
+     * Create default resource routes
+     *
+     * @return void
+     */
+    protected function createDefault() :void
+    {
+        $path = app_path('Resources/Default');
+        Storage::makeDirectory($path, true);
+
+        DefaultRoutes::create('routes', $path);
     }
 
     /**
@@ -166,5 +206,32 @@ class LuminaryScaffold extends Command
         $path = app_path('setup.sh');
 
         Storage::put($path, $content);
+    }
+
+    /**
+     * Create the default tests and folder
+     *
+     * @return void
+     */
+    protected function createTests() :void
+    {
+        $directory = app_path('tests');
+
+        Storage::makeDirectory($directory, true);
+        TestCase::create('TestCase', $directory);
+    }
+
+    /**
+     * Create the default tests and folder
+     *
+     * @return void
+     */
+    protected function createDefaultTests() :void
+    {
+        $target = app_path('Resources/Default/Tests');
+        $directory = app_path('tests/Default');
+
+        Storage::makeDirectory($directory, true);
+        Test::create('Default', $directory, ['response' => '$this->app->version()'])->link($target);
     }
 }

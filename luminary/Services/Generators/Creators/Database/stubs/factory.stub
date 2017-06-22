@@ -1,0 +1,11 @@
+<?php
+
+use {{modelNamespace}};
+
+$factory->define({{modelName}}::class, function ($faker) {
+
+    return [
+        'name' => $faker->name,
+        'email' => $faker->email,
+    ];
+});

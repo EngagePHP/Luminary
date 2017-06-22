@@ -4,6 +4,7 @@ namespace Luminary\Services\Generators\Entity;
 
 use Luminary\Services\Filesystem\App\Storage;
 use Luminary\Services\Generators\Contracts\CreatorInterface;
+use Luminary\Services\Generators\Creators\Database\Factory;
 use Luminary\Services\Generators\Creators\Database\Migration;
 use Luminary\Services\Generators\Creators\Database\Seeder;
 use Luminary\Services\Generators\Creators\Database\Structure as DatabaseStructure;
@@ -31,7 +32,6 @@ class Scaffold implements CreatorInterface
         static::database(...$args);
         static::event(...$args);
         static::middleware(...$args);
-        static::model(...$args);
         static::repository(...$args);
     }
 
@@ -47,9 +47,18 @@ class Scaffold implements CreatorInterface
         $lname = strtolower($name);
         $singular = str_singular($name);
 
+        // DB
         DatabaseStructure::create($path);
         Migration::create('create_' . $lname . '_table', $path . '/Database/Migrations', $lname, true, true);
         Seeder::create($singular . 'Seeder', $path . '/Database/Seeds');
+
+        // Model
+        ModelStructure::create($path);
+        $model = Model::create($singular, $path.'/Models', ['table' => $lname]);
+        Factory::create($singular . 'Factory', $path . '/Database/Factories', [
+            'modelNamespace' => $model->rootNamespace().'\\'.$singular,
+            'modelName' => $singular
+        ]);
     }
 
     /**
@@ -79,22 +88,6 @@ class Scaffold implements CreatorInterface
 
         MiddlewareStructure::create($path);
         Middleware::create($singular.'Middleware', $path.'/Middleware');
-    }
-
-    /**
-     * Scaffold the entity models folder
-     *
-     * @param string $name
-     * @param string $path
-     * @return void
-     */
-    protected static function model(string $name, string $path) :void
-    {
-        $lname = strtolower($name);
-        $singular = str_singular($name);
-
-        ModelStructure::create($path);
-        Model::create($singular, $path.'/Models', ['table' => $lname]);
     }
 
     /**
