@@ -4,7 +4,6 @@ namespace Luminary\Services\FormRequests;
 
 use Laravel\Lumen\Http\Redirector;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 
@@ -41,7 +40,7 @@ class ServiceProvider extends LaravelServiceProvider
     /**
      * Initialize the form request with data from the given request.
      *
-     * @param  \Illuminate\Foundation\Http\FormRequest  $form
+     * @param  \Luminary\Services\FormRequests\FormRequest  $form
      * @param  \Symfony\Component\HttpFoundation\Request  $current
      * @return void
      */

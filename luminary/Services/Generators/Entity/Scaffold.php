@@ -48,7 +48,7 @@ class Scaffold implements CreatorInterface
         $singular = str_singular($name);
 
         DatabaseStructure::create($path);
-        Migration::create('create_' . $lname . '_table', $path . '/Database/Migrations', $name, true, true);
+        Migration::create('create_' . $lname . '_table', $path . '/Database/Migrations', $lname, true, true);
         Seeder::create($singular . 'Seeder', $path . '/Database/Seeds');
     }
 

@@ -94,7 +94,13 @@ class Scaffold implements CreatorInterface
     {
         $name = studly_case(str_singular($name));
         $slug = str_slug(str_plural($name));
+        $relative_path = str_replace(app_path().'/', 'Api/', $path);
+        $namespace = str_replace('/', '\\', $relative_path.'/Controllers');
 
-        Routes::create('routes', $path, ['controller' => $name.'Controller', 'slug' => $slug]);
+        Routes::create('routes', $path, [
+            'controller' => $name.'Controller',
+            'namespace' => $namespace,
+            'slug' => $slug
+        ]);
     }
 }

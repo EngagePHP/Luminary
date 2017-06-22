@@ -13,6 +13,7 @@ class Routes extends StubCreator
      */
     protected $attributes = [
         'controller' => '',
+        'namespace' => '',
         'slug' => ''
     ];
 

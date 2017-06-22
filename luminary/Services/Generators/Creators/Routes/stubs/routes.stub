@@ -11,7 +11,7 @@
 |
 */
 
-$app->group(['namespace' => 'DummyNamespace', 'prefix' => '{{slug}}'],
+$app->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}'],
     function ($app) {
 
         // Retrieve a list for {{slug}}
