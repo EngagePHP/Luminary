@@ -38,6 +38,21 @@ $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
+| Set Log Handling
+|--------------------------------------------------------------------------
+|
+| Now we will modify the log handling to stderr for docker container output
+|
+*/
+
+$app->configureMonologUsing(function (\Monolog\Logger $monolog) {
+    $monolog->pushHandler(new \Monolog\Handler\ErrorLogHandler());
+
+    return $monolog;
+});
+
+/*
+|--------------------------------------------------------------------------
 | Register Container Bindings
 |--------------------------------------------------------------------------
 |

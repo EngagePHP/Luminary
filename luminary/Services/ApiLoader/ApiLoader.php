@@ -69,9 +69,12 @@ class ApiLoader
                 $loader = new $loader($this->registrar);
                 $path = $this->basePath($loader->path());
 
-                if (Storage::isDirectory($path)) {
-                    $loader->load($path);
+                // Run loader only if directory exists
+                if (! Storage::isDirectory($path)) {
+                    continue;
                 }
+
+                $loader->load($path);
             }
         }
 
