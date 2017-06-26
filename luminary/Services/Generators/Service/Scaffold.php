@@ -7,6 +7,7 @@ use Luminary\Services\Generators\Creators\Console\Command;
 use Luminary\Services\Generators\Creators\Console\Kernel;
 use Luminary\Services\Generators\Creators\Console\Structure as CommandStructure;
 use Luminary\Services\Generators\Creators\Providers\ServiceProvider;
+use Luminary\Services\Generators\Creators\Tests\ServiceTest;
 
 class Scaffold implements CreatorInterface
 {
@@ -23,6 +24,7 @@ class Scaffold implements CreatorInterface
 
         static::console(...$args);
         static::provider(...$args);
+        static::tests(...$args);
     }
 
     /**
@@ -51,5 +53,19 @@ class Scaffold implements CreatorInterface
     protected static function provider(string $name, string $path) :void
     {
         ServiceProvider::create($name.'ServiceProvider', $path);
+    }
+
+    /**
+     * Create the entity tests folder and initial test
+     *
+     * @return void
+     */
+    protected static function tests(string $name, string $path) :void
+    {
+        $target = $path.'/Tests';
+        $directory = app_path('tests/'.$name);
+        $singular = str_singular($name);
+
+        ServiceTest::create($singular.'Service', $directory)->link($target);
     }
 }

@@ -12,6 +12,10 @@ class DummyClass extends TestCase
      */
     public function testDummyClass()
     {
-        //
+        $this->get('/{{slug}}');
+
+        $this->assertEquals(
+            {{response}}, $this->response->getContent()
+        );
     }
 }

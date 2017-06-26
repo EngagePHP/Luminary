@@ -48,7 +48,7 @@ abstract class StubCreator implements CreatorInterface
     {
         $this->setName($name);
         $this->setPath($path);
-        $this->setRootNamespace($path);
+        $this->setRootNamespace($this->path);
     }
 
     /**
@@ -182,6 +182,8 @@ abstract class StubCreator implements CreatorInterface
      */
     protected function setPath($path) :void
     {
+        Storage::makeDirectory($path, true);
+
         $this->path = $path;
     }
 

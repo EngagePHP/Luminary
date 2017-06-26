@@ -5,7 +5,8 @@ namespace Luminary\Services\Generators\Console\Commands;
 use Illuminate\Console\Command;
 use Luminary\Services\Filesystem\App\Storage;
 use Luminary\Services\Generators\Creators\Routes\DefaultRoutes;
-use Luminary\Services\Generators\Creators\Tests\Test;
+use Luminary\Services\Generators\Creators\Tests\PhpUnit;
+use Luminary\Services\Generators\Creators\Tests\ResourceTest;
 use Luminary\Services\Generators\Creators\Tests\TestCase;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -219,6 +220,7 @@ class LuminaryScaffold extends Command
 
         Storage::makeDirectory($directory, true);
         TestCase::create('TestCase', $directory);
+        PhpUnit::create('phpunit', app_path());
     }
 
     /**
@@ -232,6 +234,6 @@ class LuminaryScaffold extends Command
         $directory = app_path('tests/Default');
 
         Storage::makeDirectory($directory, true);
-        Test::create('Default', $directory, ['response' => '$this->app->version()'])->link($target);
+        ResourceTest::create('Default', $directory, ['response' => '$this->app->version()'])->link($target);
     }
 }

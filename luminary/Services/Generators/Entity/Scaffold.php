@@ -15,6 +15,7 @@ use Luminary\Services\Generators\Creators\Models\Model;
 use Luminary\Services\Generators\Creators\Models\Structure as ModelStructure;
 use Luminary\Services\Generators\Creators\Repositories\Structure as RepositoryStructure;
 use Luminary\Services\Generators\Creators\Repositories\Repository;
+use Luminary\Services\Generators\Creators\Tests\ModelTest;
 
 class Scaffold implements CreatorInterface
 {
@@ -33,6 +34,7 @@ class Scaffold implements CreatorInterface
         static::event(...$args);
         static::middleware(...$args);
         static::repository(...$args);
+        static::tests(...$args);
     }
 
     /**
@@ -105,5 +107,19 @@ class Scaffold implements CreatorInterface
 
         RepositoryStructure::create($path);
         Repository::create($singular.'Repository', $path.'/Repositories', ['model' => $model]);
+    }
+
+    /**
+     * Create the entity tests folder and initial test
+     *
+     * @return void
+     */
+    protected static function tests(string $name, string $path) :void
+    {
+        $target = $path.'/Tests';
+        $directory = app_path('tests/'.$name);
+        $singular = str_singular($name);
+
+        ModelTest::create($singular.'Model', $directory)->link($target);
     }
 }

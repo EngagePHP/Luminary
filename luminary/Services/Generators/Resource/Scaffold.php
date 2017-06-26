@@ -2,6 +2,7 @@
 
 namespace Luminary\Services\Generators\Resource;
 
+use Luminary\Services\Filesystem\App\Storage;
 use Luminary\Services\Generators\Contracts\CreatorInterface;
 use Luminary\Services\Generators\Creators\Controllers\Controller;
 use Luminary\Services\Generators\Creators\Controllers\Structure as ControllerStructure;
@@ -10,6 +11,7 @@ use Luminary\Services\Generators\Creators\Requests\Structure as RequestStructure
 use Luminary\Services\Generators\Creators\RouteMiddleware\Registry;
 use Luminary\Services\Generators\Creators\RouteMiddleware\Structure as RouteMiddlewareStructure;
 use Luminary\Services\Generators\Creators\Routes\Routes;
+use Luminary\Services\Generators\Creators\Tests\ResourceTest;
 
 class Scaffold implements CreatorInterface
 {
@@ -28,6 +30,7 @@ class Scaffold implements CreatorInterface
         static::request(...$args);
         static::controller(...$args);
         static::route(...$args);
+        static::tests(...$args);
     }
 
     /**
@@ -102,5 +105,20 @@ class Scaffold implements CreatorInterface
             'namespace' => $namespace,
             'slug' => $slug
         ]);
+    }
+
+    /**
+     * Create the entity tests folder and initial test
+     *
+     * @return void
+     */
+    protected static function tests(string $name, string $path) :void
+    {
+        $target = $path.'/Tests';
+        $directory = app_path('tests/'.$name);
+        $singular = str_singular($name);
+        $slug = str_slug(str_plural($name));
+
+        ResourceTest::create($singular.'Resource', $directory, ['slug' => $slug])->link($target);
     }
 }

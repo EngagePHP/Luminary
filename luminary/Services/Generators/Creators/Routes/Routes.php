@@ -18,6 +18,17 @@ class Routes extends StubCreator
     ];
 
     /**
+     * Set the route name
+     * as lowercase
+     *
+     * @param string $name
+     */
+    public function setName(string $name) :void
+    {
+        $this->name = 'routes';
+    }
+
+    /**
      * Get the stub file for the generator.
      *
      * @return string

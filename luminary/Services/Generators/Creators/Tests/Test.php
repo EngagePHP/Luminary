@@ -12,10 +12,14 @@ class Test extends StubCreator
      *
      * @var array
      */
-    protected $attributes = [
-        'slug' => '',
-        'response' => '\'\''
-    ];
+    protected $attributes = [];
+
+    /**
+     * The type of test
+     *
+     * @var string
+     */
+    protected $type;
 
     /**
      * Set the class name as
@@ -26,6 +30,28 @@ class Test extends StubCreator
     public function setName(string $name) :void
     {
         parent::setName($name.'_test');
+    }
+
+    /**
+     * Set the root directory path
+     *
+     * @param $path
+     * @return void
+     */
+    protected function setPath($path) :void
+    {
+        $dir = dirname($path);
+        $name = basename($path);
+
+        $name = studly_case(str_plural($name));
+        $dir = $dir.'/'.$name;
+
+        if (! empty($this->type)) {
+            $type = studly_case($this->type);
+            $dir = $dir.'/'.$type;
+        }
+
+        parent::setPath($dir);
     }
 
     /**
