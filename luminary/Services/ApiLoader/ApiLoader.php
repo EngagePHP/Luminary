@@ -165,16 +165,11 @@ class ApiLoader
     {
         $paths = $this->registry('modelFactories')->toArray();
 
-        $this->app->singleton(ModelFactory::class, function ($app) use ($paths) {
-            $faker = $app->make(Generator::class);
-            $factory = new ModelFactory($faker);
+        $factory = app(ModelFactory::class);
 
-            foreach ($paths as $path) {
-                $factory->load($path);
-            }
-
-            return $factory;
-        });
+        foreach ($paths as $path) {
+            $factory->load($path);
+        }
     }
 
     /**
