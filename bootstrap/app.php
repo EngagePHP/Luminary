@@ -121,11 +121,13 @@ $api = $app->loadApi([
 ]);
 
 $api->registerConsole();
+$api->registerModelFactories();
 $api->registerMiddleware();
 $api->registerMigrations();
 $api->registerProviders();
 $api->registerRoutes();
 $api->registerRouteMiddleware();
+$api->registerSeeders();
 
 /*
 |--------------------------------------------------------------------------

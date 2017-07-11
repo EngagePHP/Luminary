@@ -23,6 +23,13 @@ class Registry
     protected $consoleKernels;
 
     /**
+     * A list of model factories
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $modelFactories;
+
+    /**
      * The registered middleware
      *
      * @var \Illuminate\Support\Collection
@@ -56,6 +63,13 @@ class Registry
      * @var \Illuminate\Support\Collection
      */
     protected $routeMiddleware;
+
+    /**
+     * The registered database seeders
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $seeders;
 
     /**
      * The registered views

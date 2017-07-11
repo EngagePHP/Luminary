@@ -1,0 +1,21 @@
+<?php
+
+use Laravel\Lumen\Testing\DatabaseMigrations;
+use Laravel\Lumen\Testing\DatabaseTransactions;
+
+class DummyClass extends TestCase
+{
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testDummyClass()
+    {
+        $this->get('/{{slug}}');
+
+        $this->assertEquals(
+            {{response}}, $this->response->getContent()
+        );
+    }
+}

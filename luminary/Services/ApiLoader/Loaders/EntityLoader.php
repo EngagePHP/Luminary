@@ -25,7 +25,9 @@ class EntityLoader extends AbstractApiLoader
      */
     protected function register(Registrar $registrar)
     {
+        $registrar->registerModelFactories('Database/Factories');
         $registrar->registerMigrations('Database/Migrations');
         $registrar->registerMiddleware('Middleware');
+        $registrar->registerSeeders('Database/Seeds');
     }
 }

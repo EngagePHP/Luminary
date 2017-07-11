@@ -1,0 +1,29 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Console\Scheduling\Schedule;
+use Luminary\Console\AbstractKernel as LuminaryConsoleKernel;
+
+class Kernel extends LuminaryConsoleKernel
+{
+    /**
+     * A list of console commands to register
+     *
+     * @return array
+     */
+    protected $commands = [{{commands}}];
+
+    /**
+     * Define additional application command schedules.
+     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @return void
+     */
+    public function schedule(Schedule $schedule) :void
+    {
+        //$schedule->call(function () {
+            // Do some task...
+        //})->hourly();
+    }
+}

@@ -1,0 +1,39 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Console\Command;
+
+class DummyClass extends Command
+{
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $name = '{{name}}';
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = '{{signature}}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = '{{description}}';
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        //
+    }
+}

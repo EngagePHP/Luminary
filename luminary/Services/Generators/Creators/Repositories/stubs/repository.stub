@@ -1,0 +1,134 @@
+<?php
+
+namespace DummyNamespace;
+
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Luminary\Contracts\Entity\Repository;
+use ModelNamespace;
+
+class DummyClass implements Repository
+{
+    /**
+     * Retrieve all records
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function all() :Collection
+    {
+        return ModelClass::all();
+    }
+
+    /**
+     * Find a record by id
+     *
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function find($id) :Model
+    {
+        return ModelClass::find((array) $id);
+    }
+
+    /**
+     * Find multiple records by id
+     *
+     * @param $ids
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function findAll(array $ids) :Collection
+    {
+        return ModelClass::find((array) $ids);
+    }
+
+    /**
+     * Create a new record
+     *
+     * @param array $data
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function create(array $data) :Model
+    {
+        $model = new ModelClass($data);
+
+        $model->save();
+
+        return $model;
+    }
+
+    /**
+     * Create multiple new records
+     *
+     * @param array $data
+     * @return bool
+     */
+    public static function createAll(array $data) :bool
+    {
+        $now = Carbon::now()->toDateTimeString();
+
+        $timestamps = [
+            'created_at'=> $now,
+            'updated_at'=> $now
+        ];
+
+        $data = collect($data)->transform(
+            function($attributes) use($timestamps) {
+                return array_merge($attributes, $timestamps);
+            }
+        );
+
+        return ModelClass::insert($data);
+    }
+
+    /**
+     * Update a record by id
+     *
+     * @param $id
+     * @param array $data
+     * @return bool
+     */
+    public static function update($id, array $data) :bool
+    {
+        $model = static::find($id)->first();
+
+        $model->fill($data);
+
+        return $model->save();
+    }
+
+    /**
+     * Update a record by id
+     *
+     * @param array $ids
+     * @param array $data
+     * @return bool
+     */
+    public static function updateAll(array $ids, array $data) :bool
+    {
+        return ModelClass::whereIn('id', $ids)->update($data);
+    }
+
+    /**
+     * Delete a record by id
+     *
+     * @param $id
+     * @return bool
+     */
+    public static function delete($id) :bool
+    {
+        return ModelClass::destroy($id);
+    }
+
+    /**
+     * Delete multiple records
+     * by ID
+     *
+     * @param array $ids
+     * @return bool
+     */
+    public static function deleteAll(array $ids) :bool
+    {
+        return ModelClass::destroy((array) $ids);
+    }
+}
