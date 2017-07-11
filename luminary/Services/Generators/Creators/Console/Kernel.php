@@ -22,7 +22,7 @@ class Kernel extends StubCreator
      */
     protected function getStub() :string
     {
-        return __DIR__.'/stubs/kernel.stub';
+        return __DIR__ . '/stubs/kernel.stub';
     }
 
     /**
@@ -66,7 +66,7 @@ class Kernel extends StubCreator
         }, $commands);
 
         // Create the final formatted output
-        $commands = PHP_EOL . implode(','.PHP_EOL, $commands) . PHP_EOL . "    ";
+        $commands = PHP_EOL . implode(',' . PHP_EOL, $commands) . PHP_EOL . "    ";
 
         $this->setAttribute('commands', $commands);
     }

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factory as ModelFactory;
 
 class ServiceProvider extends LaravelServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -41,14 +40,14 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function registerTesting()
     {
-        $dir = __DIR__.'/Testing/database';
+        $dir = __DIR__ . '/Testing/database';
 
         // Register Factory
-        app(ModelFactory::class)->load($dir.'/factories');
+        app(ModelFactory::class)->load($dir . '/factories');
 
         // Register Migrations
         $this->app->afterResolving('migrator', function ($migrator) use ($dir) {
-            $migrator->path($dir.'/migrations');
+            $migrator->path($dir . '/migrations');
         });
     }
 }

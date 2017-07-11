@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Query
 {
-
     /**
      * Has the current query
      * been activated?

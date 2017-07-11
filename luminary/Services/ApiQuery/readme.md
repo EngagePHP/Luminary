@@ -1,4 +1,4 @@
-#JSON Api Query
+# JSON Api Query
 
 The JSON Api Query service was developed to automatically handle JSON API spec request queries within Eloquent. The goal would be to receive the request, determine if the request method allows the request parameters and automatically apply them if applicable.
 

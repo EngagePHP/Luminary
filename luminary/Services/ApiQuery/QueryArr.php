@@ -28,14 +28,14 @@ class QueryArr extends Arr
      */
     public static function dotValue(array $array, string $defaultKey = 'default') :array
     {
-        $results = array();
+        $results = [];
 
         foreach ($array as $item) {
             $item = explode('.', $item);
             $value = array_pop($item);
             $count = count($item);
             $last_key = array_pop($item) ?: $defaultKey;
-            $result = array();
+            $result = [];
 
             switch (true) {
                 case $count <= 1:
@@ -44,7 +44,7 @@ class QueryArr extends Arr
                 case $count > 1:
                     $last = [$last_key => $value];
                     foreach (array_reverse($item) as $key) {
-                        $temp = array();
+                        $temp = [];
                         $temp[$key] = $last;
                         $result = $temp;
                         $last = $temp;
@@ -67,13 +67,13 @@ class QueryArr extends Arr
      */
     public static function dotReverse($array, $prepend = '') :array
     {
-        $results = array();
+        $results = [];
 
         foreach ($array as $context => $value) {
             $context = explode('.', $context);
             $count = count($context);
             $last_key = array_pop($context);
-            $result = array();
+            $result = [];
 
             switch (true) {
                 case $count === 1:
@@ -82,7 +82,7 @@ class QueryArr extends Arr
                 case $count > 1:
                     $last = [str_replace($prepend, '', $last_key) => $value];
                     foreach (array_reverse($context) as $key) {
-                        $temp = array();
+                        $temp = [];
                         $temp[str_replace($prepend, '', $key)] = $last;
                         $result = $temp;
                         $last = $temp;

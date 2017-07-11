@@ -6,7 +6,6 @@ use Luminary\Services\Generators\Creators\StubCreator;
 
 class PhpUnit extends StubCreator
 {
-
     /**
      * Set the route name
      * as lowercase

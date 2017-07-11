@@ -142,8 +142,8 @@ class FormRequest extends Request implements ValidatesWhenResolved
         }
 
         return $this->redirector->to($this->getRedirectUrl())
-                                        ->withInput($this->except($this->dontFlash))
-                                        ->withErrors($errors, $this->errorBag);
+            ->withInput($this->except($this->dontFlash))
+            ->withErrors($errors, $this->errorBag);
     }
 
     /**
