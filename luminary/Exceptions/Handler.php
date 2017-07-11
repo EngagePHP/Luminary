@@ -3,11 +3,13 @@
 namespace Luminary\Exceptions;
 
 use Exception;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -21,6 +23,16 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+    ];
+
+    /**
+     * A list of presenters by
+     * Exception type
+     *
+     * @var array
+     */
+    protected $presenters = [
+        HttpException::class => Presenters\HttpExceptionPresenter::class
     ];
 
     /**
@@ -45,6 +57,27 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return parent::render($request, $e);
+        $presenter = $this->getPresenter($e);
+
+        return $presenter->render();
+    }
+
+    /**
+     * Get the correct presenter to render
+     *
+     * @param Exception $e
+     * @return mixed
+     */
+    public function getPresenter(Exception $e)
+    {
+        $presenter = Presenters\DefaultPresenter::class;
+
+        foreach ($this->presenters as $exception => $class) {
+            if ($e instanceof $exception) {
+                $presenter = $class;
+            }
+        }
+
+        return new $presenter($e);
     }
 }

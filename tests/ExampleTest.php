@@ -12,6 +12,10 @@ class ExampleTest extends TestCase
      */
     public function testExample()
     {
-        //
+//        $this->get('/', ['content-type' => 'application/vnd.api+json']);
+//
+//        $this->assertEquals(
+//            $this->app->version(), $this->response->getContent()
+//        );
     }
 }
