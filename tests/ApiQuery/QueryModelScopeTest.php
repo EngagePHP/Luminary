@@ -1,35 +1,10 @@
 <?php
 
-use Laravel\Lumen\Testing\DatabaseMigrations;
-use Luminary\Services\ApiQuery\Testing\Models\Customer;
-use Luminary\Services\ApiQuery\Testing\Models\Location;
-use Luminary\Services\ApiQuery\Testing\Models\User;
+use Luminary\Services\Testing\Models\Customer;
 
 class QueryModelScopeTest extends TestCase
 {
-    use DatabaseMigrations;
-    use Luminary\Services\ApiQuery\Testing\BaseQueryTrait;
-
-    /**
-     * The customer collection
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected $customers;
-
-    /**
-     * The user collection
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected $users;
-
-    /**
-     * The location collection
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected $locations;
+    use Luminary\Services\Testing\BaseQueryTrait;
 
     /**
      * Setup the test environment.
@@ -374,31 +349,5 @@ class QueryModelScopeTest extends TestCase
         $this->assertNotEmpty($location);
 
         Customer::clearBootedModels();
-    }
-
-    /**
-     * Seed the Test Database
-     * 
-     * @return void
-     */
-    protected function seed()
-    {
-        $users = collect();
-        $locations = factory(Location::class, 5)->create();
-        $customers = factory(Customer::class, 20)
-            ->create()
-            ->each(function($customer) use($users) {
-                $users->push($customer->users()->save(factory(User::class)->make()));
-                $users->push($customer->users()->save(factory(User::class)->make()));
-                $users->push($customer->users()->save(factory(User::class)->make()));
-            });
-
-        $users->each(function($user) use($locations) {
-            $user->location()->associate($locations->random())->save();
-        });
-
-        $this->customers = $customers;
-        $this->locations = collect($locations);
-        $this->users = $users;
     }
 }

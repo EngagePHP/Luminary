@@ -2,7 +2,9 @@
 
 namespace Luminary\Http\Controllers;
 
-class Controller
+use Laravel\Lumen\Routing\Controller as BaseController;
+
+class Controller extends BaseController
 {
     //
 }

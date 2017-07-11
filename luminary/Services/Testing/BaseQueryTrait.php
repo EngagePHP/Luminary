@@ -1,11 +1,17 @@
 <?php
 
-namespace Luminary\Services\ApiQuery\Testing;
+namespace Luminary\Services\Testing;
 
+use Laravel\Lumen\Testing\DatabaseMigrations;
 use Luminary\Services\ApiQuery\Query;
+use Luminary\Services\Testing\Models\Customer;
+use Luminary\Services\Testing\Models\Location;
+use Luminary\Services\Testing\Models\User;
 
 trait BaseQueryTrait
 {
+    use DatabaseMigrations;
+
     /**
      * The fully generated url
      *
@@ -19,6 +25,27 @@ trait BaseQueryTrait
      * @var \Luminary\Services\ApiQuery\Query
      */
     protected $query;
+
+    /**
+     * The customer collection
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected $customers;
+
+    /**
+     * The user collection
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected $users;
+
+    /**
+     * The location collection
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected $locations;
 
     /**
      * Get the query instance as an array
@@ -78,5 +105,31 @@ trait BaseQueryTrait
     protected function setUpQuery()
     {
         $this->query = app(Query::class)->activate();
+    }
+
+    /**
+     * Seed the Test Database
+     *
+     * @return void
+     */
+    protected function seed()
+    {
+        $users = collect();
+        $locations = factory(Location::class, 5)->create();
+        $customers = factory(Customer::class, 20)
+            ->create()
+            ->each(function ($customer) use ($users) {
+                $users->push($customer->users()->save(factory(User::class)->make()));
+                $users->push($customer->users()->save(factory(User::class)->make()));
+                $users->push($customer->users()->save(factory(User::class)->make()));
+            });
+
+        $users->each(function ($user) use ($locations) {
+            $user->location()->associate($locations->random())->save();
+        });
+
+        $this->customers = $customers;
+        $this->locations = collect($locations);
+        $this->users = $users;
     }
 }

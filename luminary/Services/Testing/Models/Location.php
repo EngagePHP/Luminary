@@ -1,12 +1,12 @@
 <?php
 
-namespace Luminary\Services\ApiQuery\Testing\Models;
+namespace Luminary\Services\Testing\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Luminary\Services\ApiQuery\QueryTrait;
 
-class Customer extends Model
+class Location extends Model
 {
     use SoftDeletes;
     use QueryTrait;
@@ -16,7 +16,7 @@ class Customer extends Model
      *
      * @var string
      */
-    protected $table = 'customers';
+    protected $table = 'locations';
 
     /**
      * Fillable fields for a Content instance.

@@ -2,7 +2,7 @@
 
 class QueryMiddlewareTest extends TestCase
 {
-    use Luminary\Services\ApiQuery\Testing\BaseQueryTrait;
+    use Luminary\Services\Testing\BaseQueryTrait;
 
     /**
      * Query String parameters to build
