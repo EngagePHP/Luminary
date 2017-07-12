@@ -35,7 +35,7 @@ class QueryMiddlewareTest extends TestCase
      */
     public function testQueryMiddlewareWillBeTriggeredOnGetRequest()
     {
-        $this->get($this->url);
+        $this->get($this->url, ['content-type' => 'application/vnd.api+json']);
 
         $this->assertCount(1, $this->getQueryArray());
         $this->assertResponseOk();
@@ -49,7 +49,7 @@ class QueryMiddlewareTest extends TestCase
      */
     public function testQueryMiddlewareWillNotBeTriggeredOnPostRequest()
     {
-        $this->post($this->url);
+        $this->post($this->url, [], ['content-type' => 'application/vnd.api+json']);
         $response = $this->response;
 
         $this->assertCount(0, $this->getQueryArray());
@@ -64,7 +64,7 @@ class QueryMiddlewareTest extends TestCase
      */
     public function testQueryMiddlewareWillNotBeTriggeredOnPutRequest()
     {
-        $this->put($this->url);
+        $this->put($this->url, [], ['content-type' => 'application/vnd.api+json']);
         $response = $this->response;
 
         $this->assertCount(0, $this->getQueryArray());
@@ -79,7 +79,7 @@ class QueryMiddlewareTest extends TestCase
      */
     public function testQueryMiddlewareWillNotBeTriggeredOnPatchRequest()
     {
-        $this->patch($this->url);
+        $this->patch($this->url, [], ['content-type' => 'application/vnd.api+json']);
         $response = $this->response;
 
         $this->assertCount(0, $this->getQueryArray());
@@ -94,7 +94,7 @@ class QueryMiddlewareTest extends TestCase
      */
     public function testQueryMiddlewareWillNotBeTriggeredOnDeleteRequest()
     {
-        $this->delete($this->url);
+        $this->delete($this->url, [], ['content-type' => 'application/vnd.api+json']);
         $response = $this->response;
 
         $this->assertCount(0, $this->getQueryArray());
