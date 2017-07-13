@@ -4,7 +4,7 @@ use Luminary\Services\Testing\Models\Customer;
 
 class QueryModelScopeTest extends TestCase
 {
-    use Luminary\Services\Testing\BaseQueryTrait;
+    use Luminary\Services\Testing\BaseTestingTrait;
 
     /**
      * Setup the test environment.
@@ -127,7 +127,8 @@ class QueryModelScopeTest extends TestCase
             'id' => $customer->id,
             'name' => $customer->name,
             'website' => $customer->website,
-            'phone' => $customer->phone
+            'phone' => $customer->phone,
+            'location_id' => $customer->location_id
         ];
 
         $this->query->setQuery($query)->activate();
@@ -168,13 +169,15 @@ class QueryModelScopeTest extends TestCase
                 'id' => $customerOne->id,
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
-                'phone' => $customerOne->phone
+                'phone' => $customerOne->phone,
+                'location_id' => $customerOne->location_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
-                'phone' => $customerTwo->phone
+                'phone' => $customerTwo->phone,
+                'location_id' => $customerTwo->location_id
             ]
         ];
 
@@ -218,13 +221,15 @@ class QueryModelScopeTest extends TestCase
                 'id' => $customerOne->id,
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
-                'phone' => $customerOne->phone
+                'phone' => $customerOne->phone,
+                'location_id' => $customerOne->location_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
-                'phone' => $customerTwo->phone
+                'phone' => $customerTwo->phone,
+                'location_id' => $customerTwo->location_id
             ]
         ];
 
@@ -275,13 +280,15 @@ class QueryModelScopeTest extends TestCase
                 'id' => $customerOne->id,
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
-                'phone' => $customerOne->phone
+                'phone' => $customerOne->phone,
+                'location_id' => $customerOne->location_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
-                'phone' => $customerTwo->phone
+                'phone' => $customerTwo->phone,
+                'location_id' => $customerTwo->location_id
             ]
         ];
 

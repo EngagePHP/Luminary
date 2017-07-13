@@ -2,7 +2,7 @@
 
 namespace Luminary\Services\Testing\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Luminary\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Luminary\Services\ApiQuery\QueryTrait;
 
@@ -56,5 +56,15 @@ class Customer extends Model
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    /**
+     * The location relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 }

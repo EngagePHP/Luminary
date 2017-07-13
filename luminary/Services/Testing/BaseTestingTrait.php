@@ -8,7 +8,7 @@ use Luminary\Services\Testing\Models\Customer;
 use Luminary\Services\Testing\Models\Location;
 use Luminary\Services\Testing\Models\User;
 
-trait BaseQueryTrait
+trait BaseTestingTrait
 {
     use DatabaseMigrations;
 
@@ -55,6 +55,30 @@ trait BaseQueryTrait
     protected function getQueryArray()
     {
         return $this->query->toArray();
+    }
+
+    /**
+     * Return the default request headers
+     *
+     * @return array
+     */
+    protected function headers()
+    {
+        return [
+            'Content-Type' => 'application/vnd.api+json'
+        ];
+    }
+
+    /**
+     * Transform headers array to array of $_SERVER vars with HTTP_* format.
+     *
+     * @param  array  $headers
+     * @return array
+     */
+    protected function transformHeadersToServerVars(array $headers)
+    {
+        $headers = collect($this->headers())->merge($headers)->all();
+        return parent::transformHeadersToServerVars($headers);
     }
 
     /**
@@ -110,21 +134,25 @@ trait BaseQueryTrait
     /**
      * Seed the Test Database
      *
-     * @return void
+     * @param int $customerCount
+     * @param int $userCount
+     * @param int $locationCount
      */
-    protected function seed()
+    protected function seed(int $customerCount = 20, int $userCount = 3, $locationCount = 5)
     {
         $users = collect();
-        $locations = factory(Location::class, 5)->create();
-        $customers = factory(Customer::class, 20)
+        $locations = factory(Location::class, $locationCount)->create();
+        $customers = factory(Customer::class, $customerCount)
             ->create()
-            ->each(function ($customer) use ($users) {
-                $users->push($customer->users()->save(factory(User::class)->make()));
-                $users->push($customer->users()->save(factory(User::class)->make()));
-                $users->push($customer->users()->save(factory(User::class)->make()));
+            ->each(function (Customer $customer) use ($users, $userCount, $locations) {
+                for ($i=0; $i < $userCount; $i++) {
+                    $users->push($customer->users()->save(factory(User::class)->make()));
+                }
+
+                $customer->location()->associate($locations->random())->save();
             });
 
-        $users->each(function ($user) use ($locations) {
+        $users->each(function (User $user) use ($locations) {
             $user->location()->associate($locations->random())->save();
         });
 

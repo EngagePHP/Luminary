@@ -12,18 +12,16 @@ class Collection extends EloquentCollection
      *
      * @var \Illuminate\Pagination\AbstractPaginator
      */
-    protected $paginator;
+    protected static $paginator;
 
     /**
-     * Create a new collection
+     * Create a new collection.
      *
-     * @param \Illuminate\Pagination\AbstractPaginator $paginator
+     * @param  mixed  $items
      */
-    public function __construct(AbstractPaginator $paginator)
+    public function __construct($items = [])
     {
-        parent::__construct($paginator->items());
-
-        $this->paginator = $paginator;
+        parent::__construct($items);
     }
 
     /**
@@ -33,7 +31,7 @@ class Collection extends EloquentCollection
      */
     public function getPaginator() :AbstractPaginator
     {
-        return $this->paginator;
+        return static::$paginator;
     }
 
     /**
@@ -54,7 +52,7 @@ class Collection extends EloquentCollection
      */
     public function setPaginator(AbstractPaginator $paginator) :Collection
     {
-        $this->paginator = $paginator;
+        static::$paginator = $paginator;
 
         return $this;
     }

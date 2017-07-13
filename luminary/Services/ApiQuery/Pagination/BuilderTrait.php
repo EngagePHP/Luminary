@@ -2,8 +2,10 @@
 
 namespace Luminary\Services\ApiQuery\Pagination;
 
+use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection as SupportCollection;
+use Luminary\Services\ApiQuery\Pagination\Paginators\LengthAwarePaginator;
 use Luminary\Services\ApiQuery\Query;
 
 trait BuilderTrait
@@ -65,10 +67,10 @@ trait BuilderTrait
             $this->getPaginationCount(),
             $params->get('per_page'),
             $params->get('page'),
-            []
+            $this->getPaginationOptions()
         );
 
-        return new Collection($paginator);
+        return (new Collection($paginator->items()))->setPaginator($paginator);
     }
 
     /**
@@ -83,6 +85,18 @@ trait BuilderTrait
     }
 
     /**
+     * Return the pagination options
+     *
+     * @return array
+     */
+    public function getPaginationOptions() :array
+    {
+        $query = app(Query::class)->getQuery()->except(['resource'])->toArray();
+
+        return compact('query');
+    }
+
+    /**
      * Get the pagination count
      *
      * @return int
@@ -90,5 +104,26 @@ trait BuilderTrait
     public function getPaginationCount() :int
     {
         return $this->getQuery()->getCountForPagination();
+    }
+
+    /**
+     * Create a new length-aware paginator instance.
+     *
+     * @param  \Illuminate\Support\Collection  $items
+     * @param  int  $total
+     * @param  int  $perPage
+     * @param  int  $currentPage
+     * @param  array  $options
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    protected function paginator($items, $total, $perPage, $currentPage, $options)
+    {
+        return Container::getInstance()->makeWith(LengthAwarePaginator::class, compact(
+            'items',
+            'total',
+            'perPage',
+            'currentPage',
+            'options'
+        ));
     }
 }

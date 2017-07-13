@@ -2,7 +2,7 @@
 
 namespace Luminary\Services\Testing\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Luminary\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Luminary\Services\ApiQuery\QueryTrait;
 
