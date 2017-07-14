@@ -82,7 +82,6 @@ class RequestHeaders
         $accept = $request->header('accept');
         $content = $request->header('content-type');
 
-
         $this->handleContentType($content);
         $this->handleAcceptHeaders($accept);
 
@@ -93,6 +92,7 @@ class RequestHeaders
      * Validate the content-type header
      *
      * @param $contentType
+     * @return void
      */
     protected function handleContentType($contentType) :void
     {
@@ -125,6 +125,7 @@ class RequestHeaders
      *
      * @param $header
      * @param $type
+     * @return void
      */
     protected function handleHeader($header, $type) :void
     {
