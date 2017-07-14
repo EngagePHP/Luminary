@@ -65,11 +65,23 @@ class Registrar
         return $this->directory->path($path);
     }
 
+    /**
+     * Is path a directory?
+     *
+     * @param $path
+     * @return mixed
+     */
     public function isDirectory($path)
     {
         return Storage::isDirectory($path);
     }
 
+    /**
+     * Is path a file?
+     *
+     * @param $path
+     * @return mixed
+     */
     public function isFile($path)
     {
         return Storage::isFile($path);
@@ -129,6 +141,23 @@ class Registrar
         }
 
         $this->registry->commands = $this->directory->make($path)->classes();
+    }
+
+    /**
+     * Register a model factory path
+     *
+     * @param string $path
+     * @return void
+     */
+    public function registerModelFactories(string $path) :void
+    {
+        $path = $this->path($path);
+
+        if (! $this->isDirectory($path)) {
+            return;
+        }
+
+        $this->registry->modelFactories = (array) $path;
     }
 
     /**
@@ -214,6 +243,23 @@ class Registrar
         }
 
         $this->registry->routeMiddleware = (array) $path;
+    }
+
+    /**
+     * Register database seeders
+     *
+     * @param string $path
+     * @return void
+     */
+    public function registerSeeders(string $path) :void
+    {
+        $path = $this->path($path);
+
+        if (! $this->isDirectory($path)) {
+            return;
+        }
+
+        $this->registry->seeders = $this->directory->make($path)->classes();
     }
 
     /**

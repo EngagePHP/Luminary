@@ -1,0 +1,71 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyRequestNamespace\DummyRequestClassIndexRequest;
+use DummyRequestNamespace\DummyRequestClassStoreRequest;
+use DummyRequestNamespace\DummyRequestClassShowRequest;
+use DummyRequestNamespace\DummyRequestClassUpdateRequest;
+use DummyRequestNamespace\DummyRequestClassDestroyRequest;
+use Luminary\Http\Controllers\Controller;
+
+class DummyClass extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \DummyRequestNamespace\DummyRequestClassIndexRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(DummyRequestClassIndexRequest $request)
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \DummyRequestNamespace\DummyRequestClassStoreRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(DummyRequestClassStoreRequest $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \DummyRequestNamespace\DummyRequestClassShowRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(DummyRequestClassShowRequest  $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \DummyRequestNamespace\DummyRequestClassUpdateRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(DummyRequestClassUpdateRequest $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \DummyRequestNamespace\DummyRequestClassDestroyRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(DummyRequestClassDestroyRequest $request, $id)
+    {
+        //
+    }
+}

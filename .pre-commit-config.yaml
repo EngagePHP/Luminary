@@ -27,10 +27,10 @@
   - id: php-cs
     stages: [commit]
     files: \.(php)$
-    args: ["--ignore=tests", "--standard=PSR2", "-p"]
+    args: ["--ignore=tests,*/migrations,luminary/Services/Generators/templates", "--standard=PSR2", "-p"]
   - id: php-cbf
     files: \.(php)$
-    args: ["--ignore=tests", "--standard=PSR2", "-p"]
+    args: ["--ignore=tests,*/migrations,luminary/Services/Generators/templates", "--standard=PSR2", "-p"]
 - repo: git://github.com/Lucas-C/pre-commit-hooks
   sha: "1e30aa4c88cefe2e65aca072fcb2347f43ace870"
   hooks:

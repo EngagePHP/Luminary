@@ -1,0 +1,16 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Register Route Middleware
+|--------------------------------------------------------------------------
+|
+| Here we will can register the route middleware for a resource
+| Visit: https://laravel.com/docs/5.4/middleware#registering-middleware
+| for more information on array syntax for route middleware
+|
+*/
+return [
+    //'name' => DummyNamespace\Middleware::class,
+    //'name.sub' => DummyNamespace\Middleware::class
+];

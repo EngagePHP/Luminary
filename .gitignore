@@ -25,9 +25,6 @@ build.sh
 # ignore tmp folder
 tmp
 
-# ignore Docker Compose
-docker-compose.yml
-
 # Ignore dependencies
 vendor
 

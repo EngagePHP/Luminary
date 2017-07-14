@@ -83,9 +83,9 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+ $app->middleware([
+    \Luminary\Services\ApiRequest\Middleware\RequestHeaders::class
+ ]);
 
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
@@ -102,7 +102,7 @@ $app->singleton(
 |
 */
 
-$app->register(Luminary\Providers\LuminaryServiceProvider::class);
+ $app->register(Luminary\Providers\LuminaryServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -114,18 +114,20 @@ $app->register(Luminary\Providers\LuminaryServiceProvider::class);
 |
 */
 
-$api = $app->loadApi([
+ $api = $app->loadApi([
     \Luminary\Services\ApiLoader\Loaders\EntityLoader::class,
     \Luminary\Services\ApiLoader\Loaders\ResourceLoader::class,
     \Luminary\Services\ApiLoader\Loaders\ServiceLoader::class
-]);
+ ]);
 
-$api->registerConsole();
-$api->registerMiddleware();
-$api->registerMigrations();
-$api->registerProviders();
-$api->registerRoutes();
-$api->registerRouteMiddleware();
+ $api->registerConsole();
+ $api->registerModelFactories();
+ $api->registerMiddleware();
+ $api->registerMigrations();
+ $api->registerProviders();
+ $api->registerRoutes();
+ $api->registerRouteMiddleware();
+ $api->registerSeeders();
 
 /*
 |--------------------------------------------------------------------------
@@ -138,4 +140,4 @@ $api->registerRouteMiddleware();
 |
 */
 
-return $app;
+ return $app;
