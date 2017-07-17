@@ -108,6 +108,7 @@ $app->singleton(
 */
 
  $app->register(Luminary\Providers\LuminaryServiceProvider::class);
+ $app->register(Illuminate\Redis\RedisServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
