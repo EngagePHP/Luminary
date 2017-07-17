@@ -1,12 +1,12 @@
 <?php
 
-namespace Luminary\Services\ApiQuery\Testing\Models;
+namespace Luminary\Services\Testing\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Luminary\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Luminary\Services\ApiQuery\QueryTrait;
 
-class Location extends Model
+class User extends Model
 {
     use SoftDeletes;
     use QueryTrait;
@@ -16,7 +16,7 @@ class Location extends Model
      *
      * @var string
      */
-    protected $table = 'locations';
+    protected $table = 'users';
 
     /**
      * Fillable fields for a Content instance.
@@ -49,12 +49,22 @@ class Location extends Model
     ];
 
     /**
-     * Users Relationship
+     * The customer relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function users()
+    public function customer()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(Customer::class);
+    }
+
+    /**
+     * The location relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 }

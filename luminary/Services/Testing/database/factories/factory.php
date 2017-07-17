@@ -1,8 +1,8 @@
 <?php
 
-use Luminary\Services\ApiQuery\Testing\Models\Customer;
-use Luminary\Services\ApiQuery\Testing\Models\Location;
-use Luminary\Services\ApiQuery\Testing\Models\User;
+use Luminary\Services\Testing\Models\Customer;
+use Luminary\Services\Testing\Models\Location;
+use Luminary\Services\Testing\Models\User;
 
 $factory->define(User::class, function (Faker\Generator $faker) {
     return [

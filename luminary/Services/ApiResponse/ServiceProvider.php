@@ -1,6 +1,6 @@
 <?php
 
-namespace Luminary\Services\ApiQuery;
+namespace Luminary\Services\ApiResponse;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 
@@ -20,10 +20,6 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Query::class, function () {
-            return new Query(new QueryCollection);
-        });
-
-        $this->app->middleware(QueryMiddleware::class);
+        $this->app->middleware(ResponseMiddleware::class);
     }
 }
