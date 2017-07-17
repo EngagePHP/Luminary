@@ -34,6 +34,8 @@ class ApiResponseHelperTest extends TestCase
     {
         parent::setUp();
 
+        $this->withoutMiddleware();
+
         $this->get($this->path . '?' . $this->query);
         $this->root = ResponseHelper::root();
     }

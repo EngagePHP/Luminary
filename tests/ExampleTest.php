@@ -12,10 +12,12 @@ class ExampleTest extends TestCase
      */
     public function testExample()
     {
-//        $this->get('/', ['content-type' => 'application/vnd.api+json']);
-//
-//        $this->assertEquals(
-//            $this->app->version(), $this->response->getContent()
-//        );
+        $this->get('/', ['content-type' => 'application/vnd.api+json']);
+        $content = json_decode($this->response->getContent(), true);
+        $data = array_get($content, 'data');
+
+        $this->assertEquals(
+            [$this->app->version()], $data
+        );
     }
 }
