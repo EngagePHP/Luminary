@@ -1,35 +1,10 @@
 <?php
 
-use Laravel\Lumen\Testing\DatabaseMigrations;
-use Luminary\Services\ApiQuery\Testing\Models\Customer;
-use Luminary\Services\ApiQuery\Testing\Models\Location;
-use Luminary\Services\ApiQuery\Testing\Models\User;
+use Luminary\Services\Testing\Models\Customer;
 
 class QueryModelScopeTest extends TestCase
 {
-    use DatabaseMigrations;
-    use Luminary\Services\ApiQuery\Testing\BaseQueryTrait;
-
-    /**
-     * The customer collection
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected $customers;
-
-    /**
-     * The user collection
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected $users;
-
-    /**
-     * The location collection
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected $locations;
+    use Luminary\Services\Testing\BaseTestingTrait;
 
     /**
      * Setup the test environment.
@@ -152,7 +127,8 @@ class QueryModelScopeTest extends TestCase
             'id' => $customer->id,
             'name' => $customer->name,
             'website' => $customer->website,
-            'phone' => $customer->phone
+            'phone' => $customer->phone,
+            'location_id' => $customer->location_id
         ];
 
         $this->query->setQuery($query)->activate();
@@ -193,13 +169,15 @@ class QueryModelScopeTest extends TestCase
                 'id' => $customerOne->id,
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
-                'phone' => $customerOne->phone
+                'phone' => $customerOne->phone,
+                'location_id' => $customerOne->location_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
-                'phone' => $customerTwo->phone
+                'phone' => $customerTwo->phone,
+                'location_id' => $customerTwo->location_id
             ]
         ];
 
@@ -243,13 +221,15 @@ class QueryModelScopeTest extends TestCase
                 'id' => $customerOne->id,
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
-                'phone' => $customerOne->phone
+                'phone' => $customerOne->phone,
+                'location_id' => $customerOne->location_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
-                'phone' => $customerTwo->phone
+                'phone' => $customerTwo->phone,
+                'location_id' => $customerTwo->location_id
             ]
         ];
 
@@ -300,13 +280,15 @@ class QueryModelScopeTest extends TestCase
                 'id' => $customerOne->id,
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
-                'phone' => $customerOne->phone
+                'phone' => $customerOne->phone,
+                'location_id' => $customerOne->location_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
-                'phone' => $customerTwo->phone
+                'phone' => $customerTwo->phone,
+                'location_id' => $customerTwo->location_id
             ]
         ];
 
@@ -374,31 +356,5 @@ class QueryModelScopeTest extends TestCase
         $this->assertNotEmpty($location);
 
         Customer::clearBootedModels();
-    }
-
-    /**
-     * Seed the Test Database
-     * 
-     * @return void
-     */
-    protected function seed()
-    {
-        $users = collect();
-        $locations = factory(Location::class, 5)->create();
-        $customers = factory(Customer::class, 20)
-            ->create()
-            ->each(function($customer) use($users) {
-                $users->push($customer->users()->save(factory(User::class)->make()));
-                $users->push($customer->users()->save(factory(User::class)->make()));
-                $users->push($customer->users()->save(factory(User::class)->make()));
-            });
-
-        $users->each(function($user) use($locations) {
-            $user->location()->associate($locations->random())->save();
-        });
-
-        $this->customers = $customers;
-        $this->locations = collect($locations);
-        $this->users = $users;
     }
 }

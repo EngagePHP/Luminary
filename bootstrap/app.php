@@ -1,5 +1,7 @@
 <?php
 
+$start = microtime(true);
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 /*
@@ -35,6 +37,9 @@ $app = new Luminary\Application(
 );
 
 $app->withEloquent();
+
+// Set the application start time
+$app->make('config')->set('app.start', $start);
 
 /*
 |--------------------------------------------------------------------------

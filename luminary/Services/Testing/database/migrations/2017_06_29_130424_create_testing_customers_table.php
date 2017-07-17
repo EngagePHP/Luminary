@@ -18,6 +18,8 @@ class CreateTestingCustomersTable extends Migration
             $table->string('name');
             $table->string('website');
             $table->string('phone');
+            $table->integer('location_id')->unsigned()->nullable();
+            $table->foreign('location_id')->references('id')->on('locations');
             $table->timestamps();
             $table->softDeletes();
 
