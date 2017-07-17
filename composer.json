@@ -5,7 +5,8 @@
         "laravel/lumen": "^5.4",
         "wikimedia/composer-merge-plugin": "^1.4",
         "league/flysystem-aws-s3-v3": "~1.0",
-        "eddturtle/direct-upload": "^1.6"
+        "eddturtle/direct-upload": "^1.6",
+        "illuminate/redis": "5.4.*"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "3.*",
