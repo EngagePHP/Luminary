@@ -44,7 +44,7 @@ class LinkPresenter
      */
     protected function self() :array
     {
-        return [ 'self' =>  $this->serializer->selfLink()] ;
+        return ['self' =>  $this->serializer->selfLink()] ;
     }
 
     /**
