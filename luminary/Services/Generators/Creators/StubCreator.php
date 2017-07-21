@@ -138,10 +138,6 @@ abstract class StubCreator implements CreatorInterface
      */
     public function setAttribute(string $name, $value) :void
     {
-        if (! array_key_exists($name, $this->attributes)) {
-            return;
-        }
-
         $method = camel_case('set_'.$name.'_attribute');
 
         $this->attributes[$name] = method_exists($this, $method)
