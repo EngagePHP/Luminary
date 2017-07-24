@@ -78,7 +78,8 @@ class ModelSerializer extends AbstractSerializer
             'id' => $this->id(),
             'attributes' => $this->attributes(),
             'links' => $this->links(),
-            'relationships' => $this->relationships()
+            'relationships' => $this->relationships(),
+            'meta' => $this->meta()
         ];
     }
 
@@ -86,13 +87,14 @@ class ModelSerializer extends AbstractSerializer
      * Parse the model and fill
      * the class attributes
      *
-     * @param \Illuminate\Database\Eloquent\Model $data
+     * @param \Luminary\Database\Eloquent\Model $data
      */
     public function fill($data) :void
     {
         $this->setType($data->getTable())
             ->setId($data->id)
             ->setAttributes($data->attributesToArray())
+            ->setMeta($data->meta())
             ->setRelations($data->getRelations())
             ->setRelationships($this->relations())
             ->setIncluded($this->flattenedRelations());
