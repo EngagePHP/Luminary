@@ -4,12 +4,10 @@ namespace Luminary\Services\Testing\Models;
 
 use Luminary\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Luminary\Services\ApiQuery\QueryTrait;
 
 class User extends Model
 {
     use SoftDeletes;
-    use QueryTrait;
 
     /**
      * The table name.
