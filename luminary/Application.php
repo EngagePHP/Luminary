@@ -3,6 +3,7 @@
 namespace Luminary;
 
 use Laravel\Lumen\Application as LaravelApplication;
+use Luminary\Console\ConsoleServiceProvider;
 use Luminary\Services\ApiLoader\ApiLoader;
 use Luminary\Services\ApiLoader\Registry\Registrar;
 use Luminary\Services\ApiLoader\Registry\Registry;
@@ -37,6 +38,19 @@ class Application extends LaravelApplication
         $loader->load($loaders);
 
         return $loader;
+    }
+
+    /**
+     * Prepare the application to execute a console command.
+     *
+     * @param  bool  $aliases
+     * @return void
+     */
+    public function prepareForConsoleCommand($aliases = true)
+    {
+        parent::prepareForConsoleCommand($aliases);
+
+        $this->register(ConsoleServiceProvider::class);
     }
 
     /**

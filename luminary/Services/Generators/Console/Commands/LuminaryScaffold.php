@@ -7,7 +7,6 @@ use Luminary\Services\Filesystem\App\Storage;
 use Luminary\Services\Generators\Creators\Routes\DefaultRoutes;
 use Luminary\Services\Generators\Creators\Tests\PhpUnit;
 use Luminary\Services\Generators\Creators\Tests\ResourceTest;
-use Luminary\Services\Generators\Creators\Tests\TestCase;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -96,6 +95,7 @@ class LuminaryScaffold extends Command
     protected function composerRequireDev() :string
     {
         $require = [
+            "engage-php/luminary:0.*",
             "squizlabs/php_codesniffer:3.*",
             "fzaninotto/faker:~1.4",
             "phpunit/phpunit:~5.0",
@@ -219,7 +219,6 @@ class LuminaryScaffold extends Command
         $directory = app_path('tests');
 
         Storage::makeDirectory($directory, true);
-        TestCase::create('TestCase', $directory);
         PhpUnit::create('phpunit', app_path());
     }
 

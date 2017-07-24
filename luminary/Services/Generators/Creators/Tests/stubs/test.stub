@@ -2,6 +2,7 @@
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Luminary\Testing\TestCase;
 
 class DummyClass extends TestCase
 {
@@ -10,7 +11,7 @@ class DummyClass extends TestCase
      *
      * @return void
      */
-    public function testDummyClass()
+    public function test{{methodName}}()
     {
         //
     }

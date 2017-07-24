@@ -2,6 +2,7 @@
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Luminary\Testing\TestCase;
 
 class DummyClass extends TestCase
 {
@@ -10,12 +11,14 @@ class DummyClass extends TestCase
      *
      * @return void
      */
-    public function testDummyClass()
+    public function test{{methodName}}()
     {
-        $this->get('/{{slug}}');
+        $this->get('/{{slug}}', ['content-type' => 'application/vnd.api+json']);
+        $content = json_decode($this->response->getContent(), true);
+        $data = array_get($content, 'data');
 
         $this->assertEquals(
-            {{response}}, $this->response->getContent()
+            {{response}}, $data
         );
     }
 }

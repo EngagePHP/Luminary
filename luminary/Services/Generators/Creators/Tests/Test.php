@@ -12,7 +12,9 @@ class Test extends StubCreator
      *
      * @var array
      */
-    protected $attributes = [];
+    protected $attributes = [
+        'methodName' => []
+    ];
 
     /**
      * The type of test
@@ -30,6 +32,7 @@ class Test extends StubCreator
     public function setName(string $name) :void
     {
         parent::setName($name.'_test');
+        $this->setAttribute('methodName', studly_case($name));
     }
 
     /**
