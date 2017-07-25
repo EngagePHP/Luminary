@@ -16,13 +16,13 @@ class ExceptionResponseHandlerTest extends TestCase
     {
         $request = Request::create('http://example.com/api', 'GET');
         $handler = new Handler;
-        $exception = new HttpException(500);
+        $exception = new HttpException(500, 'An internal server error has occurred');
         $expected = [
             'errors' => [
                 [
                     'status' => 500,
-                    'title' => 'An internal server error has occurred',
-                    'detail' => ''
+                    'title' => 'An unknown error has occurred',
+                    'detail' => 'An internal server error has occurred'
                 ]
             ]
         ];

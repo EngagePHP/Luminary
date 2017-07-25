@@ -5,7 +5,7 @@ use Luminary\Services\ApiRequest\Exceptions\MediaTypeParametersNotAllowed;
 use Luminary\Services\ApiRequest\Exceptions\UnsupportedMediaType;
 use Luminary\Services\ApiRequest\Middleware\RequestHeaders;
 
-class JsonApiRequestMiddlewareTest extends TestCase
+class ApiRequestHeadersMiddlewareTest extends TestCase
 {
     /**
      * The JsonApiRequest instance

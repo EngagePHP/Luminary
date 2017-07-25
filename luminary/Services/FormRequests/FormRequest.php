@@ -2,7 +2,6 @@
 
 namespace Luminary\Services\FormRequests;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Validation\Validator;
@@ -12,8 +11,9 @@ use Illuminate\Validation\ValidatesWhenResolvedTrait;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Laravel\Lumen\Http\Redirector;
+use Luminary\Services\ApiRequest\ApiRequest;
 
-class FormRequest extends Request implements ValidatesWhenResolved
+class FormRequest extends ApiRequest implements ValidatesWhenResolved
 {
     use ValidatesWhenResolvedTrait;
 

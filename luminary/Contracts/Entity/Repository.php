@@ -44,7 +44,7 @@ interface Repository
      * @param array $data
      * @return bool
      */
-    public static function createAll(array $data) :bool;
+    public static function createAll(array $data);
 
     /**
      * Update a record
@@ -53,7 +53,7 @@ interface Repository
      * @param array $data
      * @return bool
      */
-    public static function update($id, array $data) :bool;
+    public static function update($id, array $data) :Model;
 
     /**
      * Update a record by id

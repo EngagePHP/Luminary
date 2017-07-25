@@ -1,10 +1,10 @@
 <?php
 
-namespace DummyNamespace;
+namespace Luminary\Services\Testing\Requests;
 
-use Luminary\Services\FormRequests\FormRequest;
+use Luminary\Services\FormRequests\FormRequest as LuminaryFormRequest;
 
-class DummyClass extends FormRequest
+class FormRequest extends LuminaryFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,6 @@ class DummyClass extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

@@ -75,14 +75,15 @@ class Scaffold implements CreatorInterface
      */
     protected static function controller(string $name, string $path) :void
     {
-        $name = studly_case(str_singular($name));
+        $name = studly_case(str_singular($name).'Repository');
         $relative_path = str_replace(app_path().'/', 'Api/', $path);
-        $namespace = str_replace('/', '\\', $relative_path.'/Requests');
+        $relative_path = str_replace('Resources', 'Entities', $relative_path);
+        $namespace = str_replace('/', '\\', $relative_path.'/Repositories/'.$name);
 
         ControllerStructure::create($path);
         Controller::create($name.'Controller', $path . '/Controllers', [
-            'requestBasename' => $name,
-            'requestNamespace' => $namespace
+            'repositoryBasename' => $name,
+            'repositoryNamespace' => $namespace
         ]);
     }
 

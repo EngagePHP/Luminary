@@ -88,9 +88,7 @@ $app->singleton(
 |
 */
 
- $app->middleware([
-    \Luminary\Services\ApiRequest\Middleware\RequestHeaders::class
- ]);
+//$app->middleware([]);
 
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
