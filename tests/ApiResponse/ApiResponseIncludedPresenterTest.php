@@ -34,7 +34,8 @@ class ApiResponseIncludedPresenterTest extends TestCase
             'type' => $model->type(),
             'attributes' => $model->attributes(),
             'links' => $model->links(),
-            'relationships' => $model->relationships()
+            'relationships' => $model->relationships(),
+            'meta' => $model->meta()
         ];
 
         $results = (new IncludedPresenter([]))->formatModel($model);
@@ -62,7 +63,8 @@ class ApiResponseIncludedPresenterTest extends TestCase
                     'type' => $model->type(),
                     'attributes' => $model->attributes(),
                     'links' => $model->links(),
-                    'relationships' => $model->relationships()
+                    'relationships' => $model->relationships(),
+                    'meta' => $model->meta()
                 ];
             }
         )->all();

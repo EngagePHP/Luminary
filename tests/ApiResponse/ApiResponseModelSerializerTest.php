@@ -118,6 +118,7 @@ class ApiResponseModelSerializerTest extends TestCase
     public function testDataMethod()
     {
         $s = $this->newSerializer();
+        $now = (string) Carbon\Carbon::now();
         $attributes = [
             'id' => 1234,
             'type' => 'anything',
@@ -127,7 +128,7 @@ class ApiResponseModelSerializerTest extends TestCase
         ];
 
         // Set the serializer attributes
-        $s->setType('customers')->setId(1234)->setAttributes($attributes);
+        $s->setType('customers')->setId(1234)->setAttributes($attributes)->setMeta(['created_at' => $now, 'updated_at' => $now, 'deleted_at' => null]);
 
         // What we should expect back
         $expected = [
@@ -137,10 +138,34 @@ class ApiResponseModelSerializerTest extends TestCase
             'links' => [
                 'self' => ResponseHelper::resourceSelf(1234, 'customers')
             ],
-            'relationships' => []
+            'relationships' => [],
+            'meta' => [
+                'created_at' => $now,
+                'updated_at' => $now,
+                'deleted_at' => null
+            ]
         ];
 
         $this->assertEquals($expected, $s->data());
+    }
+
+    /**
+     * Test the set/get meta methods
+     *
+     * @return void
+     */
+    public function testMetaMethods()
+    {
+        $s = $this->newSerializer();
+        $now = (string) Carbon\Carbon::now();
+
+        $s->setMeta(['created_at' => $now, 'updated_at' => $now, 'deleted_at' => null]);
+
+        $this->assertEquals([
+            'created_at' => $now,
+            'updated_at' => $now,
+            'deleted_at' => null
+        ], $s->meta());
     }
 
     /**
@@ -185,11 +210,12 @@ class ApiResponseModelSerializerTest extends TestCase
      * Create a new CollectionSerializer Instance
      *
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @return \Luminary\Services\ApiResponse\Serializers\ModelSerializer
+     * @param array $attributes
+     * @return ModelSerializer
      */
-    protected function newSerializer(Model $model = null)
+    protected function newSerializer(Model $model = null, $attributes = [])
     {
-        $model = $model ?: new Customer;
+        $model = $model ?: new Customer($attributes);
         return new ModelSerializer($model);
     }
 }
