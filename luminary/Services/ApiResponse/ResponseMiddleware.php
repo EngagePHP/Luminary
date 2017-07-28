@@ -5,7 +5,7 @@ namespace Luminary\Services\ApiResponse;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
-use Luminary\Services\ApiQuery\Filters\Collection;
+use Luminary\Database\Eloquent\Collection;
 use Luminary\Services\ApiResponse\Serializers\ArraySerializer;
 use Luminary\Services\ApiResponse\Serializers\CollectionSerializer;
 use Luminary\Services\ApiResponse\Serializers\ModelSerializer;
