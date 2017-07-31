@@ -4,6 +4,7 @@ namespace Luminary\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Luminary\Services\ApiQuery\ServiceProvider as ApiQueryServiceProvider;
+use Luminary\Services\ApiRequest\ServiceProvider as ApiRequestServiceProvider;
 use Luminary\Services\ApiResponse\ServiceProvider as ApiResponseServiceProvider;
 use Luminary\Services\Testing\ServiceProvider as TestingServiceProvider;
 use Luminary\Services\Filesystem\FilesystemServiceProvider;
@@ -21,6 +22,7 @@ class LuminaryServiceProvider extends ServiceProvider
         FilesystemServiceProvider::class,
         FormReqeustsServiceProvider::class,
         ApiQueryServiceProvider::class,
+        ApiRequestServiceProvider::class,
         ApiResponseServiceProvider::class,
         TestingServiceProvider::class
     ];

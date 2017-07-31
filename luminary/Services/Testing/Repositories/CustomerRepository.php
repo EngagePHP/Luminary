@@ -1,15 +1,18 @@
 <?php
 
-namespace DummyNamespace;
+namespace Luminary\Services\Testing\Repositories;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Luminary\Contracts\Entity\Repository;
-use ModelNamespace;
+use Luminary\Database\Eloquent\Relations\ManageRelations;
+use Luminary\Services\Testing\Models\Customer;
 
-class DummyClass implements Repository
+class CustomerRepository implements Repository
 {
+    use ManageRelations;
+
     /**
      * Retrieve all records
      *
@@ -17,13 +20,13 @@ class DummyClass implements Repository
      */
     public static function all() :Collection
     {
-        return ModelClass::all();
+        return Customer::all();
     }
 
     /**
      * Find a record by id
      *
-     * @param $id
+     * @param string|int $id
      * @return \Illuminate\Database\Eloquent\Model
      */
     public static function find($id) :Model
@@ -34,12 +37,12 @@ class DummyClass implements Repository
     /**
      * Find multiple records by id
      *
-     * @param $ids
+     * @param array $ids
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public static function findAll(array $ids) :Collection
     {
-        return ModelClass::find((array) $ids);
+        return Customer::find((array) $ids);
     }
 
     /**
@@ -51,9 +54,9 @@ class DummyClass implements Repository
      */
     public static function create(array $data, array $relationships = []) :Model
     {
-        $model = ModelClass::create($data);
+        $model = Customer::create($data);
 
-        if(count($relationships)) {
+        if (count($relationships)) {
             static::manageRelationships($model, $relationships);
         }
 
@@ -82,7 +85,7 @@ class DummyClass implements Repository
             }
         )->all();
 
-        $insert = ModelClass::insert($data);
+        $insert = Customer::insert($data);
 
         return $insert ? (string) $now : false;
     }
@@ -101,7 +104,7 @@ class DummyClass implements Repository
 
         $model->update($data);
 
-        if(count($relationships)) {
+        if (count($relationships)) {
             static::manageRelationships($model, $relationships);
         }
 
@@ -117,7 +120,7 @@ class DummyClass implements Repository
      */
     public static function updateAll(array $ids, array $data) :bool
     {
-        return ModelClass::whereIn('id', $ids)->update($data);
+        return Customer::whereIn('id', $ids)->update($data);
     }
 
     /**
@@ -128,7 +131,7 @@ class DummyClass implements Repository
      */
     public static function delete($id) :bool
     {
-        return ModelClass::destroy($id);
+        return Customer::destroy($id);
     }
 
     /**
@@ -140,6 +143,6 @@ class DummyClass implements Repository
      */
     public static function deleteAll(array $ids) :bool
     {
-        return ModelClass::destroy((array) $ids);
+        return Customer::destroy((array) $ids);
     }
 }

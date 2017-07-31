@@ -4,6 +4,7 @@ namespace Luminary\Exceptions\Presenters;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Luminary\Exceptions\Contracts\PresenterInterface;
 
 abstract class AbstractPresenter implements PresenterInterface
 {
@@ -13,6 +14,15 @@ abstract class AbstractPresenter implements PresenterInterface
      * @var Exception
      */
     protected $exception;
+
+    /**
+     * Default application response headers
+     *
+     * @var array
+     */
+    protected $headers = [
+        'Content-Type' => 'application/vnd.api+json'
+    ];
 
     /**
      * DefaultPresenter constructor.
@@ -41,11 +51,7 @@ abstract class AbstractPresenter implements PresenterInterface
      */
     public function render() :JsonResponse
     {
-        $headers = [
-            'Content-Type' => 'application/vnd.api+json'
-        ];
-
-        return response()->json(['errors' => $this->response()], $this->status(), $headers);
+        return response()->json(['errors' => $this->response()], $this->status(), $this->headers);
     }
 
     /**
@@ -68,10 +74,36 @@ abstract class AbstractPresenter implements PresenterInterface
     /**
      * Return the error response title
      *
-     * @return string
+     * @return null|string
      */
     public function title() :string
     {
-        return 'An unknown error has occurred';
+        return $this->getExceptionAttribute('title', 'An unknown error has occurred');
+    }
+
+    /**
+     * Return the error response title
+     *
+     * @return null|string
+     */
+    public function source()
+    {
+        return $this->getExceptionAttribute('source');
+    }
+
+    /**
+     * Get an exceptio attribute if it exists
+     *
+     * @param $name
+     * @param null $default
+     * @return null
+     */
+    protected function getExceptionAttribute($name, $default = null)
+    {
+        $method = 'get'.studly_case($name);
+
+        return method_exists($this->exception, $method)
+            ? $this->exception->{$method}()
+            : $default;
     }
 }

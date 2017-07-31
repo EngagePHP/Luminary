@@ -46,6 +46,10 @@ class RelationshipPresenter
                 $models = !empty($models) ? $this->formatModels($models) : $this->formatEmptyModels();
                 $links = $this->formatLinks($relationship);
 
+                if (str_singular($relationship) === $relationship && count($models) <= 1) {
+                    $models = empty($models) ? null : head($models);
+                }
+
                 return [
                     'links' => $links,
                     'data' => $models

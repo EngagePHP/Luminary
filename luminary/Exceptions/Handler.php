@@ -32,6 +32,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $presenters = [
+        MultiException::class => Presenters\MultiExceptionPresenter::class,
         HttpException::class => Presenters\HttpExceptionPresenter::class
     ];
 
@@ -75,6 +76,7 @@ class Handler extends ExceptionHandler
         foreach ($this->presenters as $exception => $class) {
             if ($e instanceof $exception) {
                 $presenter = $class;
+                break;
             }
         }
 

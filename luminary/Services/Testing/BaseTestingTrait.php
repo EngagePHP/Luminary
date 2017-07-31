@@ -65,7 +65,7 @@ trait BaseTestingTrait
     protected function headers()
     {
         return [
-            'Content-Type' => 'application/vnd.api+json'
+            'CONTENT_TYPE' => 'application/vnd.api+json'
         ];
     }
 

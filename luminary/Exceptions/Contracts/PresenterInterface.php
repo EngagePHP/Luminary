@@ -1,6 +1,6 @@
 <?php
 
-namespace Luminary\Exceptions\Presenters;
+namespace Luminary\Exceptions\Contracts;
 
 use Exception;
 use Illuminate\Http\JsonResponse;

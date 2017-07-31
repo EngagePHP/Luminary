@@ -21,7 +21,7 @@ class Location extends Model
      *
      * @var array
      */
-    protected $fillable = ['*'];
+    protected $fillable = [];
 
     /**
      * Fields that should stay hidden from response.

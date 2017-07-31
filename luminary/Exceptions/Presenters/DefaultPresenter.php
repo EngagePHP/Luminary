@@ -11,12 +11,13 @@ class DefaultPresenter extends AbstractPresenter
      */
     public function response() :array
     {
-        return [
-            [
-                'status' => $this->status(),
-                'title' => $this->title(),
-                'detail' => $this->message()
-            ]
+        $response = [
+            'status' => $this->status(),
+            'title' => $this->title(),
+            'detail' => $this->message(),
+            'source' => $this->source()
         ];
+
+        return [ array_filter($response) ];
     }
 }

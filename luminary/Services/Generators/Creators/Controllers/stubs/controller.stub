@@ -2,70 +2,66 @@
 
 namespace DummyNamespace;
 
-use DummyRequestNamespace\DummyRequestClassIndexRequest;
-use DummyRequestNamespace\DummyRequestClassStoreRequest;
-use DummyRequestNamespace\DummyRequestClassShowRequest;
-use DummyRequestNamespace\DummyRequestClassUpdateRequest;
-use DummyRequestNamespace\DummyRequestClassDestroyRequest;
+use Luminary\Services\ApiRequest\ApiRequest as Request;
 use Luminary\Http\Controllers\Controller;
+use DummyRepositoryNamespace;
 
 class DummyClass extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \DummyRequestNamespace\DummyRequestClassIndexRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function index(DummyRequestClassIndexRequest $request)
+    public function index()
     {
-        //
+        return DummyRepositoryClass::all();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \DummyRequestNamespace\DummyRequestClassStoreRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public function store(DummyRequestClassStoreRequest $request)
+    public function store(Request $request)
     {
-        //
+        return DummyRepositoryClass::create($request->all(), $request->getRelationships());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \DummyRequestNamespace\DummyRequestClassShowRequest  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function show(DummyRequestClassShowRequest  $request, $id)
+    public function show($id)
     {
-        //
+        return is_array($id)
+            ? DummyRepositoryClass::findAll($id)
+            : DummyRepositoryClass::find($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \DummyRequestNamespace\DummyRequestClassUpdateRequest  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param  int $id
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update(DummyRequestClassUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        //
+        return DummyRepositoryClass::update($id, $request->all(), $request->getRelationships());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \DummyRequestNamespace\DummyRequestClassDestroyRequest  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function destroy(DummyRequestClassDestroyRequest $request, $id)
+    public function destroy($id)
     {
-        //
+        DummyRepositoryClass::delete($id);
     }
 }
