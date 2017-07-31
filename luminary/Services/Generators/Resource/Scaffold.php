@@ -27,7 +27,7 @@ class Scaffold implements CreatorInterface
         $args = func_get_args();
 
         static::routeMiddleware(...$args);
-        static::request(...$args);
+        //static::request(...$args);
         static::controller(...$args);
         static::route(...$args);
         static::tests(...$args);
@@ -59,11 +59,11 @@ class Scaffold implements CreatorInterface
         $requestsPath = $path.'/Requests';
 
         RequestStructure::create($path);
-        Request::create($name.'IndexRequest', $requestsPath);
-        Request::create($name.'ShowRequest', $requestsPath);
-        Request::create($name.'StoreRequest', $requestsPath);
-        Request::create($name.'UpdateRequest', $requestsPath);
-        Request::create($name.'DestroyRequest', $requestsPath);
+        Request::create($name . 'IndexRequest', $requestsPath);
+        Request::create($name . 'ShowRequest', $requestsPath);
+        Request::create($name . 'StoreRequest', $requestsPath);
+        Request::create($name . 'UpdateRequest', $requestsPath);
+        Request::create($name . 'DestroyRequest', $requestsPath);
     }
 
     /**
@@ -75,15 +75,15 @@ class Scaffold implements CreatorInterface
      */
     protected static function controller(string $name, string $path) :void
     {
-        $name = studly_case(str_singular($name).'Repository');
-        $relative_path = str_replace(app_path().'/', 'Api/', $path);
+        $name = studly_case(str_singular($name));
+        $relative_path = str_replace(app_path() . '/', 'Api/', $path);
         $relative_path = str_replace('Resources', 'Entities', $relative_path);
-        $namespace = str_replace('/', '\\', $relative_path.'/Repositories/'.$name);
+        $namespace = str_replace('/', '\\', $relative_path . '/Repositories/' . $name);
 
         ControllerStructure::create($path);
         Controller::create($name.'Controller', $path . '/Controllers', [
-            'repositoryBasename' => $name,
-            'repositoryNamespace' => $namespace
+            'repositoryBasename' => $name . 'Repository',
+            'repositoryNamespace' => $namespace . 'Repository'
         ]);
     }
 
