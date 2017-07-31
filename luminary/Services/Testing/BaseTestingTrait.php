@@ -145,14 +145,18 @@ trait BaseTestingTrait
         $customers = factory(Customer::class, $customerCount)
             ->create()
             ->each(function (Customer $customer) use ($users, $userCount, $locations) {
+                $tenant_id = $customer->tenant_id;
                 for ($i=0; $i < $userCount; $i++) {
-                    $users->push($customer->users()->save(factory(User::class)->make()));
+                    $user = factory(User::class)->make();
+                    $user->tenant_id = $tenant_id;
+                    $users->push($customer->users()->save($user));
                 }
-
+                $locations = $locations->where('tenant_id', $tenant_id);
                 $customer->location()->associate($locations->random())->save();
             });
 
         $users->each(function (User $user) use ($locations) {
+            $locations = $locations->where('tenant_id', $user->tenant_id);
             $user->location()->associate($locations->random())->save();
         });
 
