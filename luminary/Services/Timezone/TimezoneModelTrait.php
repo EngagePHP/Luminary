@@ -18,7 +18,7 @@ trait TimezoneModelTrait
      *
      * @return string|null
      */
-    public static function timezone()
+    public static function getTimezone()
     {
         return static::$timezone;
     }
