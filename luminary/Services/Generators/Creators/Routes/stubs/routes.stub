@@ -40,8 +40,8 @@ $app->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}'],
 
         // Delte an entity for {{slug}}
         $app->delete('/{id}', [
-            'as' => '{{slug}}.delete',
-            'uses' => '{{controller}}@delete'
+            'as' => '{{slug}}.destroy',
+            'uses' => '{{controller}}@destroy'
         ]);
     }
 );

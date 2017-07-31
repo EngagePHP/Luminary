@@ -17,8 +17,7 @@ class HttpExceptionPresenterTest extends TestCase
         $response = (new HttpExceptionPresenter($e))->response();
         $expected = [[
             'status' => 500,
-            'title' => 'An internal server error has occurred',
-            'detail' => ''
+            'title' => 'An unknown error has occurred'
         ]];
 
         $this->assertEquals($expected, $response);

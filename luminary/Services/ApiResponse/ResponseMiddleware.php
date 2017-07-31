@@ -4,10 +4,12 @@ namespace Luminary\Services\ApiResponse;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Luminary\Database\Eloquent\Collection;
 use Luminary\Services\ApiResponse\Serializers\ArraySerializer;
 use Luminary\Services\ApiResponse\Serializers\CollectionSerializer;
+use Luminary\Services\ApiResponse\Serializers\EmptySerializer;
 use Luminary\Services\ApiResponse\Serializers\ModelSerializer;
 use Luminary\Services\ApiResponse\Serializers\SerializerInterface;
 
@@ -24,11 +26,15 @@ class ResponseMiddleware
     {
         $response = $next($request);
 
-        $serializer = $this->content($response);
+        if (! $response instanceof JsonResponse) {
+            $serializer = $this->content($response);
 
-        $this->setResponseTime($serializer);
+            $this->setResponseTime($serializer);
 
-        $response->setContent($serializer->serialize());
+            $response->setContent($serializer->serialize());
+
+            $this->setResponseStatus($request, $response);
+        }
 
         return $response;
     }
@@ -39,7 +45,7 @@ class ResponseMiddleware
      * @param Response $response
      * @return SerializerInterface
      */
-    public function content(Response $response) :SerializerInterface
+    public function content($response) :SerializerInterface
     {
         $original = $response->getOriginalContent();
 
@@ -49,6 +55,9 @@ class ResponseMiddleware
                 break;
             case $original instanceof Model:
                 return new ModelSerializer($original);
+                break;
+            case is_bool($original):
+                return new EmptySerializer;
                 break;
             case is_array($original):
             default:
@@ -77,6 +86,87 @@ class ResponseMiddleware
      */
     public function appStart() :int
     {
-        return app('config')->get('app.start');
+        return app('config')->get('app.start', microtime(true));
+    }
+
+    /**
+     * Set the response status
+     *
+     * @param $request
+     * @param Response $response
+     */
+    public function setResponseStatus($request, Response $response) :void
+    {
+        switch ($request->getMethod()) {
+            case 'POST':
+                $this->setCreateResponseStatus($response);
+                break;
+            case 'PATCH':
+                $this->setUpdateResponseStatus($response);
+                break;
+            case 'DELETE':
+                $this->setDeleteResponseStatus($response);
+                break;
+            case 'GET':
+            default:
+                $this->setOkResponseStatus($response);
+        }
+    }
+
+    /**
+     * Set the OK response status
+     *
+     * @param Response $response
+     * @return void
+     */
+    public function setOkResponseStatus(Response $response) :void
+    {
+        $response->setStatusCode(200);
+    }
+
+    /**
+     * Set the response status base on created content
+     *
+     * @todo Figure out how to manage queue responses | 202 Accepted
+     * @param Response $response
+     */
+    public function setCreateResponseStatus(Response $response) :void
+    {
+        $content = $response->getContent();
+
+        switch (true) {
+            case empty($content):
+                $status = 204;
+                break;
+            default:
+                $status = 201;
+                $response->header('LOCATION', array_get($content, 'data.links.self'));
+        }
+
+        $response->setStatusCode($status);
+    }
+
+    /**
+     * Set the Update response status
+     *
+     * @param Response $response
+     * @return void
+     */
+    public function setUpdateResponseStatus(Response $response) :void
+    {
+        $status = empty($response->getContent()) ? 204 : 200;
+        $response->setStatusCode($status);
+    }
+
+    /**
+     * Set the Delete response status
+     *
+     * @param Response $response
+     * @return void
+     */
+    public function setDeleteResponseStatus(Response $response) :void
+    {
+        $response->setContent('');
+        $response->setStatusCode(204);
     }
 }

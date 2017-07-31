@@ -12,8 +12,8 @@ class Controller extends StubCreator
      * @var array
      */
     protected $attributes = [
-        'requestBasename' => '',
-        'requestNamespace' => ''
+        'repositoryBasename' => '',
+        'repositoryNamespace' => ''
     ];
 
     /**
@@ -34,11 +34,11 @@ class Controller extends StubCreator
      */
     protected function replaceAttributes(string $stub)
     {
-        $base = $this->getAttribute('requestBasename');
-        $namespace = $this->getAttribute('requestNamespace');
+        $base = $this->getAttribute('repositoryBasename');
+        $namespace = $this->getAttribute('repositoryNamespace');
 
-        $stub =  str_replace('DummyRequestNamespace', $namespace, $stub);
-        $stub =  str_replace('DummyRequestClass', $base, $stub);
+        $stub =  str_replace('DummyRepositoryNamespace', $namespace, $stub);
+        $stub =  str_replace('DummyRepositoryClass', $base, $stub);
 
         return $stub;
     }

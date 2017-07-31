@@ -195,7 +195,7 @@ class ModelSerializer extends AbstractSerializer
     }
 
     /**
-     * Returnt the relations property
+     * Return the relations property
      *
      * @return \Illuminate\Support\Collection
      */

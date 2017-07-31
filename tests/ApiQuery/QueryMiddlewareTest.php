@@ -49,11 +49,10 @@ class QueryMiddlewareTest extends TestCase
      */
     public function testQueryMiddlewareWillNotBeTriggeredOnPostRequest()
     {
-        $this->post($this->url, [], ['content-type' => 'application/vnd.api+json']);
-        $response = $this->response;
+        $this->json('POST', $this->url, ['data' => ['type' => 'test']], ['content-type' => 'application/vnd.api+json']);
 
         $this->assertCount(0, $this->getQueryArray());
-        $this->assertEquals(200, $response->status());
+        $this->assertResponseStatus(201);
     }
 
     /**
@@ -65,10 +64,9 @@ class QueryMiddlewareTest extends TestCase
     public function testQueryMiddlewareWillNotBeTriggeredOnPutRequest()
     {
         $this->put($this->url, [], ['content-type' => 'application/vnd.api+json']);
-        $response = $this->response;
 
         $this->assertCount(0, $this->getQueryArray());
-        $this->assertEquals(200, $response->status());
+        $this->assertResponseOk();
     }
 
     /**
@@ -79,11 +77,15 @@ class QueryMiddlewareTest extends TestCase
      */
     public function testQueryMiddlewareWillNotBeTriggeredOnPatchRequest()
     {
-        $this->patch($this->url, [], ['content-type' => 'application/vnd.api+json']);
-        $response = $this->response;
+        $this->json('PATCH', $this->url, [
+            'data' => [
+                'type' => '',
+                'id' => 1
+            ]
+        ], ['content-type' => 'application/vnd.api+json']);
 
         $this->assertCount(0, $this->getQueryArray());
-        $this->assertEquals(200, $response->status());
+        $this->assertResponseOk();
     }
 
     /**
@@ -95,9 +97,8 @@ class QueryMiddlewareTest extends TestCase
     public function testQueryMiddlewareWillNotBeTriggeredOnDeleteRequest()
     {
         $this->delete($this->url, [], ['content-type' => 'application/vnd.api+json']);
-        $response = $this->response;
 
         $this->assertCount(0, $this->getQueryArray());
-        $this->assertEquals(200, $response->status());
+        $this->assertResponseStatus(204);
     }
 }
