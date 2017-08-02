@@ -20,14 +20,11 @@ class CreateTestingLocationsTable extends Migration
             $table->string('city');
             $table->string('zip');
             $table->string('phone');
+            $table->integer('tenant_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('id');
-            $table->index('name');
-            $table->index('street');
-            $table->index('city');
-            $table->index('zip');
+            $table->index(['id', 'name', 'street', 'city', 'zip', 'tenant_id']);
         });
     }
 

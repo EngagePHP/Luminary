@@ -4,9 +4,11 @@ namespace Luminary\Services\Testing\Models;
 
 use Luminary\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Luminary\Services\Tenants\ByTenant;
 
 class Customer extends Model
 {
+    use ByTenant;
     use SoftDeletes;
 
     /**

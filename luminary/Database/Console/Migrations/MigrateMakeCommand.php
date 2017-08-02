@@ -29,7 +29,7 @@ class MigrateMakeCommand extends LaravelMigrateMakeCommand
 
         $dir = $this->laravel->basePath() . '/api/Entities/' . $entity . '/Database/Migrations';
 
-        Storage::makeDirectory($dir);
+        Storage::makeDirectory($dir, true);
 
         return $dir;
     }
