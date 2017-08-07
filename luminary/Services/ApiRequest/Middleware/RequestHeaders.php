@@ -82,7 +82,9 @@ class RequestHeaders
         $accept = $request->header('accept');
         $content = $request->header('content-type');
 
-        $this->handleContentType($content);
+        if(in_array($request->method(), ['POST', 'PUT', 'PATCH'])) {
+            $this->handleContentType($content);
+        }
         $this->handleAcceptHeaders($accept);
 
         return $next($request);
