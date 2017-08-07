@@ -68,7 +68,7 @@ abstract class AbstractPresenter implements PresenterInterface
      */
     public function status() :int
     {
-        return (int) $this->exception->getCode();
+        return (int) $this->exception->getCode() ?: 500;
     }
 
     /**

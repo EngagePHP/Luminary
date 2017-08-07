@@ -22,13 +22,11 @@ class CreateTestingUsersTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->integer('location_id')->unsigned()->nullable();
             $table->foreign('location_id')->references('id')->on('locations');
+            $table->integer('tenant_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('id');
-            $table->index('first_name');
-            $table->index('last_name');
-            $table->index('email');
+            $table->index(['id', 'first_name', 'last_name', 'email', 'customer_id', 'location_id', 'tenant_id']);
         });
     }
 

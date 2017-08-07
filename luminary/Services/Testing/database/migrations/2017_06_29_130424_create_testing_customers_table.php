@@ -19,14 +19,12 @@ class CreateTestingCustomersTable extends Migration
             $table->string('website');
             $table->string('phone');
             $table->integer('location_id')->unsigned()->nullable();
-            $table->foreign('location_id')->references('id')->on('locations');
+            $table->integer('tenant_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('id');
-            $table->index('name');
-            $table->index('website');
-            $table->index('phone');
+            $table->index(['id', 'name', 'website', 'phone', 'location_id', 'tenant_id']);
+            $table->foreign('location_id')->references('id')->on('locations');
         });
     }
 

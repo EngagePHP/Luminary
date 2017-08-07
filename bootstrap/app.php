@@ -88,7 +88,9 @@ $app->singleton(
 |
 */
 
-//$app->middleware([]);
+$app->middleware([
+    \Barryvdh\Cors\HandleCors::class,
+]);
 
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
@@ -107,6 +109,18 @@ $app->singleton(
 
  $app->register(Luminary\Providers\LuminaryServiceProvider::class);
  $app->register(Illuminate\Redis\RedisServiceProvider::class);
+ $app->register(Barryvdh\Cors\ServiceProvider::class);
+
+/*
+|--------------------------------------------------------------------------
+| Load Configurations
+|--------------------------------------------------------------------------
+|
+| Here we will can load registered provider configs for the application
+|
+*/
+
+ $app->configure('cors');
 
 /*
 |--------------------------------------------------------------------------
