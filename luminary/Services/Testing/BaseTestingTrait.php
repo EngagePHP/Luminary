@@ -4,6 +4,7 @@ namespace Luminary\Services\Testing;
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Luminary\Services\ApiQuery\Query;
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\Models\Customer;
 use Luminary\Services\Testing\Models\Location;
 use Luminary\Services\Testing\Models\User;

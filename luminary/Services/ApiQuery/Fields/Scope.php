@@ -5,6 +5,7 @@ namespace Luminary\Services\ApiQuery\Fields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Luminary\Services\ApiQuery\Eloquent\BaseScope;
 use Luminary\Services\ApiQuery\QueryArr;
 
@@ -28,14 +29,66 @@ class Scope extends BaseScope
     {
         $this->builder = $builder;
         $this->model = $model;
+        $columns = $this->getQueryColumns($builder);
 
-        $fields = collect($this->fields())->map(
-            function ($field) {
-                return $this->table() . '.' . $field;
+        $fields = collect($this->fields())->filter(function($field) {
+            return $field !== '*';
+        })->map(
+            function ($field) use ($columns) {
+                return $this->getFullyQualifiedColumn($columns, $field);
             }
-        )->toArray();
+        );
 
-        $builder->select($fields);
+        if($fields->count()) {
+            $builder->select($fields->all());
+        }
+    }
+
+    /**
+     * Get the fully qualified column name from
+     * an array of query columns and field name
+     *
+     * @param array $columns
+     * @param string $field
+     * @return string
+     */
+    public function getFullyQualifiedColumn(array $columns, string $field) :string
+    {
+        $column = collect($columns)->first(
+            function($column) use($field) {
+
+                if(preg_match('/as '.$field.'/i', $column)) {
+                    return true;
+                }
+
+                if(preg_match('/'.$field.'/i', $column) && strpos($column, '.')) {
+
+                    $c = strtok($column, '.');
+
+                    return (str_replace($c . '.','', $column) === $field);
+                }
+
+                return false;
+            }
+        );
+
+        return $column ? $column : $this->table() . '.' . $field;
+    }
+
+    /**
+     * Get the query column array
+     * from builder
+     *
+     * @param $builder
+     * @return array
+     */
+    public function getQueryColumns($builder) :array
+    {
+        if($builder instanceof Relation) {
+            $builder = $builder->getQuery();
+        }
+
+        return $builder->getQuery()->columns ?: [];
     }
 
     /**

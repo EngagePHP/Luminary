@@ -1,5 +1,6 @@
 <?php
 
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\Models\Customer;
 
 class QueryModelScopeTest extends TestCase
@@ -17,6 +18,8 @@ class QueryModelScopeTest extends TestCase
 
         $this->seed();
         $this->setUpQuery();
+
+        TenantModelScope::setOverride();
     }
 
     /**
@@ -79,6 +82,40 @@ class QueryModelScopeTest extends TestCase
     }
 
     /**
+     * Test the Fields Query with custom select scope
+     *
+     * @return void
+     */
+    public function testModelFieldsWithCustomScope()
+    {
+        $query = [
+            'resource' => 'customers',
+            'include' => 'users,users.location',
+            'fields' => [
+                'customers' => 'name, website, location_name',
+                'users' => 'first_name, last_name',
+                'users.location' => 'street'
+            ]
+        ];
+
+        $this->query->setQuery($query)->activate();
+
+        $customer = Customer::select('name', 'website', 'phone', 'locations.name as location_name')
+            ->leftJoin('locations', 'customers.location_id', '=', 'locations.id')
+            ->get()
+            ->first();
+
+        $user = $customer->getRelation('users')->first();
+        $location = $user->getRelation('location');
+
+        $this->assertEquals(['name','website', 'location_name'], array_keys($customer->attributesToArray()));
+        $this->assertEquals(['first_name','last_name'], array_keys($user->attributesToArray()));
+        $this->assertEquals(['street'], array_keys($location->attributesToArray()));
+
+        Customer::clearBootedModels();
+    }
+
+    /**
      * Test the page based pagination query
      *
      * @return void
@@ -128,7 +165,8 @@ class QueryModelScopeTest extends TestCase
             'name' => $customer->name,
             'website' => $customer->website,
             'phone' => $customer->phone,
-            'location_id' => $customer->location_id
+            'location_id' => $customer->location_id,
+            'tenant_id' => $customer->tenant_id
         ];
 
         $this->query->setQuery($query)->activate();
@@ -170,14 +208,16 @@ class QueryModelScopeTest extends TestCase
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
                 'phone' => $customerOne->phone,
-                'location_id' => $customerOne->location_id
+                'location_id' => $customerOne->location_id,
+                'tenant_id' => $customerOne->tenant_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
                 'phone' => $customerTwo->phone,
-                'location_id' => $customerTwo->location_id
+                'location_id' => $customerTwo->location_id,
+                'tenant_id' => $customerTwo->tenant_id
             ]
         ];
 
@@ -222,14 +262,16 @@ class QueryModelScopeTest extends TestCase
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
                 'phone' => $customerOne->phone,
-                'location_id' => $customerOne->location_id
+                'location_id' => $customerOne->location_id,
+                'tenant_id' => $customerOne->tenant_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
                 'phone' => $customerTwo->phone,
-                'location_id' => $customerTwo->location_id
+                'location_id' => $customerTwo->location_id,
+                'tenant_id' => $customerTwo->tenant_id
             ]
         ];
 
@@ -281,14 +323,16 @@ class QueryModelScopeTest extends TestCase
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
                 'phone' => $customerOne->phone,
-                'location_id' => $customerOne->location_id
+                'location_id' => $customerOne->location_id,
+                'tenant_id' => $customerOne->tenant_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
                 'phone' => $customerTwo->phone,
-                'location_id' => $customerTwo->location_id
+                'location_id' => $customerTwo->location_id,
+                'tenant_id' => $customerTwo->tenant_id
             ]
         ];
 

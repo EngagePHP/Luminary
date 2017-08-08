@@ -74,7 +74,8 @@ class ResponseMiddleware
     public function setResponseTime(SerializerInterface $serializer)
     {
         $time = microtime(true) - $this->appStart();
-        $responseTime = $time > 1 ? $time . ' seconds' : ($time * 1000) . ' milliseconds';
+
+        $responseTime = $time > 1 ? round($time, 2) . ' seconds' : floor(($time) * 1000) . ' milliseconds';
 
         $serializer->addMeta('response_time', $responseTime);
     }
@@ -84,7 +85,7 @@ class ResponseMiddleware
      *
      * @return int
      */
-    public function appStart() :int
+    public function appStart()
     {
         return app('config')->get('app.start', microtime(true));
     }

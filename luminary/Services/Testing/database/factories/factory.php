@@ -5,6 +5,21 @@ use Luminary\Services\Testing\Models\Location;
 use Luminary\Services\Testing\Models\User;
 
 $tenant_id = function() {
+    static $first;
+    static $second;
+
+    // make sure we have at least one
+    if(is_null($first)) {
+        $first = 1234;
+        return 1234;
+    }
+
+    // make sure we have at least one
+    if(is_null($second)) {
+        $second = 2345;
+        return 2345;
+    }
+
     return rand(0,1) ? 1234 : 2345;
 };
 

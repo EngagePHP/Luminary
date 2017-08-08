@@ -63,6 +63,11 @@ trait ByTenant
         return parent::load($relations);
     }
 
+    /**
+     * Get the current Tenant Model Scope
+     *
+     * @return TenantModelScope
+     */
     public function getCurrentTenantScope() :TenantModelScope
     {
         return $this->getGlobalScope(TenantModelScope::class);

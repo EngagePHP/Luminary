@@ -121,7 +121,7 @@ class ApiRequestHeadersMiddlewareTest extends TestCase
         $response->getContent();
 
         // Create the request
-        $request = Request::create('http://example.com/api', 'GET');
+        $request = Request::create('http://example.com/api', 'POST');
         $request->headers->set('content-type', 'application/wrong.api+json');
 
         // Pass it to the middleware
@@ -148,7 +148,7 @@ class ApiRequestHeadersMiddlewareTest extends TestCase
         $response->getContent();
 
         // Create the request
-        $request = Request::create('http://example.com/api', 'GET');
+        $request = Request::create('http://example.com/api', 'POST');
         $request->headers->set('content-type', 'application/vnd.api+json; charset=utf-8');
 
         // Pass it to the middleware
@@ -171,7 +171,6 @@ class ApiRequestHeadersMiddlewareTest extends TestCase
 
         // Create the request
         $request = Request::create('http://example.com/api', 'GET');
-        $request->headers->set('content-type', 'application/vnd.api+json');
         $request->headers->set('accept', 'application/vnd.api+json');
 
         // Pass it to the middleware
@@ -200,7 +199,7 @@ class ApiRequestHeadersMiddlewareTest extends TestCase
         $response->getContent();
 
         // Create the request
-        $request = Request::create('http://example.com/api', 'GET');
+        $request = Request::create('http://example.com/api', 'POST');
         $request->headers->set('content-type', 'application/api.api+json');
         $request->headers->set('accept', 'application/vnd.wrong+json');
 

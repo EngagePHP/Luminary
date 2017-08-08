@@ -2,6 +2,7 @@
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\Models\Customer;
 use Luminary\Services\Testing\Models\User;
 
@@ -18,7 +19,8 @@ class TimezoneTraitTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(1, 2, 1);
+        $this->seed(2, 2, 2);
+        TenantModelScope::setOverride();
     }
 
     /**
@@ -84,7 +86,7 @@ class TimezoneTraitTest extends TestCase
             use \Luminary\Services\Timezone\TimezoneModelTrait;
         };
 
-        $timezone = (new $class)->timezone();
+        $timezone = (new $class)->getTimezone();
 
         $this->assertEquals(null, $timezone);
 
@@ -104,7 +106,7 @@ class TimezoneTraitTest extends TestCase
 
         Customer::$timezone = $zone;
 
-        $timezone = (new User)->timezone();
+        $timezone = (new User)->getTimezone();
 
         $this->assertEquals($zone, $timezone);
 
