@@ -82,6 +82,40 @@ class QueryModelScopeTest extends TestCase
     }
 
     /**
+     * Test the Fields Query with custom select scope
+     *
+     * @return void
+     */
+    public function testModelFieldsWithCustomScope()
+    {
+        $query = [
+            'resource' => 'customers',
+            'include' => 'users,users.location',
+            'fields' => [
+                'customers' => 'name, website, location_name',
+                'users' => 'first_name, last_name',
+                'users.location' => 'street'
+            ]
+        ];
+
+        $this->query->setQuery($query)->activate();
+
+        $customer = Customer::select('name', 'website', 'phone', 'locations.name as location_name')
+            ->leftJoin('locations', 'customers.location_id', '=', 'locations.id')
+            ->get()
+            ->first();
+
+        $user = $customer->getRelation('users')->first();
+        $location = $user->getRelation('location');
+
+        $this->assertEquals(['name','website', 'location_name'], array_keys($customer->attributesToArray()));
+        $this->assertEquals(['first_name','last_name'], array_keys($user->attributesToArray()));
+        $this->assertEquals(['street'], array_keys($location->attributesToArray()));
+
+        Customer::clearBootedModels();
+    }
+
+    /**
      * Test the page based pagination query
      *
      * @return void

@@ -4,7 +4,7 @@ namespace DummyNamespace;
 
 use Luminary\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Luminary\Services\Tenants\Tenants\ByTenant;
+use Luminary\Services\Tenants\ByTenant;
 
 class DummyClass extends Model
 {
