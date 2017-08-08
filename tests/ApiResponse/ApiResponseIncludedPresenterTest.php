@@ -16,7 +16,7 @@ class ApiResponseIncludedPresenterTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(1, 2, 1);
+        $this->seed(2, 2, 2);
     }
 
     /**

@@ -28,6 +28,7 @@ class TenantScopeTest extends TestCase
 
         $this->seed(10, 3, 10);
 
+        TenantModelScope::setOverride(false);
         TenantModelScope::setTenantId($this->tenantId);
     }
 

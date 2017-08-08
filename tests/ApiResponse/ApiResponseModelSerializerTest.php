@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Luminary\Services\ApiResponse\ResponseHelper;
 use Luminary\Services\ApiResponse\Serializers\ModelSerializer;
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\Models\Customer;
 
 class ApiResponseModelSerializerTest extends TestCase
@@ -32,7 +33,8 @@ class ApiResponseModelSerializerTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(1, 2, 1);
+        $this->seed(2, 2, 2);
+        TenantModelScope::setOverride();
         $this->model = Customer::with('location', 'users', 'users.location')->first();
     }
 

@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Luminary\Services\ApiResponse\ResponseHelper;
 use Luminary\Services\ApiResponse\Serializers\ModelSerializer;
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\Models\Customer;
 
 class ApiResponseModelMetaTest extends TestCase
@@ -32,7 +33,9 @@ class ApiResponseModelMetaTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(1, 1, 1);
+        $this->seed(2, 2, 2);
+
+        TenantModelScope::setOverride();
     }
 
     /**

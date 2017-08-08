@@ -25,6 +25,7 @@ class TenantObserverTest extends TestCase
     {
         parent::setUp();
 
+        TenantModelScope::setOverride(false);
         TenantModelScope::setTenantId($this->tenantId);
     }
 
@@ -35,7 +36,7 @@ class TenantObserverTest extends TestCase
      */
     public function testCreate() :void
     {
-        $customer = factory(Customer::class)->create();
+        $customer = factory(Customer::class)->create(['tenant_id' => $this->tenantId]);
 
         $this->assertNotNull($customer->id);
         $this->assertEquals($this->tenantId, $customer->tenant_id);

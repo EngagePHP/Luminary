@@ -1,5 +1,6 @@
 <?php
 
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\Models\Customer;
 
 class QueryModelScopeTest extends TestCase
@@ -17,6 +18,8 @@ class QueryModelScopeTest extends TestCase
 
         $this->seed();
         $this->setUpQuery();
+
+        TenantModelScope::setOverride();
     }
 
     /**
@@ -128,7 +131,8 @@ class QueryModelScopeTest extends TestCase
             'name' => $customer->name,
             'website' => $customer->website,
             'phone' => $customer->phone,
-            'location_id' => $customer->location_id
+            'location_id' => $customer->location_id,
+            'tenant_id' => $customer->tenant_id
         ];
 
         $this->query->setQuery($query)->activate();
@@ -170,14 +174,16 @@ class QueryModelScopeTest extends TestCase
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
                 'phone' => $customerOne->phone,
-                'location_id' => $customerOne->location_id
+                'location_id' => $customerOne->location_id,
+                'tenant_id' => $customerOne->tenant_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
                 'phone' => $customerTwo->phone,
-                'location_id' => $customerTwo->location_id
+                'location_id' => $customerTwo->location_id,
+                'tenant_id' => $customerTwo->tenant_id
             ]
         ];
 
@@ -222,14 +228,16 @@ class QueryModelScopeTest extends TestCase
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
                 'phone' => $customerOne->phone,
-                'location_id' => $customerOne->location_id
+                'location_id' => $customerOne->location_id,
+                'tenant_id' => $customerOne->tenant_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
                 'phone' => $customerTwo->phone,
-                'location_id' => $customerTwo->location_id
+                'location_id' => $customerTwo->location_id,
+                'tenant_id' => $customerTwo->tenant_id
             ]
         ];
 
@@ -281,14 +289,16 @@ class QueryModelScopeTest extends TestCase
                 'name' => $customerOne->name,
                 'website' => $customerOne->website,
                 'phone' => $customerOne->phone,
-                'location_id' => $customerOne->location_id
+                'location_id' => $customerOne->location_id,
+                'tenant_id' => $customerOne->tenant_id
             ],
             [
                 'id' => $customerTwo->id,
                 'name' => $customerTwo->name,
                 'website' => $customerTwo->website,
                 'phone' => $customerTwo->phone,
-                'location_id' => $customerTwo->location_id
+                'location_id' => $customerTwo->location_id,
+                'tenant_id' => $customerTwo->tenant_id
             ]
         ];
 
