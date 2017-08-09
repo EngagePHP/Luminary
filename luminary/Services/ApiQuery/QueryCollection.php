@@ -21,7 +21,7 @@ class QueryCollection extends Collection
         'fields',
         'filter',
         'include',
-        'paginate',
+        'page',
         'resource',
         'sort'
     ];
@@ -109,7 +109,7 @@ class QueryCollection extends Collection
     public function pagination() :array
     {
         return PaginationParser::parse(
-            $this->get('paginate', [])
+            $this->get('page', [])
         );
     }
 
