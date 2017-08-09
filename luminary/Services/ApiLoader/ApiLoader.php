@@ -106,6 +106,24 @@ class ApiLoader
      *
      * @return void
      */
+    public function registerConfigs() :void
+    {
+        $this->registry('configs')->each(
+            function ($config) {
+                $ext = pathinfo($config, PATHINFO_EXTENSION);
+                $name = basename($config, '.' . $ext);
+                $config = (array) include $config;
+
+                config([$name => $config]);
+            }
+        );
+    }
+
+    /**
+     * Register a Console Kernels and Commands
+     *
+     * @return void
+     */
     public function registerConsole() :void
     {
         $this->registerConsoleKernels();
