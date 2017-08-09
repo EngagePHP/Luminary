@@ -2,7 +2,7 @@
 
 namespace Luminary\Services\ApiQuery;
 
-use Illuminate\Database\Eloquent\Model;
+use Luminary\Database\Eloquent\Model;
 
 class Query
 {
