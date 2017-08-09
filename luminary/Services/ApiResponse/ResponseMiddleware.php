@@ -4,9 +4,10 @@ namespace Luminary\Services\ApiResponse;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Luminary\Database\Eloquent\Collection;
+use Luminary\Services\ApiQuery\Pagination\Collection as PaginationCollection;
 use Luminary\Services\ApiResponse\Serializers\ArraySerializer;
 use Luminary\Services\ApiResponse\Serializers\CollectionSerializer;
 use Luminary\Services\ApiResponse\Serializers\EmptySerializer;
