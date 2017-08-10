@@ -16,6 +16,13 @@ class Registry
     protected $commands;
 
     /**
+     * The registered configs
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $configs;
+
+    /**
      * A list of console kernel classes
      *
      * @var \Illuminate\Support\Collection
