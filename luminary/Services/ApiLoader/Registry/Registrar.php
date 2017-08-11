@@ -94,6 +94,32 @@ class Registrar
      * @param string $path
      * @return void
      */
+    public function registerConfigs(string $path = '') :void
+    {
+        $path = $this->path($path);
+
+        if (! $this->isDirectory($path)) {
+            return;
+        }
+
+        $files = array_filter(
+            $this->directory->make($path)->files(),
+            function ($file) {
+                $ext = pathinfo($file, PATHINFO_EXTENSION);
+                return strtolower($ext) == 'php';
+            }
+        );
+
+        $this->registry->configs = $files;
+    }
+
+    /**
+     * Register a console kernel or
+     * directory of command classes
+     *
+     * @param string $path
+     * @return void
+     */
     public function registerConsole(string $path) :void
     {
         $kernel = $this->path($path).'/Kernel.php';

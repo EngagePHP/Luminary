@@ -3,6 +3,7 @@
 namespace Luminary\Services\ApiResponse\Serializers;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Luminary\Services\ApiResponse\Presenters\IncludedPresenter;
@@ -222,7 +223,11 @@ class ModelSerializer extends AbstractSerializer
      */
     public function setRelations(array $relations) :ModelSerializer
     {
-        $this->relations = collect($relations)->map(
+        $this->relations = collect($relations)->filter(
+            function($model) {
+                return (! $model instanceof Pivot);
+            }
+        )->map(
             function ($models) {
                 $collection = $this->modelsToCollection($models);
                 return $this->serializeModels($collection);
