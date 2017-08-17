@@ -120,6 +120,7 @@ $app->register(Barryvdh\Cors\ServiceProvider::class);
 |
 */
 
+$app->configure('luminary');
 $app->configure('cors');
 
 /*

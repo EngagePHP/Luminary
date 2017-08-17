@@ -99,7 +99,7 @@ class ResponseHelper
      */
     public static function generateUrl(array $path)
     {
-        $path = array_merge([static::root()], $path);
+        $path = array_merge([static::root()], [config('luminary.location')], $path);
         return implode('/', array_filter($path));
     }
 
