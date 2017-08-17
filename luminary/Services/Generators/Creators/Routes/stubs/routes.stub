@@ -13,7 +13,6 @@
 
 $app->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}'],
     function ($app) {
-
         // Retrieve a list for {{slug}}
         $app->get('/', [
             'as' => '{{slug}}',
