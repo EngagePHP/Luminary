@@ -60,6 +60,14 @@ abstract class AbstractSerializer implements SerializerInterface
     protected $resource;
 
     /**
+     * Set true for top level
+     * serializer
+     *
+     * @var bool
+     */
+    public $topLevel = false;
+
+    /**
      * AbstractSerializer constructor
      *
      * @param mixed $data
@@ -196,7 +204,7 @@ abstract class AbstractSerializer implements SerializerInterface
      */
     public function links() :array
     {
-        return (new LinkPresenter($this))->format();
+        return (new LinkPresenter($this))->format($this->topLevel());
     }
 
     /**
@@ -390,4 +398,27 @@ abstract class AbstractSerializer implements SerializerInterface
      * @return array
      */
     abstract public function serialize() :array;
+
+    /**
+     * Get the top level property
+     *
+     * @return bool
+     */
+    public function topLevel()
+    {
+        return $this->topLevel;
+    }
+
+    /**
+     * Set whether the serializer is the top level
+     *
+     * @param bool $bool
+     * @return $this
+     */
+    public function setTopLevel($bool = true)
+    {
+        $this->topLevel = $bool;
+
+        return $this;
+    }
 }
