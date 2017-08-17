@@ -31,6 +31,7 @@ class ResponsePresenter
     public function format() :array
     {
         $s = $this->serializer;
+        $s->setTopLevel();
 
         return [
             'jsonapi' => [

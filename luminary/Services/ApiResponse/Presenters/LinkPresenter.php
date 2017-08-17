@@ -2,6 +2,7 @@
 
 namespace Luminary\Services\ApiResponse\Presenters;
 
+use Luminary\Services\ApiResponse\ResponseHelper;
 use Luminary\Services\ApiResponse\Serializers\SerializerInterface;
 
 class LinkPresenter
@@ -26,12 +27,13 @@ class LinkPresenter
     /**
      * Return the formatted presenter array
      *
+     * @param bool $query
      * @return array
      */
-    public function format() :array
+    public function format($query = false) :array
     {
         return array_merge(
-            $this->self(),
+            $this->self($query),
             $this->related(),
             $this->pagination()
         );
@@ -40,11 +42,13 @@ class LinkPresenter
     /**
      * Return teh self link as an array
      *
+     * @param bool $addQuery
      * @return array
      */
-    protected function self() :array
+    protected function self($addQuery = false) :array
     {
-        return ['self' =>  $this->serializer->selfLink()] ;
+        $query = $addQuery ? $this->queryString() : '';
+        return ['self' =>  $this->serializer->selfLink() . $query] ;
     }
 
     /**
@@ -56,6 +60,17 @@ class LinkPresenter
     {
         $link = $this->serializer->relatedLink();
         return empty($link) ? [] : ['related' => $link];
+    }
+
+    /**
+     * Get the current request query string
+     *
+     * @return string
+     */
+    protected function queryString()
+    {
+        $queryString = ResponseHelper::queryString();
+        return $queryString ? '?' . $queryString : '';
     }
 
     /**

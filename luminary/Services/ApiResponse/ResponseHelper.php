@@ -45,6 +45,16 @@ class ResponseHelper
     }
 
     /**
+     * Get the request query string
+     *
+     * @return null|string
+     */
+    public static function queryString()
+    {
+        return static::request()->getQueryString();
+    }
+
+    /**
      * Return the resource name
      *
      * @return string
