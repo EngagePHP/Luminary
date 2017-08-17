@@ -79,7 +79,7 @@ class ResponseMiddleware
 
         $responseTime = $time > 1 ? round($time, 2) . ' seconds' : floor(($time) * 1000) . ' milliseconds';
 
-        $serializer->addMeta('response_time', $responseTime);
+        $serializer->addResponseMeta('response_time', $responseTime);
     }
 
     /**

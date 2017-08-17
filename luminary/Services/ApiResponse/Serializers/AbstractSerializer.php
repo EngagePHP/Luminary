@@ -39,6 +39,13 @@ abstract class AbstractSerializer implements SerializerInterface
     protected $meta;
 
     /**
+     * Top Level meta
+     *
+     * @var Collection
+     */
+    protected $responseMeta;
+
+    /**
      * Is this a paginated collection?
      *
      * @var bool
@@ -75,6 +82,7 @@ abstract class AbstractSerializer implements SerializerInterface
     public function __construct($data = null)
     {
         $this->setMeta();
+        $this->setResponseMeta();
 
         if (!is_null($data)) {
             $this->fill($data);
@@ -288,7 +296,7 @@ abstract class AbstractSerializer implements SerializerInterface
                  return $item;
             })->toArray();
 
-            $this->addMeta('pagination', $meta);
+            $this->addResponseMeta('pagination', $meta);
         }
 
         return $this;
@@ -408,6 +416,44 @@ abstract class AbstractSerializer implements SerializerInterface
      * @return array
      */
     abstract public function serialize() :array;
+
+    /**
+     * Return the responseMeta property
+     * as an array
+     */
+    public function responseMeta() :array
+    {
+        return $this->responseMeta->toArray();
+    }
+
+    /**
+     * Get/Replace the responseMeta property
+     *
+     * @param array $meta
+     * @return \Luminary\Services\ApiResponse\Serializers\AbstractSerializer
+     */
+    public function setResponseMeta(array $meta = null) :AbstractSerializer
+    {
+        $meta = $meta ?: [];
+
+        $this->responseMeta = collect($meta);
+
+        return $this;
+    }
+
+    /**
+     * Add an item to the responseMeta property
+     *
+     * @param $key
+     * @param $value
+     * @return \Luminary\Services\ApiResponse\Serializers\AbstractSerializer
+     */
+    public function addResponseMeta($key, $value) :AbstractSerializer
+    {
+        $this->responseMeta->put($key, $value);
+
+        return $this;
+    }
 
     /**
      * Get the top level property
