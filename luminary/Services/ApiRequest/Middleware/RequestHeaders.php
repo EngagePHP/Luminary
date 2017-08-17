@@ -9,34 +9,13 @@ use Luminary\Services\ApiRequest\Exceptions\UnsupportedMediaType;
 class RequestHeaders
 {
     /**
-     * The vendor tree string
-     *
-     * @var string
-     */
-    protected $vendorTree = 'application/vnd';
-
-    /**
-     * The producer string
-     *
-     * @var string
-     */
-    protected $producer = 'api';
-
-    /**
-     * The request media type
-     *
-     * @var string
-     */
-    protected $mediaType = 'json';
-
-    /**
      * Get the accepted vendor tree property
      *
      * @return string
      */
     public function vendorTree()
     {
-        return $this->vendorTree;
+        return config('luminary.vendorTree');
     }
 
     /**
@@ -46,7 +25,7 @@ class RequestHeaders
      */
     public function producer()
     {
-        return $this->producer;
+        return config('luminary.producer');
     }
 
     /**
@@ -56,7 +35,7 @@ class RequestHeaders
      */
     public function mediaType()
     {
-        return $this->mediaType;
+        return config('luminary.mediaType');
     }
 
     /**

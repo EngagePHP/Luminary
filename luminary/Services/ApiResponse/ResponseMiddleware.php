@@ -32,7 +32,8 @@ class ResponseMiddleware
 
             $this->setResponseTime($serializer);
 
-            $response->setContent($serializer->serialize());
+            $response->setContent($serializer->serialize())
+                ->header('Content-Type', config('luminary.contentType'));
 
             $this->setResponseStatus($request, $response);
         }
