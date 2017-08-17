@@ -268,9 +268,19 @@ abstract class AbstractSerializer implements SerializerInterface
      */
     public function setPaginatedMeta() :AbstractSerializer
     {
+        $baseUrl = $this->selfLink();
+
         if ($this->paginated()) {
             $paginator = $this->paginator();
-            $this->addMeta('pagination', $paginator->toArray());
+            $meta = collect($paginator->toArray())->map(function($item, $key) use($baseUrl) {
+                 if(preg_match('/_url/i', $key)) {
+                     return $baseUrl . $item;
+                 }
+
+                 return $item;
+            })->toArray();
+
+            $this->addMeta('pagination', $meta);
         }
 
         return $this;
@@ -296,7 +306,7 @@ abstract class AbstractSerializer implements SerializerInterface
 
         return collect($urls)->map(
             function ($query) use ($baseUrl) {
-                return $baseUrl . $query;
+                return $query ? $baseUrl . $query : null;
             }
         )->all();
     }
