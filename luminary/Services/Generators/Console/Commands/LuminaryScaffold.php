@@ -207,6 +207,8 @@ class LuminaryScaffold extends Command
         $path = app_path('setup.sh');
 
         Storage::put($path, $content);
+
+        chmod($path, 0751); //rwxr-x--x
     }
 
     /**

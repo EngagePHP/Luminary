@@ -37,3 +37,19 @@ if (! function_exists('is_class')) {
             ->count() > 0;
     }
 }
+
+if (! function_exists('env_list')) {
+    /**
+     * Gets the value of an environment variable,
+     * and returns as an array
+     * @param  string $key
+     * @param  mixed $default
+     * @param string $separator
+     * @return mixed
+     */
+    function env_list($key, $default = null, $separator = ',') :array
+    {
+        $value = env($key, $default);
+        return ! is_null($value) ? explode($separator, $value) : [];
+    }
+}

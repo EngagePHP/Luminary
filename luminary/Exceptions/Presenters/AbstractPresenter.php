@@ -20,9 +20,7 @@ abstract class AbstractPresenter implements PresenterInterface
      *
      * @var array
      */
-    protected $headers = [
-        'Content-Type' => 'application/vnd.api+json'
-    ];
+    protected $headers = [];
 
     /**
      * DefaultPresenter constructor.
@@ -51,7 +49,8 @@ abstract class AbstractPresenter implements PresenterInterface
      */
     public function render() :JsonResponse
     {
-        return response()->json(['errors' => $this->response()], $this->status(), $this->headers);
+        $headers = array_merge($this->headers, ['Content-Type' => config('luminary.contentType')]);
+        return response()->json(['errors' => $this->response()], $this->status(), $headers);
     }
 
     /**

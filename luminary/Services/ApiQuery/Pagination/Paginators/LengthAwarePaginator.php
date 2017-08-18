@@ -86,7 +86,7 @@ class LengthAwarePaginator extends IlluminateLengthAwarePaginator
     public function createUrlParameters(int $page, int $perPage) :array
     {
         return [
-            'paginate' => [
+            'page' => [
                 'number' => $page,
                 'size' => $perPage
             ]
