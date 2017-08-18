@@ -87,4 +87,9 @@ class Application extends LaravelApplication
             $this->luminaryAvailableBindings
         );
     }
+
+    public function group(array $attributes, \Closure $callback)
+    {
+        parent::group($attributes, $callback);
+    }
 }
