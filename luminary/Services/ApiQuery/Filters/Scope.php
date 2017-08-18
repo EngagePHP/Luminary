@@ -131,11 +131,6 @@ class Scope extends BaseScope
         $columns = $this->getQueryColumns($builder);
         $attribute = $this->getFullyQualifiedColumn($columns, $attribute);
 
-        if ($this->isExpression($value)) {
-            $this->applyExpressionFilter($attribute, $operator, $value, $type);
-            return;
-        }
-
         switch ($operator) {
             case 'IN':
                 $builder->whereIn($attribute, $value, $type);
@@ -199,55 +194,6 @@ class Scope extends BaseScope
         }
 
         return $builder->getQuery()->columns ?: [];
-    }
-
-    /**
-     * Check if the current value should be
-     * called as an expression
-     *
-     * @param $value
-     * @return bool
-     */
-    protected function isExpression($value) :bool
-    {
-        $explode = explode('.', $value);
-        return count($explode) > 1;
-    }
-
-    /**
-     * Create an expression from a value
-     *
-     * @param string $value
-     * @return Expression
-     */
-    protected function createExpression(string $value) :Expression
-    {
-        $explode = explode('.', $value);
-
-        return collect($explode)->map(
-            function ($v) {
-                return "\"$v\"";
-            }
-        )->pipe(
-            function ($collection) {
-                $implode = implode('.', $collection->all());
-                return app('db')->raw($implode);
-            }
-        );
-    }
-
-    /**
-     * Apply and expression filter
-     *
-     * @param string $attribute
-     * @param string $operator
-     * @param $value
-     * @param string $type
-     */
-    protected function applyExpressionFilter(string $attribute, string $operator, $value, string $type) :void
-    {
-        $expression = $this->createExpression($value);
-        $this->builder->whereRaw("$attribute $operator " . $expression->getValue(), [], $type);
     }
 
     /**
