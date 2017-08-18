@@ -23,6 +23,6 @@ return [
     | Prefix urls with a location. (useful for proxies)
     |
     */
-    'location' => env('URL_PREFIX' , '')
+    'location' => env('URL_PREFIX', '')
 
 ];
