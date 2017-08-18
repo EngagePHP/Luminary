@@ -131,7 +131,7 @@ class QueryCollection extends Collection
     public function sorting(string $resource = null) :array
     {
         $sorting = SortingParser::parse(
-            $this->get('sort', []),
+            (array) $this->get('sort', []),
             $this->resource()
         );
 

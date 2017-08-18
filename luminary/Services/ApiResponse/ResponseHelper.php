@@ -45,6 +45,16 @@ class ResponseHelper
     }
 
     /**
+     * Get the request query string
+     *
+     * @return null|string
+     */
+    public static function queryString()
+    {
+        return static::request()->getQueryString();
+    }
+
+    /**
      * Return the resource name
      *
      * @return string
@@ -99,7 +109,7 @@ class ResponseHelper
      */
     public static function generateUrl(array $path)
     {
-        $path = array_merge([static::root()], $path);
+        $path = array_merge([static::root()], [config('luminary.location')], $path);
         return implode('/', array_filter($path));
     }
 

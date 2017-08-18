@@ -39,6 +39,13 @@ abstract class AbstractSerializer implements SerializerInterface
     protected $meta;
 
     /**
+     * Top Level meta
+     *
+     * @var Collection
+     */
+    protected $responseMeta;
+
+    /**
      * Is this a paginated collection?
      *
      * @var bool
@@ -60,6 +67,14 @@ abstract class AbstractSerializer implements SerializerInterface
     protected $resource;
 
     /**
+     * Set true for top level
+     * serializer
+     *
+     * @var bool
+     */
+    public $topLevel = false;
+
+    /**
      * AbstractSerializer constructor
      *
      * @param mixed $data
@@ -67,6 +82,7 @@ abstract class AbstractSerializer implements SerializerInterface
     public function __construct($data = null)
     {
         $this->setMeta();
+        $this->setResponseMeta();
 
         if (!is_null($data)) {
             $this->fill($data);
@@ -196,7 +212,7 @@ abstract class AbstractSerializer implements SerializerInterface
      */
     public function links() :array
     {
-        return (new LinkPresenter($this))->format();
+        return (new LinkPresenter($this))->format($this->topLevel());
     }
 
     /**
@@ -268,9 +284,19 @@ abstract class AbstractSerializer implements SerializerInterface
      */
     public function setPaginatedMeta() :AbstractSerializer
     {
+        $baseUrl = $this->selfLink();
+
         if ($this->paginated()) {
             $paginator = $this->paginator();
-            $this->addMeta('pagination', $paginator->toArray());
+            $meta = collect($paginator->toArray())->map(function($item, $key) use($baseUrl) {
+                 if(preg_match('/_url/i', $key)) {
+                     return $baseUrl . $item;
+                 }
+
+                 return $item;
+            })->toArray();
+
+            $this->addResponseMeta('pagination', $meta);
         }
 
         return $this;
@@ -296,7 +322,7 @@ abstract class AbstractSerializer implements SerializerInterface
 
         return collect($urls)->map(
             function ($query) use ($baseUrl) {
-                return $baseUrl . $query;
+                return $query ? $baseUrl . $query : null;
             }
         )->all();
     }
@@ -390,4 +416,65 @@ abstract class AbstractSerializer implements SerializerInterface
      * @return array
      */
     abstract public function serialize() :array;
+
+    /**
+     * Return the responseMeta property
+     * as an array
+     */
+    public function responseMeta() :array
+    {
+        return $this->responseMeta->toArray();
+    }
+
+    /**
+     * Get/Replace the responseMeta property
+     *
+     * @param array $meta
+     * @return \Luminary\Services\ApiResponse\Serializers\AbstractSerializer
+     */
+    public function setResponseMeta(array $meta = null) :AbstractSerializer
+    {
+        $meta = $meta ?: [];
+
+        $this->responseMeta = collect($meta);
+
+        return $this;
+    }
+
+    /**
+     * Add an item to the responseMeta property
+     *
+     * @param $key
+     * @param $value
+     * @return \Luminary\Services\ApiResponse\Serializers\AbstractSerializer
+     */
+    public function addResponseMeta($key, $value) :AbstractSerializer
+    {
+        $this->responseMeta->put($key, $value);
+
+        return $this;
+    }
+
+    /**
+     * Get the top level property
+     *
+     * @return bool
+     */
+    public function topLevel()
+    {
+        return $this->topLevel;
+    }
+
+    /**
+     * Set whether the serializer is the top level
+     *
+     * @param bool $bool
+     * @return $this
+     */
+    public function setTopLevel($bool = true)
+    {
+        $this->topLevel = $bool;
+
+        return $this;
+    }
 }

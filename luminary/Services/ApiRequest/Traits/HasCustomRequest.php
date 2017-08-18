@@ -15,7 +15,7 @@ trait HasCustomRequest
      */
     protected function injectRequest(string $class, Request $request = null) :Request
     {
-        $request = $request ?: app('reqest');
+        $request = $request ?: app('request');
 
         app()->singleton('request', function () use ($request, $class) {
             $class = new $class();

@@ -5,6 +5,8 @@ namespace Luminary\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 use Luminary\Services\ApiLoader\Console\Commands\LuminaryCache;
+use Luminary\Console\Commands\Config;
+use Luminary\Console\Commands\ConfigPublish;
 use Luminary\Services\Generators\Console\Commands\EntityCreator;
 use Luminary\Services\Generators\Console\Commands\LuminaryScaffold;
 use Luminary\Services\Generators\Console\Commands\ResourceCreator;
@@ -18,6 +20,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Config::class,
+        ConfigPublish::class,
         LuminaryCache::class,
         LuminaryScaffold::class,
         EntityCreator::class,

@@ -19,13 +19,6 @@ class DummyClass extends Model
     protected $table = '{{table}}';
 
     /**
-     * Fillable fields for a Content instance.
-     *
-     * @var array
-     */
-    protected $fillable = ['*'];
-
-    /**
      * Fields that should stay hidden from response.
      *
      * @var array

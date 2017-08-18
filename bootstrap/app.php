@@ -39,7 +39,7 @@ $app = new Luminary\Application(
 $app->withEloquent();
 
 // Set the application start time
-$app->make('config')->set('app.start', $start);
+config(['app' => ['start' => $start]]);
 
 /*
 |--------------------------------------------------------------------------
@@ -107,9 +107,9 @@ $app->middleware([
 |
 */
 
- $app->register(Luminary\Providers\LuminaryServiceProvider::class);
- $app->register(Illuminate\Redis\RedisServiceProvider::class);
- $app->register(Barryvdh\Cors\ServiceProvider::class);
+$app->register(Luminary\Providers\LuminaryServiceProvider::class);
+$app->register(Illuminate\Redis\RedisServiceProvider::class);
+$app->register(Barryvdh\Cors\ServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -120,7 +120,8 @@ $app->middleware([
 |
 */
 
- $app->configure('cors');
+$app->configure('luminary');
+$app->configure('cors');
 
 /*
 |--------------------------------------------------------------------------
@@ -132,30 +133,37 @@ $app->middleware([
 |
 */
 
- $api = $app->loadApi([
+$api = $app->loadApi([
+    \Luminary\Services\ApiLoader\Loaders\ConfigLoader::class,
     \Luminary\Services\ApiLoader\Loaders\EntityLoader::class,
     \Luminary\Services\ApiLoader\Loaders\ResourceLoader::class,
     \Luminary\Services\ApiLoader\Loaders\ServiceLoader::class
- ]);
+]);
 
- $api->registerConsole();
- $api->registerModelFactories();
- $api->registerMiddleware();
- $api->registerMigrations();
- $api->registerProviders();
- $api->registerRoutes();
- $api->registerRouteMiddleware();
- $api->registerSeeders();
+$api->registerConfigs();
+$api->registerConsole();
+$api->registerModelFactories();
+$api->registerMiddleware();
+$api->registerMigrations();
+$api->registerProviders();
+$api->registerRoutes();
+$api->registerRouteMiddleware();
+$api->registerSeeders();
 
 /*
 |--------------------------------------------------------------------------
-| Load The Application Routes
+| Load A Custom Bootstrap file
 |--------------------------------------------------------------------------
 |
-| Next we will include the routes file so that they can all be added to
-| the application. This will provide all of the URLs the application
-| can respond to, as well as the controllers that may handle them.
+| Next we will include a custom bootstrap.php file if it exists in the
+| api directory
 |
 */
 
- return $app;
+$boostrap = realpath(__DIR__ . '/../api/bootstrap.php');
+
+if (file_exists($boostrap)) {
+    include $boostrap;
+}
+
+return $app;
