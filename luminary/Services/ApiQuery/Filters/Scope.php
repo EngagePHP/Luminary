@@ -3,6 +3,7 @@
 namespace Luminary\Services\ApiQuery\Filters;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Expression;
 use Luminary\Services\ApiQuery\Eloquent\BaseScope;
 
@@ -127,7 +128,8 @@ class Scope extends BaseScope
     protected function applyFilter(string $attribute, string $operator, $value, string $type) :void
     {
         $builder = $this->builder;
-        $attribute = $this->formatAttribute($attribute);
+        $columns = $this->getQueryColumns($builder);
+        $attribute = $this->getFullyQualifiedColumn($columns, $attribute);
 
         if ($this->isExpression($value)) {
             $this->applyExpressionFilter($attribute, $operator, $value, $type);
@@ -154,17 +156,49 @@ class Scope extends BaseScope
     }
 
     /**
-     * Format an attribute with table name
-     * if missing
+     * Get the fully qualified column name from
+     * an array of query columns and field name
      *
-     * @param string $attribute
+     * @param array $columns
+     * @param string $field
      * @return string
      */
-    protected function formatAttribute(string $attribute) :string
+    public function getFullyQualifiedColumn(array $columns, string $field) :string
     {
-        return strpos($attribute, '.') !== true
-            ? $this->model->getTable() . '.' . $attribute
-            : $attribute;
+        $column = collect($columns)->first(
+            function ($column) use ($field) {
+
+                if (preg_match('/as '.$field.'/i', $column)) {
+                    return true;
+                }
+
+                if (preg_match('/'.$field.'/i', $column) && strpos($column, '.')) {
+                    $c = strtok($column, '.');
+
+                    return (str_replace($c . '.', '', $column) === $field);
+                }
+
+                return false;
+            }
+        );
+
+        return $column ? trim(head(explode('as', $column))) : $this->table() . '.' . $field;
+    }
+
+    /**
+     * Get the query column array
+     * from builder
+     *
+     * @param $builder
+     * @return array
+     */
+    public function getQueryColumns($builder) :array
+    {
+        if ($builder instanceof Relation) {
+            $builder = $builder->getQuery();
+        }
+
+        return $builder->getQuery()->columns ?: [];
     }
 
     /**
@@ -197,7 +231,7 @@ class Scope extends BaseScope
         )->pipe(
             function ($collection) {
                 $implode = implode('.', $collection->all());
-                return \DB::raw($implode);
+                return app('db')->raw($implode);
             }
         );
     }
