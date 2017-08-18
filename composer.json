@@ -2,7 +2,7 @@
     "name": "engage-php/luminary",
     "description": "An api service based on laravel lumen",
     "require": {
-        "laravel/lumen": "^5.4",
+        "laravel/lumen": "5.4.*",
         "wikimedia/composer-merge-plugin": "^1.4",
         "league/flysystem-aws-s3-v3": "~1.0",
         "eddturtle/direct-upload": "^1.6",
