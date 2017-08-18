@@ -288,10 +288,10 @@ abstract class AbstractSerializer implements SerializerInterface
 
         if ($this->paginated()) {
             $paginator = $this->paginator();
-            $meta = collect($paginator->toArray())->map(function($item, $key) use($baseUrl) {
-                 if(preg_match('/_url/i', $key)) {
-                     return $baseUrl . $item;
-                 }
+            $meta = collect($paginator->toArray())->map(function ($item, $key) use ($baseUrl) {
+                if (preg_match('/_url/i', $key)) {
+                    return $baseUrl . $item;
+                }
 
                  return $item;
             })->toArray();
