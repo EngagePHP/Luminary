@@ -168,7 +168,7 @@ class Scope extends BaseScope
         $column = collect($columns)->first(
             function ($column) use ($field) {
 
-                if (preg_match('/as '.$field.'/i', $column)) {
+                if (preg_match('/ as '.$field.'/i', $column)) {
                     return true;
                 }
 
@@ -182,7 +182,7 @@ class Scope extends BaseScope
             }
         );
 
-        return $column ? trim(head(explode('as', $column))) : $this->table() . '.' . $field;
+        return $column ? head(explode(' as', $column)) : $this->table() . '.' . $field;
     }
 
     /**
