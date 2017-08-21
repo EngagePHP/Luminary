@@ -9,13 +9,23 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Luminary\Services\ApiQuery\Pagination\Collection as PaginationCollection;
 use Luminary\Services\ApiResponse\Serializers\ArraySerializer;
+use Luminary\Services\ApiResponse\Serializers\CollectionRelationshipSerializer;
 use Luminary\Services\ApiResponse\Serializers\CollectionSerializer;
 use Luminary\Services\ApiResponse\Serializers\EmptySerializer;
+use Luminary\Services\ApiResponse\Serializers\ModelRelationshipSerializer;
 use Luminary\Services\ApiResponse\Serializers\ModelSerializer;
 use Luminary\Services\ApiResponse\Serializers\SerializerInterface;
 
 class ResponseMiddleware
 {
+    /**
+     * Set the bool for whether the response
+     * format should be for relationships
+     *
+     * @var bool
+     */
+    public static $relationshipResponse = false;
+
     /**
      * Run the request filter.
      *
@@ -28,7 +38,7 @@ class ResponseMiddleware
         $response = $next($request);
 
         if (! $response instanceof JsonResponse) {
-            $serializer = $this->content($response);
+            $serializer = $this->content($response, $request);
 
             $this->setResponseTime($serializer);
 
@@ -42,21 +52,37 @@ class ResponseMiddleware
     }
 
     /**
+     * Tell if the current response for a relationship
+     * request.
+     *
+     * @return bool
+     */
+    public function isRelationshipResponse() :bool
+    {
+        return static::$relationshipResponse;
+    }
+
+    /**
      * Return the correct content serializer
      *
      * @param Response $response
+     * @param  \Illuminate\Http\Request  $request
      * @return SerializerInterface
      */
-    public function content($response) :SerializerInterface
+    public function content($response, $request) :SerializerInterface
     {
         $original = $response->getOriginalContent();
 
         switch (true) {
             case $original instanceof Collection:
-                return new CollectionSerializer($original);
+                return $this->isRelationshipResponse()
+                    ? new CollectionRelationshipSerializer($original, $request)
+                    : new CollectionSerializer($original);
                 break;
             case $original instanceof Model:
-                return new ModelSerializer($original);
+                return $this->isRelationshipResponse()
+                    ? new ModelRelationshipSerializer($original, $request)
+                    : new ModelSerializer($original);
                 break;
             case is_bool($original):
                 return new EmptySerializer;
