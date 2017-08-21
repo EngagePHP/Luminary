@@ -37,7 +37,7 @@ class QueryMiddlewareTest extends TestCase
     {
         $this->get($this->url, ['content-type' => 'application/vnd.api+json']);
 
-        $this->assertCount(1, $this->getQueryArray());
+        $this->assertCount(2, $this->getQueryArray());
         $this->assertResponseOk();
     }
 

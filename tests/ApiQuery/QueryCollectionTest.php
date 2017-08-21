@@ -114,7 +114,7 @@ class QueryCollectionTest extends TestCase
     public function testQueryPagination()
     {
         $query = [
-            'paginate' => [
+            'page' => [
                 'number' => 2,
                 'size' => 3
             ]

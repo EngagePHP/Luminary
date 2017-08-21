@@ -125,7 +125,7 @@ class QueryModelScopeTest extends TestCase
         $query = [
             'resource' => 'customers',
             'include' => 'users',
-            'paginate' => [
+            'page' => [
                 'number' => 2,
                 'size' => 5
             ]
