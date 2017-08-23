@@ -26,7 +26,7 @@ class ApiResponseMiddlewareTest extends TestCase
      */
     public function testCollectionSerializerResponse()
     {
-        app()->get('customers', function() {
+        app()->router->get('customers', function() {
             return Customer::all();
         });
 
@@ -54,7 +54,7 @@ class ApiResponseMiddlewareTest extends TestCase
      */
     public function testArraySerializerResponse()
     {
-        app()->get('customers', function() {
+        app()->router->get('customers', function() {
             return [];
         });
 
@@ -82,7 +82,7 @@ class ApiResponseMiddlewareTest extends TestCase
      */
     public function testModelSerializerResponse()
     {
-        app()->get('customers/{id}', function($id) {
+        app()->router->get('customers/{id}', function($id) {
             return Customer::find($id);
         });
 

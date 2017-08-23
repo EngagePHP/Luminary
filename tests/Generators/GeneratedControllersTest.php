@@ -36,31 +36,32 @@ class GeneratedControllersTest extends TestCase
     protected function setUpRoutes()
     {
         $app = app();
+        $router = $app->router;
 
-        $app->group(['namespace' => '\Luminary\Services\Testing\Controllers', 'prefix' => 'customers'],
-            function ($app) {
+        $router->group(['namespace' => '\Luminary\Services\Testing\Controllers', 'prefix' => 'customers'],
+            function ($router) {
 
-                $app->get('/', [
+                $router->get('/', [
                     'as' => 'customers',
                     'uses' => 'CustomerController@index'
                 ]);
 
-                $app->post('/', [
+                $router->post('/', [
                     'as' => 'customers.store',
                     'uses' => 'CustomerController@store'
                 ]);
 
-                $app->get('/{id}', [
+                $router->get('/{id}', [
                     'as' => 'customers.show',
                     'uses' => 'CustomerController@show'
                 ]);
 
-                $app->patch('/{id}', [
+                $router->patch('/{id}', [
                     'as' => 'customers.update',
                     'uses' => 'CustomerController@update'
                 ]);
 
-                $app->delete('/{id}', [
+                $router->delete('/{id}', [
                     'as' => 'customers.destroy',
                     'uses' => 'CustomerController@destroy'
                 ]);

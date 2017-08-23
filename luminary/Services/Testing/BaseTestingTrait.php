@@ -90,24 +90,25 @@ trait BaseTestingTrait
     protected function setUpRoutes()
     {
         $app = app();
+        $router = $app->router;
 
-        $app->get('api-query-middleware', function () {
+        $router->get('api-query-middleware', function () {
             return response('api query middleware', 200);
         });
 
-        $app->post('api-query-middleware', function () {
+        $router->post('api-query-middleware', function () {
             return response('api query middleware', 200);
         });
 
-        $app->put('api-query-middleware', function () {
+        $router->put('api-query-middleware', function () {
             return response('api query middleware', 200);
         });
 
-        $app->patch('api-query-middleware', function () {
+        $router->patch('api-query-middleware', function () {
             return response('api query middleware', 200);
         });
 
-        $app->delete('api-query-middleware', function () {
+        $router->delete('api-query-middleware', function () {
             return response('api query middleware', 200);
         });
     }
