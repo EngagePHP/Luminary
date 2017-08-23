@@ -51,10 +51,13 @@ class TimezoneTraitTest extends TestCase
      */
     public function testTimezoneTrait()
     {
+        Customer::setTimezone('UTC');
+
         $zone = 'America/New_York';
         $result = Customer::first();
 
         $before = $result->created_at;
+
         Customer::setTimezone($zone);
 
         $after = $result->created_at;

@@ -305,6 +305,7 @@ class ApiLoader
     protected function loadRoutesFrom($path)
     {
         $app = $this->app;
+        $router = $app->router;
 
         require $path;
     }

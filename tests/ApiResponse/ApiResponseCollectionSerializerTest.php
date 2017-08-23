@@ -118,7 +118,7 @@ class ApiResponseCollectionSerializerTest extends TestCase
         $query = [
             'resource' => 'customers',
             'include' => 'users',
-            'paginate' => [
+            'page' => [
                 'number' => 2,
                 'size' => 3
             ]
@@ -134,10 +134,10 @@ class ApiResponseCollectionSerializerTest extends TestCase
 
         $expected = [
             'self' => "http://localhost/customers",
-            'first' => "http://localhost/customers/?include=users&paginate%5Bnumber%5D=1&paginate%5Bsize%5D=3",
-            'last' => "http://localhost/customers/?include=users&paginate%5Bnumber%5D=4&paginate%5Bsize%5D=3",
-            'prev' => "http://localhost/customers/?include=users&paginate%5Bnumber%5D=1&paginate%5Bsize%5D=3",
-            'next' => "http://localhost/customers/?include=users&paginate%5Bnumber%5D=3&paginate%5Bsize%5D=3"
+            'first' => "http://localhost/customers/?include=users&page%5Bnumber%5D=1&page%5Bsize%5D=3",
+            'last' => "http://localhost/customers/?include=users&page%5Bnumber%5D=4&page%5Bsize%5D=3",
+            'prev' => "http://localhost/customers/?include=users&page%5Bnumber%5D=1&page%5Bsize%5D=3",
+            'next' => "http://localhost/customers/?include=users&page%5Bnumber%5D=3&page%5Bsize%5D=3"
         ];
 
         $this->assertEquals($expected, $results);

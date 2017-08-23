@@ -1,5 +1,5 @@
 <?php
 
-$app->get('/', function () use ($app) {
+$router->get('/', function () use ($app) {
     return $app->version();
 });

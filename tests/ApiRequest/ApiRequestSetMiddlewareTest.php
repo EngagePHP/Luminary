@@ -25,7 +25,7 @@ class ApiRequestSetMiddlewareTest extends TestCase
     {
         $self = $this;
 
-        app()->post('/api', function(Request $request, \Luminary\Services\Testing\Requests\FormRequest $formRequest, \Luminary\Services\ApiRequest\ApiRequest $apiRequest) use($self) {
+        app()->router->post('/api', function(Request $request, \Luminary\Services\Testing\Requests\FormRequest $formRequest, \Luminary\Services\ApiRequest\ApiRequest $apiRequest) use($self) {
             $self->assertInstanceOf(\Luminary\Services\ApiRequest\ApiRequest::class, $request);
             $self->assertInstanceOf(\Luminary\Services\ApiRequest\ApiRequest::class, $formRequest);
             $self->assertInstanceOf(\Luminary\Services\ApiRequest\ApiRequest::class, $apiRequest);
