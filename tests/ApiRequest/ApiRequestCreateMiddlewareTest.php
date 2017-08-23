@@ -56,7 +56,7 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testDataAttributeMethodFailureResponse() :void
     {
-        app()->post('/api', function() {});
+        app()->router->post('/api', function() {});
 
         $this->json('post', '/api', ['datas' => []],$this->headers);
 
@@ -100,7 +100,7 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testTypeAttributeMethodFailureResponse() :void
     {
-        app()->post('/api', function() {});
+        app()->router->post('/api', function() {});
 
         $this->json('post', '/api', ['data' => []],$this->headers);
 
@@ -143,7 +143,7 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testAcceptedAttributesMethodFailureResponse() :void
     {
-        app()->post('/api', function() {});
+        app()->router->post('/api', function() {});
 
         $this->json('post', '/api', ['data' => ['type' => 'test', 'not-it' => '', 'unacceptable' => '']],$this->headers);
 
@@ -195,7 +195,7 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testForbiddenAttributeMethodFailureResponse() :void
     {
-        app()->post('/api', function() {});
+        app()->router->post('/api', function() {});
 
         $this->json('post', '/api', ['data' => [
             'type' => 'test',

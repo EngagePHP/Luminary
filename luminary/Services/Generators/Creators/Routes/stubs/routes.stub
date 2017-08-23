@@ -11,34 +11,34 @@
 |
 */
 
-$app->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}'],
-    function ($app) {
+$router->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}'],
+    function ($router) {
         // Retrieve a list for {{slug}}
-        $app->get('/', [
+        $router->get('/', [
             'as' => '{{slug}}',
             'uses' => '{{controller}}@index'
         ]);
 
         // Create a new entity for {{slug}}
-        $app->post('/', [
+        $router->post('/', [
             'as' => '{{slug}}.store',
             'uses' => '{{controller}}@store'
         ]);
 
         // Show an entity for {{slug}}
-        $app->get('/{id}', [
+        $router->get('/{id}', [
             'as' => '{{slug}}.show',
             'uses' => '{{controller}}@show'
         ]);
 
         // Update an entity for {{slug}}
-        $app->patch('/{id}', [
+        $router->patch('/{id}', [
             'as' => '{{slug}}.update',
             'uses' => '{{controller}}@update'
         ]);
 
         // Delte an entity for {{slug}}
-        $app->delete('/{id}', [
+        $router->delete('/{id}', [
             'as' => '{{slug}}.destroy',
             'uses' => '{{controller}}@destroy'
         ]);
