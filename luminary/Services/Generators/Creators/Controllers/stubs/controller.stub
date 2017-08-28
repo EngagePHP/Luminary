@@ -4,7 +4,7 @@ namespace DummyNamespace;
 
 use Luminary\Services\ApiRequest\ApiRequest as Request;
 use Luminary\Http\Controllers\Controller;
-use DummyRepositoryNamespace;
+use DummyRepositoryNamespace as Repository;
 
 class DummyClass extends Controller
 {
@@ -15,7 +15,7 @@ class DummyClass extends Controller
      */
     public function index()
     {
-        return DummyRepositoryClass::all();
+        return Repository::all();
     }
 
     /**
@@ -26,7 +26,7 @@ class DummyClass extends Controller
      */
     public function store(Request $request)
     {
-        return DummyRepositoryClass::create($request->all(), $request->getRelationships());
+        return Repository::create($request->data(), $request->relationships());
     }
 
     /**
@@ -38,8 +38,8 @@ class DummyClass extends Controller
     public function show($id)
     {
         return is_array($id)
-            ? DummyRepositoryClass::findAll($id)
-            : DummyRepositoryClass::find($id);
+            ? Repository::findAll($id)
+            : Repository::find($id);
     }
 
     /**
@@ -51,7 +51,7 @@ class DummyClass extends Controller
      */
     public function update(Request $request, $id)
     {
-        return DummyRepositoryClass::update($id, $request->all(), $request->getRelationships());
+        return Repository::update($id, $request->data(), $request->relationships());
     }
 
     /**
@@ -62,6 +62,6 @@ class DummyClass extends Controller
      */
     public function destroy($id)
     {
-        DummyRepositoryClass::delete($id);
+        Repository::delete($id);
     }
 }

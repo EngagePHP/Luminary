@@ -1,5 +1,6 @@
 <?php
 
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\BaseTestingTrait;
 use Luminary\Services\Testing\Models\Customer;
 
@@ -26,6 +27,7 @@ class GeneratedControllersTest extends TestCase
 
         $this->seed(5,5,5);
         $this->setUpRoutes();
+        TenantModelScope::setOverride();
     }
 
     /**
@@ -38,7 +40,7 @@ class GeneratedControllersTest extends TestCase
         $app = app();
         $router = $app->router;
 
-        $router->group(['namespace' => '\Luminary\Services\Testing\Controllers', 'prefix' => 'customers'],
+        $router->group(['namespace' => '\Luminary\Services\Testing\Controllers', 'prefix' => 'customers', 'middleware' => 'request'],
             function ($router) {
 
                 $router->get('/', [
@@ -180,6 +182,8 @@ class GeneratedControllersTest extends TestCase
             ]
         ];
 
+
+
         $this->json('PATCH', 'customers/' . $id, $data, $this->headers());
 
         $response = json_decode($this->response->getContent(), true);
@@ -206,7 +210,7 @@ class GeneratedControllersTest extends TestCase
         $customer->setRelations([]);
         $id = $customer->id;
         $location = $this->locations->first()->id;
-        $users = $this->users->take(3)->pluck('id')->all();
+        $users = $this->users->take(3)->pluck('id');
 
         $data = [
             'data' => [
@@ -221,7 +225,7 @@ class GeneratedControllersTest extends TestCase
                         ]
                     ],
                     'users' => [
-                        'data' => array_map(function($id) { return ['type' => 'users', 'id' => $id ];}, $users)
+                        'data' => array_map(function($id) { return ['type' => 'users', 'id' => $id ];}, $users->all())
                     ]
                 ]
             ]
@@ -244,7 +248,7 @@ class GeneratedControllersTest extends TestCase
         $this->assertEquals(array_get($results, 'attributes.location_id'), $location);
 
         // Assert Users Relationship
-        $usersExpected = $customerRelations['users']->pluck('id')->merge($users)->sort()->unique()->values();
+        $usersExpected = $users->sort()->values();
         $usersResults = collect(array_get($results, 'relationships.users.data'))->pluck('id')->sort()->values();
 
         $this->assertEquals($usersExpected, $usersResults);

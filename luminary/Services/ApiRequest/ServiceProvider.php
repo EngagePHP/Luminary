@@ -47,8 +47,6 @@ class ServiceProvider extends LaravelServiceProvider
     {
         $this->app->middleware([
             \Luminary\Services\ApiRequest\Middleware\RequestHeaders::class,
-            \Luminary\Services\ApiRequest\Middleware\PostRequest::class,
-            \Luminary\Services\ApiRequest\Middleware\PatchRequest::class,
             \Luminary\Services\ApiRequest\Middleware\SetApiRequest::class,
         ]);
     }

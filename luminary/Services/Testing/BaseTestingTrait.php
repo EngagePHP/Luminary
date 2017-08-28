@@ -6,6 +6,7 @@ use Laravel\Lumen\Testing\DatabaseMigrations;
 use Luminary\Services\ApiQuery\Query;
 use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\Models\Customer;
+use Luminary\Services\Testing\Models\Interest;
 use Luminary\Services\Testing\Models\Location;
 use Luminary\Services\Testing\Models\User;
 
@@ -144,14 +145,17 @@ trait BaseTestingTrait
     {
         $users = collect();
         $locations = factory(Location::class, $locationCount)->create();
+        $interests = factory(Interest::class, 10)->create();
         $customers = factory(Customer::class, $customerCount)
             ->create()
-            ->each(function (Customer $customer) use ($users, $userCount, $locations) {
+            ->each(function (Customer $customer) use ($users, $userCount, $locations, $interests) {
                 $tenant_id = $customer->tenant_id;
                 for ($i=0; $i < $userCount; $i++) {
                     $user = factory(User::class)->make();
                     $user->tenant_id = $tenant_id;
-                    $users->push($customer->users()->save($user));
+                    $user = $customer->users()->save($user);
+                    $customer->interests()->sync($interests->pluck('id')->random(5));
+                    $users->push($user);
                 }
                 $locations = $locations->where('tenant_id', $tenant_id);
                 $customer->location()->associate($locations->random())->save();

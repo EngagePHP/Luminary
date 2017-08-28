@@ -67,4 +67,14 @@ class Customer extends Model
     {
         return $this->belongsTo(Location::class);
     }
+
+    /**
+     * The interest relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function interests()
+    {
+        return $this->belongsToMany(Interest::class);
+    }
 }

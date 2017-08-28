@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Luminary\Services\ApiResponse\ResponseMiddleware;
 
 class ApiResponseRelationshipMiddlewareTest extends TestCase
@@ -20,17 +21,17 @@ class ApiResponseRelationshipMiddlewareTest extends TestCase
     {
         parent::setUp();
 
-        $app = app();
-        $app->group(['middleware' => 'response'], function () use ($app) {
-            $app->get('customers/{id}', function() {
+        $router = app()->router;
+        $router->group(['middleware' => 'response'], function () use ($router) {
+            $router->get('test/{id}', function() {
                 return;
             });
 
-            $app->get('customers/{id}/relationships/{relationship}', function() {
+            $router->get('test/{id}/relationships/{relationship}', function() {
                 return;
             });
 
-            $app->get('customers/{id}/{relationship}', function() {
+            $router->get('test/{id}/{relationship}', function() {
                 return;
             });
         });
@@ -43,7 +44,7 @@ class ApiResponseRelationshipMiddlewareTest extends TestCase
      */
     public function testRelationshipResponseNotTriggered() :void
     {
-        $this->json('get', '/customers/12345', $this->headers);
+        $this->json('get', '/test/12345', $this->headers);
 
         $this->assertFalse(ResponseMiddleware::$relationshipResponse);
     }
@@ -56,7 +57,7 @@ class ApiResponseRelationshipMiddlewareTest extends TestCase
      */
     public function testRelationshipResponseTriggeredForSelfLink() :void
     {
-        $this->json('get', '/customers/12345/relationships/users', $this->headers);
+        $this->json('get', '/test/12345/relationships/users', $this->headers);
 
         $this->assertTrue(ResponseMiddleware::$relationshipResponse);
 
@@ -71,7 +72,7 @@ class ApiResponseRelationshipMiddlewareTest extends TestCase
      */
     public function testRelationshipResponseTriggeredForRelatedLink() :void
     {
-        $this->json('get', '/customers/12345/users', $this->headers);
+        $this->json('get', '/test/12345/users', $this->headers);
 
         $this->assertTrue(ResponseMiddleware::$relationshipResponse);
 

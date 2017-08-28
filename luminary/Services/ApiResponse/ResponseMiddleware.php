@@ -85,6 +85,7 @@ class ResponseMiddleware
                     : new ModelSerializer($original);
                 break;
             case is_bool($original):
+            case is_null($original):
                 return new EmptySerializer;
                 break;
             case is_array($original):

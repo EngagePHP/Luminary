@@ -8,33 +8,57 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class ApiRequest extends Request
 {
     /**
-     * post relationship params
+     * Parsed resource data
+     *
+     * @var \Symfony\Component\HttpFoundation\ParameterBag
+     */
+    public $data;
+
+    /**
+     * Parsed relationship data
      *
      * @var \Symfony\Component\HttpFoundation\ParameterBag
      */
     public $relationships;
 
     /**
-     * request post type
+     * Post Type
      *
-     * @var \Symfony\Component\HttpFoundation\ParameterBag
+     * @var string
      */
     public $type;
 
     /**
-     * Get the attributes from an request
+     * Get the data parameter bag
      *
-     * @param array $content
+     * @return array
      */
-    public function setAttributesFromContent(array $content)
+    public function data() :array
     {
-        $attributes = array_get($content, 'data.attributes', []);
+        return $this->data ? $this->data->all() : [];
+    }
 
-        if ($id = array_get($content, 'data.id')) {
-            $attributes = array_add($attributes, 'id', $id);
-        }
+    /**
+     * Get the data parameter bag
+     *
+     * @return \Symfony\Component\HttpFoundation\ParameterBag
+     */
+    public function getData() :ParameterBag
+    {
+        return $this->data ?: new ParameterBag;
+    }
 
-        $this->json = new ParameterBag($attributes);
+    /**
+     * Set the data parameter bag
+     *
+     * @param array $data
+     * @return \Luminary\Services\ApiRequest\ApiRequest
+     */
+    public function setData(array $data) :ApiRequest
+    {
+        $this->data = new ParameterBag($data);
+
+        return $this;
     }
 
     /**
@@ -42,47 +66,40 @@ class ApiRequest extends Request
      *
      * @return array
      */
-    public function getRelationships()
+    public function relationships() :array
     {
         return $this->relationships ? $this->relationships->all() : [];
+    }
+
+    /**
+     * The the relationships property
+     *
+     * @return @return \Symfony\Component\HttpFoundation\ParameterBag
+     */
+    public function getRelationships() :ParameterBag
+    {
+        return $this->relationships ?: new ParameterBag;
     }
 
     /**
      * Set the relationships property
      *
      * @param array $relationships
+     * @return \Luminary\Services\ApiRequest\ApiRequest
      */
-    public function setRelationships(array $relationships)
+    public function setRelationships(array $relationships) :ApiRequest
     {
         $this->relationships = new ParameterBag($relationships);
-    }
 
-    /**
-     * Set the relationships from a request
-     *
-     * @param array $content
-     */
-    public function setRelationshipsFromContent(array $content)
-    {
-        $relationships = array_get($content, 'data.relationships', []) ?: [];
-        $relationships = collect($relationships)->map(
-            function ($values) {
-                $data = array_get($values, 'data');
-                $id = array_get($data, 'id');
-
-                return is_null($id) ? array_pluck($data, 'id') : $id;
-            }
-        )->toArray();
-
-        $this->setRelationships($relationships);
+        return $this;
     }
 
     /**
      * Get the document type parameter
      *
-     * @return ParameterBag
+     * @return string
      */
-    public function getType()
+    public function getType() :string
     {
         return $this->type;
     }
@@ -91,20 +108,12 @@ class ApiRequest extends Request
      * Set the document type parameter
      *
      * @param string $type
+     * @return \Luminary\Services\ApiRequest\ApiRequest
      */
-    public function setType(string $type)
+    public function setType(string $type) :ApiRequest
     {
         $this->type = $type;
-    }
 
-    /**
-     * Set the document type from request
-     *
-     * @param array $content
-     */
-    public function setTypeFromContent(array $content)
-    {
-        $type = array_get($content, 'data.type', '');
-        $this->setType($type);
+        return $this;
     }
 }

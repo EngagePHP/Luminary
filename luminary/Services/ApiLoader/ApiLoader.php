@@ -252,7 +252,7 @@ class ApiLoader
      */
     public function registerRoutes(array $middleware = []) :void
     {
-        $this->app->group(['middleware' => $middleware], function () {
+        $this->app->router->group(['middleware' => $middleware], function () {
             $this->registry('routes')->each(
                 function ($route) {
                     $this->loadRoutesFrom($route);

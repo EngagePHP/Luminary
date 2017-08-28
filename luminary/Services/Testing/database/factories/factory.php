@@ -1,6 +1,7 @@
 <?php
 
 use Luminary\Services\Testing\Models\Customer;
+use Luminary\Services\Testing\Models\Interest;
 use Luminary\Services\Testing\Models\Location;
 use Luminary\Services\Testing\Models\User;
 
@@ -49,5 +50,11 @@ $factory->define(Location::class, function (Faker\Generator $faker) use ($tenant
         'zip' => $faker->postcode,
         'phone' => $faker->phoneNumber,
         'tenant_id' => $tenant_id()
+    ];
+});
+
+$factory->define(Interest::class, function (Faker\Generator $faker) use ($tenant_id) {
+    return [
+        'name' => $faker->safeColorName
     ];
 });

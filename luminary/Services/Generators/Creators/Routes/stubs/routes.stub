@@ -44,3 +44,67 @@ $router->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}'],
         ]);
     }
 );
+
+// Relationship Controller
+$router->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}/{id}'],
+    function ($router) {
+        // Retrieve a {{slug}} relationship
+        $router->get('/relationships/{relationship}', [
+            'as' => '{{slug}}.relationships',
+            'uses' => '{{relationshipController}}@index'
+        ]);
+
+        // Update a {{slug}} relationship
+        $router->post('/relationships/{relationship}', [
+            'as' => '{{slug}}.relationships.create',
+            'uses' => '{{relationshipController}}@store'
+        ]);
+
+        // Update a {{slug}} relationship
+        $router->patch('/relationships/{relationship}', [
+            'as' => '{{slug}}.relationships.update',
+            'uses' => '{{relationshipController}}@update'
+        ]);
+
+        // Delete a {{slug}} relationship
+        $router->delete('/relationships/{relationship}', [
+            'as' => '{{slug}}.relationships.delete',
+            'uses' => '{{relationshipController}}@destroy'
+        ]);
+    }
+);
+
+// Related Controller
+$router->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}/{id}'],
+    function ($router) {
+        // Retrieve a {{slug}} relationship
+        $router->get('/{related}', [
+            'as' => '{{slug}}.related',
+            'uses' => '{{relatedController}}@index'
+        ]);
+
+        // Retrieve the customer relationship record
+        $router->get('/{related}/{relatedId}', [
+            'as' => '{{slug}}.related.show',
+            'uses' => '{{relatedController}}@show'
+        ]);
+
+        // Update a {{slug}} relationship
+        $router->post('/{related}', [
+            'as' => '{{slug}}.related.create',
+            'uses' => '{{relatedController}}@store'
+        ]);
+
+        // Update a {{slug}} relationship
+        $router->patch('/{related}/{relatedId}', [
+            'as' => '{{slug}}.related.update',
+            'uses' => '{{relatedController}}@update'
+        ]);
+
+        // Delete a {{slug}} relationship
+        $router->delete('/{related}/{relatedId}', [
+            'as' => '{{slug}}.related.delete',
+            'uses' => '{{relatedController}}@destroy'
+        ]);
+    }
+);

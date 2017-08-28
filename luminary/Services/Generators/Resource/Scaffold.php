@@ -5,6 +5,8 @@ namespace Luminary\Services\Generators\Resource;
 use Luminary\Services\Filesystem\App\Storage;
 use Luminary\Services\Generators\Contracts\CreatorInterface;
 use Luminary\Services\Generators\Creators\Controllers\Controller;
+use Luminary\Services\Generators\Creators\Controllers\RelatedController;
+use Luminary\Services\Generators\Creators\Controllers\RelationshipController;
 use Luminary\Services\Generators\Creators\Controllers\Structure as ControllerStructure;
 use Luminary\Services\Generators\Creators\Requests\Request;
 use Luminary\Services\Generators\Creators\Requests\Structure as RequestStructure;
@@ -28,7 +30,7 @@ class Scaffold implements CreatorInterface
 
         static::routeMiddleware(...$args);
         //static::request(...$args);
-        static::controller(...$args);
+        static::controllers(...$args);
         static::route(...$args);
         static::tests(...$args);
     }
@@ -73,7 +75,7 @@ class Scaffold implements CreatorInterface
      * @param string $path
      * @return void
      */
-    protected static function controller(string $name, string $path) :void
+    protected static function controllers(string $name, string $path) :void
     {
         $name = studly_case(str_singular($name));
         $relative_path = str_replace(app_path() . '/', 'Api/', $path);
@@ -81,9 +83,23 @@ class Scaffold implements CreatorInterface
         $namespace = str_replace('/', '\\', $relative_path . '/Repositories/' . $name);
 
         ControllerStructure::create($path);
+
+        // Create default controller
         Controller::create($name.'Controller', $path . '/Controllers', [
             'repositoryBasename' => $name . 'Repository',
             'repositoryNamespace' => $namespace . 'Repository'
+        ]);
+
+        // Create related controller
+        RelatedController::create($name.'RelatedController', $path . '/Controllers', [
+            'repositoryBasename' => $name . 'RelatedRepository',
+            'repositoryNamespace' => $namespace . 'RelatedRepository'
+        ]);
+
+        // Create relationship controller
+        RelationshipController::create($name.'RelationshipController', $path . '/Controllers', [
+            'repositoryBasename' => $name . 'RelationshipRepository',
+            'repositoryNamespace' => $namespace . 'RelationshipRepository'
         ]);
     }
 
@@ -103,6 +119,8 @@ class Scaffold implements CreatorInterface
 
         Routes::create('routes', $path, [
             'controller' => $name.'Controller',
+            'relatedController' => $name.'RelatedController',
+            'relationshipController' => $name.'RelationshipController',
             'namespace' => $namespace,
             'slug' => $slug
         ]);

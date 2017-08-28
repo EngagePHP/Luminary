@@ -93,7 +93,8 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
- 'response' => Luminary\Services\ApiResponse\ResponseRouteMiddleware::class,
+    'request' => Luminary\Services\ApiRequest\Middleware\RequestRouteMiddleware::class,
+    'response' => Luminary\Services\ApiResponse\ResponseRouteMiddleware::class,
 ]);
 
 /*
@@ -146,7 +147,7 @@ $api->registerModelFactories();
 $api->registerMiddleware();
 $api->registerMigrations();
 $api->registerProviders();
-$api->registerRoutes(['response']);
+$api->registerRoutes(['request','response']);
 $api->registerRouteMiddleware();
 $api->registerSeeders();
 
