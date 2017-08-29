@@ -17,7 +17,9 @@ class DummyClass extends Controller
      */
     public function index($id, $related)
     {
-        return Repository::all($id, $related);
+        return str_singular($related) === $related
+            ? Repository::find($id, $related)
+            : Repository::all($id, $related);
     }
 
     /**
