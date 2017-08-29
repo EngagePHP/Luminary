@@ -159,7 +159,7 @@ interface SerializerInterface
     /**
      * Return the serialized array
      *
-     * @return array
+     * @return array|string|null
      */
-    public function serialize() :array;
+    public function serialize();
 }

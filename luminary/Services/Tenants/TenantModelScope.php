@@ -76,11 +76,11 @@ class TenantModelScope implements Scope
     public function mapEagerLoads(array $eagerLoads, $tenantId) :array
     {
         return collect($eagerLoads)->map(
-            function($closure) use($tenantId) {
-                return function($query) use($closure, $tenantId) {
+            function ($closure) use ($tenantId) {
+                return function ($query) use ($closure, $tenantId) {
                     $builder = $query->getQuery();
 
-                    if($builder->getMacro('byTenant')) {
+                    if ($builder->getMacro('byTenant')) {
                         $builder->byTenant($tenantId);
                     }
 

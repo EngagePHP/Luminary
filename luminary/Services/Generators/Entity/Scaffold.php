@@ -13,6 +13,8 @@ use Luminary\Services\Generators\Creators\Middleware\Middleware;
 use Luminary\Services\Generators\Creators\Middleware\Structure as MiddlewareStructure;
 use Luminary\Services\Generators\Creators\Models\Model;
 use Luminary\Services\Generators\Creators\Models\Structure as ModelStructure;
+use Luminary\Services\Generators\Creators\Repositories\RelatedRepository;
+use Luminary\Services\Generators\Creators\Repositories\RelationshipRepository;
 use Luminary\Services\Generators\Creators\Repositories\Structure as RepositoryStructure;
 use Luminary\Services\Generators\Creators\Repositories\Repository;
 use Luminary\Services\Generators\Creators\Tests\ModelTest;
@@ -107,6 +109,8 @@ class Scaffold implements CreatorInterface
 
         RepositoryStructure::create($path);
         Repository::create($singular.'Repository', $path.'/Repositories', ['model' => $model]);
+        RelatedRepository::create($singular.'RelatedRepository', $path.'/Repositories', ['model' => $model]);
+        RelationshipRepository::create($singular.'RelationshipRepository', $path.'/Repositories', ['model' => $model]);
     }
 
     /**

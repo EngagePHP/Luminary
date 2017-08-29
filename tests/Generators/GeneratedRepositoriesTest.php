@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\BaseTestingTrait;
 use Luminary\Services\Testing\Models\Customer;
 use Luminary\Services\Testing\Repositories\CustomerRepository;
@@ -28,6 +29,7 @@ class GeneratedRepositoriesTest extends TestCase
         parent::setUp();
 
         $this->seed(5, 5, 5);
+        TenantModelScope::setOverride();
     }
 
     /**
@@ -173,7 +175,7 @@ class GeneratedRepositoriesTest extends TestCase
 
         $id = $original->id;
         $location = $this->locations->random()->id;
-        $users = $this->users->random(3)->pluck('id')->all();
+        $users = $originalRelations['users']->random(3)->pluck('id')->sort()->all();
         $relationships = compact('location', 'users');
 
         $customer = CustomerRepository::update($id, $data, $relationships);
@@ -188,10 +190,9 @@ class GeneratedRepositoriesTest extends TestCase
         $this->assertEquals($customer->getRelation('location')->id, $location);
 
         // Assert Users Relationship
-        $usersExpected = $originalRelations['users']->pluck('id')->merge($users)->sort()->unique()->values();
-        $usersResults = $customer->getRelation('users')->pluck('id')->sort()->values();
+        $usersResults = $customer->getRelation('users')->pluck('id')->sort()->values()->all();
 
-        $this->assertEquals($usersExpected, $usersResults);
+        $this->assertEquals($users, $usersResults);
     }
 
     /**

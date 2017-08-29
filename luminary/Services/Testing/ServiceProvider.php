@@ -34,6 +34,7 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function registerTesting()
     {
+        $app = $this->app;
         $dir = __DIR__ . '/database';
 
         // Register Factory
@@ -42,6 +43,11 @@ class ServiceProvider extends LaravelServiceProvider
         // Register Migrations
         $this->app->afterResolving('migrator', function ($migrator) use ($dir) {
             $migrator->path($dir . '/migrations');
+        });
+
+        // Load Routes
+        $app->router->group(['middleware' => ['request', 'response']], function ($router) {
+            require __DIR__ . '/routes.php';
         });
     }
 }

@@ -51,7 +51,7 @@ interface Repository
      *
      * @param $id
      * @param array $data
-     * @return bool
+     * @return Model
      */
     public static function update($id, array $data) :Model;
 

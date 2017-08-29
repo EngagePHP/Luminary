@@ -57,7 +57,7 @@ class CustomerRepository implements Repository
         $model = Customer::create($data);
 
         if (count($relationships)) {
-            static::manageRelationships($model, $relationships);
+            static::createRelationships($model, $relationships);
         }
 
         return $model;
@@ -105,7 +105,7 @@ class CustomerRepository implements Repository
         $model->update($data);
 
         if (count($relationships)) {
-            static::manageRelationships($model, $relationships);
+            static::updateRelationships($model, $relationships);
         }
 
         return $model;
