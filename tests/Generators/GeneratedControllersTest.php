@@ -26,49 +26,8 @@ class GeneratedControllersTest extends TestCase
         parent::setUp();
 
         $this->seed(5,5,5);
-        $this->setUpRoutes();
+
         TenantModelScope::setOverride();
-    }
-
-    /**
-     * Setup the routes for running middleware tests
-     *
-     * @return void
-     */
-    protected function setUpRoutes()
-    {
-        $app = app();
-        $router = $app->router;
-
-        $router->group(['namespace' => '\Luminary\Services\Testing\Controllers', 'prefix' => 'customers', 'middleware' => 'request'],
-            function ($router) {
-
-                $router->get('/', [
-                    'as' => 'customers',
-                    'uses' => 'CustomerController@index'
-                ]);
-
-                $router->post('/', [
-                    'as' => 'customers.store',
-                    'uses' => 'CustomerController@store'
-                ]);
-
-                $router->get('/{id}', [
-                    'as' => 'customers.show',
-                    'uses' => 'CustomerController@show'
-                ]);
-
-                $router->patch('/{id}', [
-                    'as' => 'customers.update',
-                    'uses' => 'CustomerController@update'
-                ]);
-
-                $router->delete('/{id}', [
-                    'as' => 'customers.destroy',
-                    'uses' => 'CustomerController@destroy'
-                ]);
-            }
-        );
     }
 
     /**

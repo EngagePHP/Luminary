@@ -18,7 +18,7 @@ class RequestRouteMiddleware
     /**
      * The route request
      *
-     * @var \Illuminate\Http\Request
+     * @var \Luminary\Services\ApiRequest\ApiRequest
      */
     protected $request;
 
@@ -67,7 +67,11 @@ class RequestRouteMiddleware
                 break;
         }
 
-        return $next($request);
+        $this->setResource();
+        $request->setRelated($this->related);
+        $request->setRelationship($this->relationship);
+
+        return $next($this->request);
     }
 
     /**
@@ -163,5 +167,21 @@ class RequestRouteMiddleware
             default:
                 return new Content($content);
         }
+    }
+
+    /**
+     * Set the request resource
+     *
+     * @return void
+     */
+    protected function setResource() :void
+    {
+        if ($this->related) {
+            $resource = $this->param('related');
+        } else {
+            $resource = $this->request->segment(1) ?: '';
+        }
+
+        $this->request->setResource(str_plural($resource));
     }
 }

@@ -28,5 +28,8 @@ class ResourceLoader extends AbstractApiLoader
     {
         $registrar->registerRoutes('routes.php');
         $registrar->registerRouteMiddleware('Middleware/registry.php');
+        $registrar->registerAuthorizer('Requests/Auth.php');
+        $registrar->registerSanitizer('Requests/Sanitizer.php');
+        $registrar->registerValidators('Requests/Validators');
     }
 }
