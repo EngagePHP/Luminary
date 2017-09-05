@@ -4,6 +4,7 @@ namespace Luminary\Services\Generators\Resource;
 
 use Luminary\Services\Filesystem\App\Storage;
 use Luminary\Services\Generators\Contracts\CreatorInterface;
+use Luminary\Services\Generators\Creators\Authorizers\Authorizer;
 use Luminary\Services\Generators\Creators\Controllers\Controller;
 use Luminary\Services\Generators\Creators\Controllers\RelatedController;
 use Luminary\Services\Generators\Creators\Controllers\RelationshipController;
@@ -13,7 +14,10 @@ use Luminary\Services\Generators\Creators\Requests\Structure as RequestStructure
 use Luminary\Services\Generators\Creators\RouteMiddleware\Registry;
 use Luminary\Services\Generators\Creators\RouteMiddleware\Structure as RouteMiddlewareStructure;
 use Luminary\Services\Generators\Creators\Routes\Routes;
+use Luminary\Services\Generators\Creators\Sanitizers\Sanitizer;
 use Luminary\Services\Generators\Creators\Tests\ResourceTest;
+use Luminary\Services\Generators\Creators\Validators\Validator;
+use Luminary\Services\Generators\Creators\Validators\Structure as ValidatorStructure;
 
 class Scaffold implements CreatorInterface
 {
@@ -29,7 +33,7 @@ class Scaffold implements CreatorInterface
         $args = func_get_args();
 
         static::routeMiddleware(...$args);
-        //static::request(...$args);
+        static::request(...$args);
         static::controllers(...$args);
         static::route(...$args);
         static::tests(...$args);
@@ -61,11 +65,11 @@ class Scaffold implements CreatorInterface
         $requestsPath = $path.'/Requests';
 
         RequestStructure::create($path);
-        Request::create($name . 'IndexRequest', $requestsPath);
-        Request::create($name . 'ShowRequest', $requestsPath);
-        Request::create($name . 'StoreRequest', $requestsPath);
-        Request::create($name . 'UpdateRequest', $requestsPath);
-        Request::create($name . 'DestroyRequest', $requestsPath);
+        ValidatorStructure::create($path);
+        Validator::create('Store', $requestsPath . '/Validators');
+        Validator::create('Update', $requestsPath . '/Validators');
+        Authorizer::create('Auth', $requestsPath);
+        Sanitizer::create('Sanitizer', $requestsPath);
     }
 
     /**

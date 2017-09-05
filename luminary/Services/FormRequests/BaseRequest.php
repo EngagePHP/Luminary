@@ -5,17 +5,13 @@ namespace Luminary\Services\FormRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Validation\ValidatesWhenResolvedTrait;
-use Illuminate\Contracts\Validation\ValidatesWhenResolved;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Laravel\Lumen\Http\Redirector;
 use Luminary\Services\ApiRequest\ApiRequest;
+use Luminary\Services\Auth\AuthorizesWhenResolvedTrait;
 
-class FormRequest extends ApiRequest implements ValidatesWhenResolved
+abstract class BaseRequest extends ApiRequest
 {
-    use ValidatesWhenResolvedTrait;
+    use AuthorizesWhenResolvedTrait;
 
     /**
      * The container instance.
@@ -67,66 +63,17 @@ class FormRequest extends ApiRequest implements ValidatesWhenResolved
     protected $dontFlash = ['password', 'password_confirmation'];
 
     /**
-     * Get the validator instance for the request.
+     * Get the input source for the request.
      *
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return \Symfony\Component\HttpFoundation\ParameterBag
      */
-    protected function getValidatorInstance()
+    protected function getInputSource()
     {
-        $factory = $this->container->make(ValidationFactory::class);
-
-        if (method_exists($this, 'validator')) {
-            $validator = $this->container->call([$this, 'validator'], compact('factory'));
-        } else {
-            $validator = $this->createDefaultValidator($factory);
+        if ($this->isJson()) {
+            return $this->getData();
         }
 
-        if (method_exists($this, 'withValidator')) {
-            $this->withValidator($validator);
-        }
-
-        return $validator;
-    }
-
-    /**
-     * Create the default validator instance.
-     *
-     * @param  \Illuminate\Contracts\Validation\Factory  $factory
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function createDefaultValidator(ValidationFactory $factory)
-    {
-        return $factory->make(
-            $this->validationData(),
-            $this->container->call([$this, 'rules']),
-            $this->messages(),
-            $this->attributes()
-        );
-    }
-
-    /**
-     * Get data to be validated from the request.
-     *
-     * @return array
-     */
-    protected function validationData()
-    {
-        return $this->all();
-    }
-
-    /**
-     * Handle a failed validation attempt.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    protected function failedValidation(Validator $validator)
-    {
-        throw new ValidationException($validator, $this->response(
-            $this->formatErrors($validator)
-        ));
+        return $this->getRealMethod() == 'GET' ? $this->query : $this->request;
     }
 
     /**
@@ -175,52 +122,6 @@ class FormRequest extends ApiRequest implements ValidatesWhenResolved
         }
 
         return $url->previous();
-    }
-
-    /**
-     * Determine if the request passes the authorization check.
-     *
-     * @return bool
-     */
-    protected function passesAuthorization()
-    {
-        if (method_exists($this, 'authorize')) {
-            return $this->container->call([$this, 'authorize']);
-        }
-
-        return false;
-    }
-
-    /**
-     * Handle a failed authorization attempt.
-     *
-     * @return void
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    protected function failedAuthorization()
-    {
-        throw new AuthorizationException('This action is unauthorized.');
-    }
-
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [];
-    }
-
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return [];
     }
 
     /**

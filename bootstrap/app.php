@@ -141,6 +141,7 @@ $api = $app->loadApi([
     \Luminary\Services\ApiLoader\Loaders\ServiceLoader::class
 ]);
 
+$api->registerAuthorizers();
 $api->registerConfigs();
 $api->registerConsole();
 $api->registerModelFactories();
@@ -149,7 +150,9 @@ $api->registerMigrations();
 $api->registerProviders();
 $api->registerRoutes(['request','response']);
 $api->registerRouteMiddleware();
+$api->registerSanitizers();
 $api->registerSeeders();
+$api->registerValidators();
 
 /*
 |--------------------------------------------------------------------------

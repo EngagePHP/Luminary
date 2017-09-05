@@ -102,6 +102,21 @@ class ApiLoader
     }
 
     /**
+     * Register the Request Authorizers
+     *
+     * @return void
+     */
+    public function registerAuthorizers() :void
+    {
+        $this->registry('authorizers')->each(
+            function ($authorizer) {
+                list($key, $class) = $authorizer;
+                $this->app->authorizers($key, $class);
+            }
+        );
+    }
+
+    /**
      * Register a Console Kernels and Commands
      *
      * @return void
@@ -273,6 +288,36 @@ class ApiLoader
             $seeders = $this->registry('seeders')->toArray();
             return new Database\DatabaseSeeder($seeders);
         });
+    }
+
+    /**
+     * Register the Request Sanitizers
+     *
+     * @return void
+     */
+    public function registerSanitizers() :void
+    {
+        $this->registry('sanitizers')->each(
+            function ($sanitizer) {
+                list($key, $class) = $sanitizer;
+                $this->app->sanitizers($key, $class);
+            }
+        );
+    }
+
+    /**
+     * Register the Request Validators
+     *
+     * @return void
+     */
+    public function registerValidators() :void
+    {
+        $this->registry('validators')->each(
+            function ($validator) {
+                list($key, $type, $class) = $validator;
+                $this->app->validators($key, $type, $class);
+            }
+        );
     }
 
     /**
