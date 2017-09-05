@@ -30,7 +30,6 @@ trait AuthorizesWhenResolvedTrait
         // no default action
     }
 
-
     /**
      * Determine if the request passes the authorization check.
      *

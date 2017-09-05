@@ -8,10 +8,10 @@ class Input
      * Sanitize an input
      *
      * @param mixed $input
-     * @param string
+     * @param string $type
      * @return mixed
      */
-    public static function sanitize($input, $type)
+    public static function sanitize($input, string $type)
     {
         $instance = new static;
 
@@ -28,11 +28,11 @@ class Input
       * $input is array values
       * $type is type of array values
       *
-      * @param $input
-      * @param $type
+      * @param array $input
+      * @param string $type
       * @return mixed
       */
-    public function arr($input, $type)
+    public function arr(array $input, string $type)
     {
         $instance = new static;
 
