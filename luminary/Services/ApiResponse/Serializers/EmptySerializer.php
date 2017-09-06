@@ -50,10 +50,10 @@ class EmptySerializer extends AbstractSerializer
      * Return a formatted array for
      * Json Serialization
      *
-     * @return array
+     * @return null
      */
-    public function serialize() :array
+    public function serialize()
     {
-        return '';
+        return null;
     }
 }

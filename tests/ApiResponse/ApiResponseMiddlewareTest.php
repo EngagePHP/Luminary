@@ -26,10 +26,6 @@ class ApiResponseMiddlewareTest extends TestCase
      */
     public function testCollectionSerializerResponse()
     {
-        app()->router->get('customers', function() {
-            return Customer::all();
-        });
-
         $this->get('customers?include=location&fields[location]=name');
 
         $this->seeJsonStructure([
@@ -54,11 +50,11 @@ class ApiResponseMiddlewareTest extends TestCase
      */
     public function testArraySerializerResponse()
     {
-        app()->router->get('customers', function() {
+        app()->router->get('array', function() {
             return [];
         });
 
-        $this->get('customers?include=location&fields[location]=name');
+        $this->get('array?include=location&fields[location]=name');
 
         $this->seeJsonStructure([
             'jsonapi' => [
@@ -82,10 +78,6 @@ class ApiResponseMiddlewareTest extends TestCase
      */
     public function testModelSerializerResponse()
     {
-        app()->router->get('customers/{id}', function($id) {
-            return Customer::find($id);
-        });
-
         $id = $this->customers->first()->id;
         $this->get('customers/'.$id.'?include=location&fields[location]=name');
 

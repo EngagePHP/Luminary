@@ -31,7 +31,7 @@ class Scope extends BaseScope
         $this->model = $model;
         $columns = $this->getQueryColumns($builder);
 
-        $fields = collect($this->fields())->filter(function($field) {
+        $fields = collect($this->fields())->filter(function ($field) {
             return $field !== '*';
         })->map(
             function ($field) use ($columns) {
@@ -39,7 +39,7 @@ class Scope extends BaseScope
             }
         );
 
-        if($fields->count()) {
+        if ($fields->count()) {
             $builder->select($fields->all());
         }
     }
@@ -55,17 +55,16 @@ class Scope extends BaseScope
     public function getFullyQualifiedColumn(array $columns, string $field) :string
     {
         $column = collect($columns)->first(
-            function($column) use($field) {
+            function ($column) use ($field) {
 
-                if(preg_match('/as '.$field.'/i', $column)) {
+                if (preg_match('/ as '.$field.'/i', $column)) {
                     return true;
                 }
 
-                if(preg_match('/'.$field.'/i', $column) && strpos($column, '.')) {
-
+                if (preg_match('/'.$field.'/i', $column) && strpos($column, '.')) {
                     $c = strtok($column, '.');
 
-                    return (str_replace($c . '.','', $column) === $field);
+                    return (str_replace($c . '.', '', $column) === $field);
                 }
 
                 return false;
@@ -84,7 +83,7 @@ class Scope extends BaseScope
      */
     public function getQueryColumns($builder) :array
     {
-        if($builder instanceof Relation) {
+        if ($builder instanceof Relation) {
             $builder = $builder->getQuery();
         }
 

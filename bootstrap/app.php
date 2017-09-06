@@ -92,9 +92,10 @@ $app->middleware([
     \Barryvdh\Cors\HandleCors::class,
 ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'request' => Luminary\Services\ApiRequest\Middleware\RequestRouteMiddleware::class,
+    'response' => Luminary\Services\ApiResponse\ResponseRouteMiddleware::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -140,15 +141,18 @@ $api = $app->loadApi([
     \Luminary\Services\ApiLoader\Loaders\ServiceLoader::class
 ]);
 
+$api->registerAuthorizers();
 $api->registerConfigs();
 $api->registerConsole();
 $api->registerModelFactories();
 $api->registerMiddleware();
 $api->registerMigrations();
 $api->registerProviders();
-$api->registerRoutes();
+$api->registerRoutes(['request','response']);
 $api->registerRouteMiddleware();
+$api->registerSanitizers();
 $api->registerSeeders();
+$api->registerValidators();
 
 /*
 |--------------------------------------------------------------------------

@@ -2,34 +2,72 @@
 
 namespace Luminary\Services\Testing\Controllers;
 
-use Luminary\Services\ApiRequest\ApiRequest as Request;
+use Luminary\Http\Requests\Destroy;
+use Luminary\Http\Requests\Index;
+use Luminary\Http\Requests\Show;
+use Luminary\Http\Requests\Store;
+use Luminary\Http\Requests\Update;
 use Luminary\Http\Controllers\Controller;
-use Luminary\Services\Testing\Repositories\CustomerRepository;
+use Luminary\Services\Testing\Repositories\CustomerRepository as Repository;
 
 class CustomerController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Index $request
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function index(Index $request)
     {
-        return CustomerRepository::all();
+        return Repository::all();
     }
 
-    public function store(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Store $request
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function store(Store $request)
     {
-        return CustomerRepository::create($request->all(), $request->getRelationships());
+        return Repository::create($request->data(), $request->relationships());
     }
 
-    public function show($id)
+    /**
+     * Display the specified resource.
+     *
+     * @param Show $request
+     * @param  int $id
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     */
+    public function show(Show $request, $id)
     {
-        return CustomerRepository::find($id);
+        return is_array($id)
+            ? Repository::findAll($id)
+            : Repository::find($id);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Update $request
+     * @param  int $id
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function update(Update $request, $id)
     {
-        return CustomerRepository::update($id, $request->all(), $request->getRelationships());
+        return Repository::update($id, $request->data(), $request->relationships());
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Destroy $request
+     * @param int $id
+     */
+    public function destroy(Destroy $request, $id)
     {
-        CustomerRepository::delete($id);
+        Repository::delete($id);
     }
 }

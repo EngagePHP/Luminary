@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Luminary\Database\Eloquent\Relations\ManageRelations;
 use Luminary\Database\Eloquent\Relations\RelationshipNotFoundException;
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\Models\Customer;
 use Luminary\Services\Testing\Models\Location;
 use Luminary\Services\Testing\Models\User;
@@ -34,6 +35,7 @@ class ManageRelationsTraitTest extends TestCase
         };
 
         parent::setUp();
+        TenantModelScope::setOverride();
     }
 
     /**
@@ -75,7 +77,7 @@ class ManageRelationsTraitTest extends TestCase
     public function testGetRelationMethod() :void
     {
         $relation = (new Customer)->location();
-        $method = $this->trait->getRelationMethod($relation);
+        $method = $this->trait->getRelationMethod($relation, 'create');
 
         $this->assertEquals('associate', $method);
     }
@@ -129,7 +131,7 @@ class ManageRelationsTraitTest extends TestCase
         $customer = factory(Customer::class, 1)->create()->first();
         $location = factory(Location::class, 1)->create()->first();
 
-        $this->trait->manageRelationship($customer, 'location', $location->id);
+        $this->trait->createRelationship($customer, 'location', $location->id);
 
         $this->assertInstanceOf(Location::class, $customer->getRelation('location'));
     }
@@ -144,7 +146,7 @@ class ManageRelationsTraitTest extends TestCase
         $customer = factory(Customer::class, 1)->create()->first();
         $users = factory(User::class, 3)->create();
         $ids = $users->pluck('id');
-        $this->trait->manageRelationship($customer, 'users', $ids);
+        $this->trait->createRelationship($customer, 'users', $ids);
 
         $relation = $customer->getRelation('users');
 
@@ -163,7 +165,7 @@ class ManageRelationsTraitTest extends TestCase
         $location = factory(Location::class, 1)->create()->first();
         $users = factory(User::class, 3)->create();
 
-        $this->trait->manageRelationships($customer, [
+        $this->trait->createRelationships($customer, [
             'location' => $location->id,
             'users' => $users->pluck('id')
         ]);

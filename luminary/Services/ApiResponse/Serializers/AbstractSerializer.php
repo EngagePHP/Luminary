@@ -413,9 +413,9 @@ abstract class AbstractSerializer implements SerializerInterface
     /**
      * Return the serialized array
      *
-     * @return array
+     * @return array|string|null
      */
-    abstract public function serialize() :array;
+    abstract public function serialize();
 
     /**
      * Return the responseMeta property

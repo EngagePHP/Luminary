@@ -2,66 +2,72 @@
 
 namespace DummyNamespace;
 
-use Luminary\Services\ApiRequest\ApiRequest as Request;
+use Luminary\Http\Requests\Destroy;
+use Luminary\Http\Requests\Index;
+use Luminary\Http\Requests\Show;
+use Luminary\Http\Requests\Store;
+use Luminary\Http\Requests\Update;
 use Luminary\Http\Controllers\Controller;
-use DummyRepositoryNamespace;
+use DummyRepositoryNamespace as Repository;
 
 class DummyClass extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param \Luminary\Http\Requests\Index $request
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function index()
+    public function index(Index $request)
     {
-        return DummyRepositoryClass::all();
+        return Repository::all();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param \Luminary\Http\Requests\Store $request
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function store(Request $request)
+    public function store(Store $request)
     {
-        return DummyRepositoryClass::create($request->all(), $request->getRelationships());
+        return Repository::create($request->data(), $request->relationships());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param \Luminary\Http\Requests\Show $request
+     * @param  int $id
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function show($id)
+    public function show(Show $request, $id)
     {
         return is_array($id)
-            ? DummyRepositoryClass::findAll($id)
-            : DummyRepositoryClass::find($id);
+            ? Repository::findAll($id)
+            : Repository::find($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param \Luminary\Http\Requests\Update $request
      * @param  int $id
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update(Request $request, $id)
+    public function update(Update $request, $id)
     {
-        return DummyRepositoryClass::update($id, $request->all(), $request->getRelationships());
+        return Repository::update($id, $request->data(), $request->relationships());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return void
+     * @param \Luminary\Http\Requests\Destroy $request
+     * @param  int $id
      */
-    public function destroy($id)
+    public function destroy(Destroy $request, $id)
     {
-        DummyRepositoryClass::delete($id);
+        Repository::delete($id);
     }
 }

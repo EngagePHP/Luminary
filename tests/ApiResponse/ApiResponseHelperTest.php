@@ -1,9 +1,13 @@
 <?php
 
 use Luminary\Services\ApiResponse\ResponseHelper;
+use Luminary\Services\Tenants\TenantModelScope;
+use Luminary\Services\Testing\BaseTestingTrait;
 
 class ApiResponseHelperTest extends TestCase
 {
+    use BaseTestingTrait;
+
     /**
      * The root URL for the request
      *
@@ -16,14 +20,14 @@ class ApiResponseHelperTest extends TestCase
      *
      * @var string
      */
-    protected $path = 'customers/75/users';
+    protected $path = 'customers/2/users';
 
     /**
      * The url query for the request
      *
      * @var string
      */
-    protected $query = 'include=location&fields[location]=name';
+    protected $queryString = 'include=location&fields[location]=name';
 
     /**
      * Setup the test environment.
@@ -34,9 +38,11 @@ class ApiResponseHelperTest extends TestCase
     {
         parent::setUp();
 
-        $this->withoutMiddleware();
+        TenantModelScope::setOverride();
 
-        $this->get($this->path . '?' . $this->query);
+        $this->withoutMiddleware();
+        $this->seed(2, 2, 2);
+        $this->get($this->path . '?' . $this->queryString);
         $this->root = ResponseHelper::root();
     }
 
@@ -92,7 +98,7 @@ class ApiResponseHelperTest extends TestCase
      */
     public function testResourceSelfMethod()
     {
-        $this->assertEquals($this->root . '/customers/75', ResponseHelper::resourceSelf(75));
+        $this->assertEquals($this->root . '/customers/2', ResponseHelper::resourceSelf(2));
     }
 
     /**
@@ -102,17 +108,17 @@ class ApiResponseHelperTest extends TestCase
      */
     public function testRelationshipLinkGeneration()
     {
-        $singular = ResponseHelper::generateRelationshipLinks('customers', 75, 'users', false);
-        $plural = ResponseHelper::generateRelationshipLinks('customers',75, 'users');
+        $singular = ResponseHelper::generateRelationshipLinks('customers', 2, 'users', false);
+        $plural = ResponseHelper::generateRelationshipLinks('customers',2, 'users');
 
         $expectedSingular = [
-            'self' => $this->root . '/customers/75/relationships/user',
-            'related' => $this->root . '/customers/75/user'
+            'self' => $this->root . '/customers/2/relationships/user',
+            'related' => $this->root . '/customers/2/user'
         ];
 
         $expectedPlural = [
-            'self' => $this->root . '/customers/75/relationships/users',
-            'related' => $this->root . '/customers/75/users'
+            'self' => $this->root . '/customers/2/relationships/users',
+            'related' => $this->root . '/customers/2/users'
         ];
 
         $this->assertEquals($expectedSingular, $singular);

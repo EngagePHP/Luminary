@@ -3,6 +3,7 @@
 namespace Luminary\Services\ApiQuery\Filters;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Expression;
 use Luminary\Services\ApiQuery\Eloquent\BaseScope;
 
@@ -127,12 +128,8 @@ class Scope extends BaseScope
     protected function applyFilter(string $attribute, string $operator, $value, string $type) :void
     {
         $builder = $this->builder;
-        $attribute = $this->formatAttribute($attribute);
-
-        if ($this->isExpression($value)) {
-            $this->applyExpressionFilter($attribute, $operator, $value, $type);
-            return;
-        }
+        $columns = $this->getQueryColumns($builder);
+        $attribute = $this->getFullyQualifiedColumn($columns, $attribute);
 
         switch ($operator) {
             case 'IN':
@@ -154,66 +151,49 @@ class Scope extends BaseScope
     }
 
     /**
-     * Format an attribute with table name
-     * if missing
+     * Get the fully qualified column name from
+     * an array of query columns and field name
      *
-     * @param string $attribute
+     * @param array $columns
+     * @param string $field
      * @return string
      */
-    protected function formatAttribute(string $attribute) :string
+    public function getFullyQualifiedColumn(array $columns, string $field) :string
     {
-        return strpos($attribute, '.') !== true
-            ? $this->model->getTable() . '.' . $attribute
-            : $attribute;
-    }
+        $column = collect($columns)->first(
+            function ($column) use ($field) {
 
-    /**
-     * Check if the current value should be
-     * called as an expression
-     *
-     * @param $value
-     * @return bool
-     */
-    protected function isExpression($value) :bool
-    {
-        $explode = explode('.', $value);
-        return count($explode) > 1;
-    }
+                if (preg_match('/ as '.$field.'/i', $column)) {
+                    return true;
+                }
 
-    /**
-     * Create an expression from a value
-     *
-     * @param string $value
-     * @return Expression
-     */
-    protected function createExpression(string $value) :Expression
-    {
-        $explode = explode('.', $value);
+                if (preg_match('/'.$field.'/i', $column) && strpos($column, '.')) {
+                    $c = strtok($column, '.');
 
-        return collect($explode)->map(
-            function ($v) {
-                return "\"$v\"";
-            }
-        )->pipe(
-            function ($collection) {
-                $implode = implode('.', $collection->all());
-                return \DB::raw($implode);
+                    return (str_replace($c . '.', '', $column) === $field);
+                }
+
+                return false;
             }
         );
+
+        return $column ? head(explode(' as', $column)) : $this->table() . '.' . $field;
     }
 
     /**
-     * Apply and expression filter
+     * Get the query column array
+     * from builder
      *
-     * @param string $attribute
-     * @param string $operator
-     * @param $value
-     * @param string $type
+     * @param $builder
+     * @return array
      */
-    protected function applyExpressionFilter(string $attribute, string $operator, $value, string $type) :void
+    public function getQueryColumns($builder) :array
     {
-        $expression = $this->createExpression($value);
-        $this->builder->whereRaw("$attribute $operator " . $expression->getValue(), [], $type);
+        if ($builder instanceof Relation) {
+            $builder = $builder->getQuery();
+        }
+
+        return $builder->getQuery()->columns ?: [];
     }
 
     /**

@@ -23,19 +23,4 @@ class SetApiRequest
 
         return $next($request);
     }
-
-    /**
-     * An empty method for customizing the
-     * injected request before being returned
-     *
-     * @param Request $request
-     */
-    protected function customizeRequest(Request $request)
-    {
-        $json = $request->json()->all();
-
-        $request->setAttributesFromContent($json);
-        $request->setRelationshipsFromContent($json);
-        $request->setTypeFromContent($json);
-    }
 }

@@ -15,7 +15,7 @@ class TenantModelObserver
      */
     public function saving(Model $model)
     {
-        if(! $model->tenant_id) {
+        if (! $model->tenant_id) {
             $id = $model->getCurrentTenantScope()->tenantId();
             $model->setAttribute('tenant_id', $id);
         }

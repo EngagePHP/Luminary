@@ -224,7 +224,7 @@ class ModelSerializer extends AbstractSerializer
     public function setRelations(array $relations) :ModelSerializer
     {
         $this->relations = collect($relations)->filter(
-            function($model) {
+            function ($model) {
                 return (! $model instanceof Pivot);
             }
         )->map(

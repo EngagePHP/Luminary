@@ -88,6 +88,28 @@ class Registrar
     }
 
     /**
+     * Register a resource authorizer
+     *
+     * @param string $path
+     * @return void
+     */
+    public function registerAuthorizer($path)
+    {
+        $resource = strtolower(basename($this->path()));
+        $path = $this->path($path);
+
+        if (! $this->isFile($path)) {
+            return;
+        }
+
+        $dir = dirname($path);
+        $basename = basename($path, ".php");
+        $authorizer = $this->directory->make($dir)->class($basename);
+
+        $this->registry->authorizers = [[$resource, $authorizer]];
+    }
+
+    /**
      * Register a console kernel or
      * directory of command classes
      *
@@ -272,6 +294,28 @@ class Registrar
     }
 
     /**
+     * Register a resource authorizer
+     *
+     * @param string $path
+     * @return void
+     */
+    public function registerSanitizer($path)
+    {
+        $resource = strtolower(basename($this->path()));
+        $path = $this->path($path);
+
+        if (! $this->isFile($path)) {
+            return;
+        }
+
+        $dir = dirname($path);
+        $basename = basename($path, ".php");
+        $sanitizer = $this->directory->make($dir)->class($basename);
+
+        $this->registry->sanitizers = [[$resource, $sanitizer]];
+    }
+
+    /**
      * Register database seeders
      *
      * @param string $path
@@ -286,6 +330,28 @@ class Registrar
         }
 
         $this->registry->seeders = $this->directory->make($path)->classes();
+    }
+
+    /**
+     * Register database seeders
+     *
+     * @param string $path
+     * @return void
+     */
+    public function registerValidators(string $path) :void
+    {
+        $resource = strtolower(basename($this->path()));
+        $path = $this->path($path);
+
+        if (! $this->isDirectory($path)) {
+            return;
+        }
+
+        $classes = $this->directory->make($path)->classes();
+
+        $this->registry->validators = array_map(function ($class) use ($resource) {
+            return [$resource, basename($class, '.php'), $class];
+        }, $classes);
     }
 
     /**

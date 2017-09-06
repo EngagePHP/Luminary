@@ -5,14 +5,14 @@ use Luminary\Exceptions\MultiException;
 use Luminary\Services\ApiRequest\Exceptions\ForbiddenAttribute;
 use Luminary\Services\ApiRequest\Exceptions\MissingDataAttribute;
 use Luminary\Services\ApiRequest\Exceptions\MissingTypeAttribute;
-use Luminary\Services\ApiRequest\Middleware\PostRequest;
+use Luminary\Services\ApiRequest\Validation\Post;
 
 class ApiRequestCreateMiddlewareTest extends TestCase
 {
     /**
      * The JsonApiRequest instance
      *
-     * @var \Luminary\Services\ApiRequest\Middleware\PostRequest
+     * @var \Luminary\Services\ApiRequest\Validation\Post
      */
     protected $middleware;
 
@@ -31,7 +31,7 @@ class ApiRequestCreateMiddlewareTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->middleware = new PostRequest;
+        $this->middleware = new Post;
     }
 
     /**
@@ -56,7 +56,9 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testDataAttributeMethodFailureResponse() :void
     {
-        app()->router->post('/api', function() {});
+        app()->router->group(['middleware' => 'request'], function ($router) {
+            $router->post('/api', function() {});
+        });
 
         $this->json('post', '/api', ['datas' => []],$this->headers);
 
@@ -100,7 +102,9 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testTypeAttributeMethodFailureResponse() :void
     {
-        app()->router->post('/api', function() {});
+        app()->router->group(['middleware' => 'request'], function ($router) {
+            $router->post('/api', function() {});
+        });
 
         $this->json('post', '/api', ['data' => []],$this->headers);
 
@@ -143,7 +147,9 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testAcceptedAttributesMethodFailureResponse() :void
     {
-        app()->router->post('/api', function() {});
+        app()->router->group(['middleware' => 'request'], function ($router) {
+            $router->post('/api', function() {});
+        });
 
         $this->json('post', '/api', ['data' => ['type' => 'test', 'not-it' => '', 'unacceptable' => '']],$this->headers);
 
@@ -195,7 +201,9 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testForbiddenAttributeMethodFailureResponse() :void
     {
-        app()->router->post('/api', function() {});
+        app()->router->group(['middleware' => 'request'], function ($router) {
+            $router->post('/api', function() {});
+        });
 
         $this->json('post', '/api', ['data' => [
             'type' => 'test',

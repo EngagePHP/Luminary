@@ -49,10 +49,11 @@ trait ByTenant
         $tenantId = $scope->tenantId();
         $relations = is_string($relations) ? func_get_args() : $relations;
         $relations = collect($relations)->mapWithKeys(
-            function($constraints, $name) {
+            function ($constraints, $name) {
                 if (is_numeric($name)) {
                     $name = $constraints;
-                    $constraints = function () {};
+                    $constraints = function () {
+                    };
                 }
 
                 return [$name => $constraints];

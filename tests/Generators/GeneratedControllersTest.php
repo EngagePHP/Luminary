@@ -1,5 +1,6 @@
 <?php
 
+use Luminary\Services\Tenants\TenantModelScope;
 use Luminary\Services\Testing\BaseTestingTrait;
 use Luminary\Services\Testing\Models\Customer;
 
@@ -25,48 +26,8 @@ class GeneratedControllersTest extends TestCase
         parent::setUp();
 
         $this->seed(5,5,5);
-        $this->setUpRoutes();
-    }
 
-    /**
-     * Setup the routes for running middleware tests
-     *
-     * @return void
-     */
-    protected function setUpRoutes()
-    {
-        $app = app();
-        $router = $app->router;
-
-        $router->group(['namespace' => '\Luminary\Services\Testing\Controllers', 'prefix' => 'customers'],
-            function ($router) {
-
-                $router->get('/', [
-                    'as' => 'customers',
-                    'uses' => 'CustomerController@index'
-                ]);
-
-                $router->post('/', [
-                    'as' => 'customers.store',
-                    'uses' => 'CustomerController@store'
-                ]);
-
-                $router->get('/{id}', [
-                    'as' => 'customers.show',
-                    'uses' => 'CustomerController@show'
-                ]);
-
-                $router->patch('/{id}', [
-                    'as' => 'customers.update',
-                    'uses' => 'CustomerController@update'
-                ]);
-
-                $router->delete('/{id}', [
-                    'as' => 'customers.destroy',
-                    'uses' => 'CustomerController@destroy'
-                ]);
-            }
-        );
+        TenantModelScope::setOverride();
     }
 
     /**
@@ -180,6 +141,8 @@ class GeneratedControllersTest extends TestCase
             ]
         ];
 
+
+
         $this->json('PATCH', 'customers/' . $id, $data, $this->headers());
 
         $response = json_decode($this->response->getContent(), true);
@@ -206,7 +169,7 @@ class GeneratedControllersTest extends TestCase
         $customer->setRelations([]);
         $id = $customer->id;
         $location = $this->locations->first()->id;
-        $users = $this->users->take(3)->pluck('id')->all();
+        $users = $this->users->take(3)->pluck('id');
 
         $data = [
             'data' => [
@@ -221,7 +184,7 @@ class GeneratedControllersTest extends TestCase
                         ]
                     ],
                     'users' => [
-                        'data' => array_map(function($id) { return ['type' => 'users', 'id' => $id ];}, $users)
+                        'data' => array_map(function($id) { return ['type' => 'users', 'id' => $id ];}, $users->all())
                     ]
                 ]
             ]
@@ -244,7 +207,7 @@ class GeneratedControllersTest extends TestCase
         $this->assertEquals(array_get($results, 'attributes.location_id'), $location);
 
         // Assert Users Relationship
-        $usersExpected = $customerRelations['users']->pluck('id')->merge($users)->sort()->unique()->values();
+        $usersExpected = $users->sort()->values();
         $usersResults = collect(array_get($results, 'relationships.users.data'))->pluck('id')->sort()->values();
 
         $this->assertEquals($usersExpected, $usersResults);

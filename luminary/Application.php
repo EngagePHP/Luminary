@@ -3,6 +3,7 @@
 namespace Luminary;
 
 use Laravel\Lumen\Application as LaravelApplication;
+use Luminary\Concerns\RoutesRequests;
 use Luminary\Console\ConsoleServiceProvider;
 use Luminary\Services\ApiLoader\ApiLoader;
 use Luminary\Services\ApiLoader\Registry\Registrar;
@@ -10,6 +11,13 @@ use Luminary\Services\ApiLoader\Registry\Registry;
 
 class Application extends LaravelApplication
 {
+    use RoutesRequests;
+
+    /**
+     * Additional bindings for luminary application
+     *
+     * @var array
+     */
     public $luminaryAvailableBindings = [
         'api.loader' => 'registerApiLoaderBindings',
     ];
@@ -70,6 +78,11 @@ class Application extends LaravelApplication
         );
     }
 
+    /**
+     * Register the ApiLoader with Lumen
+     *
+     * @return void
+     */
     protected function registerApiLoaderBindings()
     {
         $this->singleton('api.loader', function () {
@@ -80,6 +93,11 @@ class Application extends LaravelApplication
         });
     }
 
+    /**
+     * Add luminary bindings to the default Lumen bindings
+     *
+     * @return void
+     */
     protected function registerLuminaryAvailableBindings()
     {
         $this->availableBindings = array_merge(
