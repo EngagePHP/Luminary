@@ -98,7 +98,7 @@ class LuminaryScaffold extends Command
             "engage-php/luminary:0.*",
             "squizlabs/php_codesniffer:3.*",
             "fzaninotto/faker:~1.4",
-            "phpunit/phpunit:~5.0",
+            "phpunit/phpunit:~6.0",
             "mockery/mockery:~0.9"
         ];
 
