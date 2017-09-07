@@ -50,17 +50,6 @@ class ApiResponseCollectionSerializerTest extends TestCase
     }
 
     /**
-     * Test the fill method through the
-     * set collection method
-     *
-     * @return void
-     */
-    public function testCollectionFillMethod()
-    {
-        // Test the fill method through the set collection method
-    }
-
-    /**
      * Test the set/get data methods
      *
      * @return void
