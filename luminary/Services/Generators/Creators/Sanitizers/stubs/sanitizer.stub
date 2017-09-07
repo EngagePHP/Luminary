@@ -1,0 +1,20 @@
+<?php
+
+namespace DummyNamespace;
+
+use Luminary\Services\Sanitation\Contracts\SanitizerArguments;
+
+class DummyClass implements SanitizerArguments
+{
+    /**
+     * Sanitize the data values from the request.
+     *
+     * @return array
+     */
+    public function sanitizable() :array
+    {
+        return [
+            //
+        ];
+    }
+}

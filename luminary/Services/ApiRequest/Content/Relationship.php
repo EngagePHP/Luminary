@@ -28,6 +28,11 @@ class Relationship extends Related
     public function relationships() :array
     {
         $relationships = array_get($this->content, 'data', []) ?: [];
+
+        if ($id = array_get($relationships, 'id')) {
+            return [$id];
+        }
+
         $relationships = collect($relationships)->map(
             function ($values) {
                 $id = array_get($values, 'id');

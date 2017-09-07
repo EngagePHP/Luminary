@@ -9,6 +9,13 @@ use ReflectionProperty;
 class Registry
 {
     /**
+     * The registered request authorizers
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $authorizers;
+
+    /**
      * The registered commands
      *
      * @var \Illuminate\Support\Collection
@@ -77,6 +84,20 @@ class Registry
      * @var \Illuminate\Support\Collection
      */
     protected $seeders;
+
+    /**
+     * The registered request sanitizers
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $sanitizers;
+
+    /**
+     * The registered request validators
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $validators;
 
     /**
      * The registered views

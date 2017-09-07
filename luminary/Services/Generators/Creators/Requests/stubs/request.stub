@@ -2,9 +2,9 @@
 
 namespace DummyNamespace;
 
-use Luminary\Services\FormRequests\FormRequest;
+use Luminary\Services\FormRequests\BaseRequest;
 
-class DummyClass extends FormRequest
+class DummyClass extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,6 +22,42 @@ class DummyClass extends FormRequest
      * @return array
      */
     public function rules()
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            //
+        ];
+    }
+
+    /**
+     * Sanitize the data values from the request.
+     *
+     * @return array
+     */
+    public function sanitize()
     {
         return [
             //

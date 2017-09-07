@@ -4,6 +4,8 @@ namespace Luminary\Services\FormRequests;
 
 use Laravel\Lumen\Http\Redirector;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use Luminary\Services\Auth\Contracts\AuthorizesWhenResolved;
+use Luminary\Services\Sanitation\Contracts\SanitizesWhenResolved;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 
@@ -26,11 +28,19 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function boot()
     {
+        $this->app->afterResolving(AuthorizesWhenResolved::class, function ($resolved) {
+            $resolved->authorizeInstance();
+        });
+
+        $this->app->afterResolving(SanitizesWhenResolved::class, function ($resolved) {
+            $resolved->sanitizeInstance();
+        });
+
         $this->app->afterResolving(ValidatesWhenResolved::class, function ($resolved) {
             $resolved->validate();
         });
 
-        $this->app->resolving(FormRequest::class, function ($request, $app) {
+        $this->app->resolving(BaseRequest::class, function ($request, $app) {
             $this->initializeRequest($request, $app['request']);
 
             $request->setContainer($app)->setRedirector($app->make(Redirector::class));
@@ -40,11 +50,11 @@ class ServiceProvider extends LaravelServiceProvider
     /**
      * Initialize the form request with data from the given request.
      *
-     * @param  \Luminary\Services\FormRequests\FormRequest  $form
+     * @param  \Luminary\Services\FormRequests\BaseRequest  $form
      * @param  \Symfony\Component\HttpFoundation\Request  $current
      * @return void
      */
-    protected function initializeRequest(FormRequest $form, Request $current)
+    protected function initializeRequest(BaseRequest $form, Request $current)
     {
         $files = $current->files->all();
 
@@ -61,6 +71,13 @@ class ServiceProvider extends LaravelServiceProvider
         );
 
         $form->setJson($current->json());
+
+        $form->setType($current->type());
+        $form->setResource($current->resource());
+        $form->setData($current->data());
+        $form->setRelationships($current->relationships());
+        $form->setRelated($current->isRelated());
+        $form->setRelationship($current->isRelationship());
 
         if ($session = $current->getSession()) {
             $form->setLaravelSession($session);

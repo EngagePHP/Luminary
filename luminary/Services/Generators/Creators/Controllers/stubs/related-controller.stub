@@ -2,7 +2,11 @@
 
 namespace DummyNamespace;
 
-use Luminary\Services\ApiRequest\ApiRequest as Request;
+use Luminary\Http\Requests\Destroy;
+use Luminary\Http\Requests\Index;
+use Luminary\Http\Requests\Show;
+use Luminary\Http\Requests\Store;
+use Luminary\Http\Requests\Update;
 use Luminary\Http\Controllers\Controller;
 use DummyRepositoryNamespace as Repository;
 
@@ -11,11 +15,12 @@ class DummyClass extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param $id
+     * @param \Luminary\Http\Requests\Index $request
+     * @param int $id
      * @param $related
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function index($id, $related)
+    public function index(Index $request, $id, $related)
     {
         return str_singular($related) === $related
             ? Repository::find($id, $related)
@@ -25,12 +30,13 @@ class DummyClass extends Controller
     /**
      * Display an individual item of the resource.
      *
-     * @param $id
+     * @param \Luminary\Http\Requests\Show $request
+     * @param int $id
      * @param $related
      * @param $relatedId
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function show($id, $related, $relatedId)
+    public function show(Show $request, $id, $related, $relatedId)
     {
         return Repository::find($id, $related, $relatedId);
     }
@@ -38,12 +44,12 @@ class DummyClass extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @param $id
+     * @param \Luminary\Http\Requests\Store $request
+     * @param int $id
      * @param $related
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function store(Request $request, $id, $related)
+    public function store(Store $request, $id, $related)
     {
         return Repository::create($id, $related, $request->data(), $request->relationships());
     }
@@ -51,13 +57,13 @@ class DummyClass extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int $id
+     * @param \Luminary\Http\Requests\Update $request
+     * @param int $id
      * @param $related
      * @param null $relatedId
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function update(Request $request, $id, $related, $relatedId = null)
+    public function update(Update $request, $id, $related, $relatedId = null)
     {
         return Repository::update($id, $related, $relatedId, $request->data());
     }
@@ -65,11 +71,12 @@ class DummyClass extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param \Luminary\Http\Requests\Destroy $request
+     * @param int $id
      * @param $related
      * @param null $relatedId
      */
-    public function destroy($id, $related, $relatedId = null)
+    public function destroy(Destroy $request, $id, $related, $relatedId = null)
     {
         Repository::delete($id, $related, $relatedId);
     }
