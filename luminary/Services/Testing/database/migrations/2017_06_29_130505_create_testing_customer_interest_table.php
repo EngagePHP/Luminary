@@ -16,7 +16,7 @@ class CreateTestingCustomerInterestTable extends Migration
         Schema::create('customer_interest', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('customer_id')->unsigned()->nullable();
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('customer_id')->references('id')->on('users');
             $table->integer('interest_id')->unsigned()->nullable();
             $table->foreign('interest_id')->references('id')->on('interests');
             $table->timestamps();
