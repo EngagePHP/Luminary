@@ -83,6 +83,7 @@ class GeneratedControllersTest extends TestCase
         $attributes = factory(Customer::class, 1)->make()->first()->toArray();
         $location = $this->locations->first()->id;
         $users = $this->users->take(3)->pluck('id')->all();
+        $interests = $this->interests->take(3)->pluck('id')->all();
 
         $data = [
             'data' => [
@@ -97,6 +98,9 @@ class GeneratedControllersTest extends TestCase
                     ],
                     'users' => [
                         'data' => array_map(function($id) { return ['type' => 'users', 'id' => $id ];}, $users)
+                    ],
+                    'interests' => [
+                        'data' => array_map(function($id) { return ['type' => 'interests', 'id' => $id ];}, $interests)
                     ]
                 ]
             ]

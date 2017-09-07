@@ -50,6 +50,13 @@ trait BaseTestingTrait
     protected $locations;
 
     /**
+     * The interest collection
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected $interests;
+
+    /**
      * Get the query instance as an array
      *
      * @return array
@@ -168,6 +175,7 @@ trait BaseTestingTrait
 
         $this->customers = $customers;
         $this->locations = collect($locations);
+        $this->interests = $interests;
         $this->users = $users;
     }
 }
