@@ -61,11 +61,9 @@ class Scaffold implements CreatorInterface
      */
     protected static function request(string $name, string $path) :void
     {
-        $name = studly_case(str_singular($name));
         $requestsPath = $path.'/Requests';
 
         RequestStructure::create($path);
-        ValidatorStructure::create($path);
         Validator::create('Store', $requestsPath . '/Validators');
         Validator::create('Update', $requestsPath . '/Validators');
         Authorizer::create('Auth', $requestsPath);
@@ -116,8 +114,9 @@ class Scaffold implements CreatorInterface
      */
     protected static function route(string $name, string $path) :void
     {
-        $name = studly_case(str_singular($name));
         $slug = str_slug(str_plural($name));
+        $routeName = snake_case(str_replace(['-', ' '], '.', $name));
+        $name = studly_case(str_singular($name));
         $relative_path = str_replace(app_path().'/', 'Api/', $path);
         $namespace = str_replace('/', '\\', $relative_path.'/Controllers');
 
@@ -126,7 +125,8 @@ class Scaffold implements CreatorInterface
             'relatedController' => $name.'RelatedController',
             'relationshipController' => $name.'RelationshipController',
             'namespace' => $namespace,
-            'slug' => $slug
+            'slug' => $slug,
+            'routeName' => $routeName
         ]);
     }
 
