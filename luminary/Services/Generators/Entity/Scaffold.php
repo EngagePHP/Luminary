@@ -48,7 +48,7 @@ class Scaffold implements CreatorInterface
      */
     protected static function database(string $name, string $path) :void
     {
-        $lname = strtolower($name);
+        $lname = strtolower(snake_case($name));
         $singular = str_singular($name);
 
         // DB
