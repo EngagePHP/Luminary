@@ -36,8 +36,6 @@ $app = new Luminary\Application(
     realpath(__DIR__.'/../')
 );
 
-$app->withEloquent();
-
 // Set the application start time
 config(['app' => ['start' => $start]]);
 
@@ -123,6 +121,9 @@ $app->register(Barryvdh\Cors\ServiceProvider::class);
 
 $app->configure('luminary');
 $app->configure('cors');
+$app->configure('view');
+
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
