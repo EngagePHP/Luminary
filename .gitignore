@@ -27,6 +27,3 @@ tmp
 
 # Ignore dependencies
 vendor
-
-# Ignore composer
-composer.lock
