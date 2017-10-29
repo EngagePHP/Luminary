@@ -2,26 +2,24 @@
 
 namespace Luminary\Console;
 
+use Illuminate\Cache\Console\ClearCommand as CacheClearCommand;
 use Laravel\Lumen\Console\ConsoleServiceProvider as LaravelConsoleServiceProvider;
 use Luminary\Database\Console\Migrations\MigrateMakeCommand;
 
 class ConsoleServiceProvider extends LaravelConsoleServiceProvider
 {
     /**
-     * The commands to be registered.
+     * Register the command.
+     * @todo: Remove once laravel fixes this issue
      *
-     * @var array
+     * @return void
      */
-    protected $commands = [];
-
-    /**
-     * The commands to be registered.
-     *
-     * @var array
-     */
-    protected $devCommands = [
-        'MigrateMake' => 'command.migrate.make',
-    ];
+    protected function registerCacheClearCommand()
+    {
+        $this->app->singleton('command.cache.clear', function ($app) {
+            return new CacheClearCommand($app['cache'], $app['files']);
+        });
+    }
 
     /**
      * Register the command.

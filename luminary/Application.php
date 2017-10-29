@@ -56,7 +56,15 @@ class Application extends LaravelApplication
      */
     public function prepareForConsoleCommand($aliases = true)
     {
-        parent::prepareForConsoleCommand($aliases);
+        $this->withFacades($aliases);
+
+        $this->make('cache');
+        $this->make('queue');
+
+        $this->configure('database');
+
+        $this->register('Illuminate\Database\MigrationServiceProvider');
+        $this->register('Laravel\Lumen\Console\ConsoleServiceProvider');
 
         $this->register(ConsoleServiceProvider::class);
     }
