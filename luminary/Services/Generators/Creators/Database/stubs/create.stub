@@ -7,17 +7,20 @@ use Illuminate\Database\Migrations\Migration;
 class DummyClass extends Migration
 {
     /**
+     * The table name
+     *
+     * @var string
+     */
+    protected $table = 'DummyTable';
+
+    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('DummyTable', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        $this->createTable();
     }
 
     /**
@@ -27,6 +30,37 @@ class DummyClass extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('DummyTable');
+        $this->dropForeignKeys();
+        Schema::dropIfExists($this->table);
+    }
+
+    /**
+     * Create the people table
+     *
+     * @return void
+     */
+    public function createTable() :void
+    {
+        Schema::create('DummyTable', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->primary('id');
+            $table->index(['created_at', 'updated_at', 'deleted_at']);
+            //$table->foreign('tablenameSingular_id')->references('id')->on('tablename');
+        });
+    }
+
+    /**
+     * Drop the tables foreign keys
+     *
+     * @return void
+     */
+    protected function dropForeignKeys() :void
+    {
+        Schema::table($this->table, function($table) {
+            //$table->dropForeign($this->table . '_tablenameSingular_id_foreign');
+        });
     }
 }

@@ -64,7 +64,7 @@ class ModelRelationshipSerializer extends ModelSerializer
      */
     public function fill($data) :void
     {
-        $this->setType($data->getTable())->setId($data->id);
+        $this->setType($data->getType())->setId($data->id);
     }
 
     /**

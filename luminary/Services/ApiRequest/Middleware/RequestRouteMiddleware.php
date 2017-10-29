@@ -56,6 +56,9 @@ class RequestRouteMiddleware
         $method = $request->method();
 
         switch ($method) {
+            case 'GET':
+                $this->handleGet($request);
+                break;
             case 'POST':
                 $this->handlePost($request);
                 break;
@@ -106,13 +109,25 @@ class RequestRouteMiddleware
             return;
         }
 
-        (new DeleteRelationship)->validate($request);
+        with(new DeleteRelationship)->validate($request);
 
         $content = $this->content($request);
 
         $request->setType($content->type());
         $request->setData($content->attributes());
         $request->setRelationships($content->relationships());
+    }
+
+    /**
+    * Handle a GET Request
+    *
+    * @param ApiRequest $request
+    * @return void
+    */
+    protected function handleGet(ApiRequest $request)
+    {
+        $resource = $request->segment(1) ?: '';
+        $request->setType($resource);
     }
 
     /**
@@ -182,6 +197,6 @@ class RequestRouteMiddleware
             $resource = $this->request->segment(1) ?: '';
         }
 
-        $this->request->setResource(str_plural($resource));
+        $this->request->setResource($resource);
     }
 }

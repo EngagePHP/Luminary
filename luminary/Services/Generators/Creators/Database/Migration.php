@@ -4,7 +4,6 @@ namespace Luminary\Services\Generators\Creators\Database;
 
 use Illuminate\Filesystem\Filesystem;
 use Luminary\Services\Generators\Contracts\CreatorInterface;
-use Illuminate\Database\Migrations\MigrationCreator;
 
 class Migration implements CreatorInterface
 {

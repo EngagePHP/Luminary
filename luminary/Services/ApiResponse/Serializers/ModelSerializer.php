@@ -92,7 +92,7 @@ class ModelSerializer extends AbstractSerializer
      */
     public function fill($data) :void
     {
-        $this->setType($data->getTable())
+        $this->setType($data->getType())
             ->setId($data->id)
             ->setAttributes($data->attributesToArray())
             ->setMeta($data->meta())

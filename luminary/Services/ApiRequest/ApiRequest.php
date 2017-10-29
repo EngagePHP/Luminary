@@ -143,6 +143,7 @@ class ApiRequest extends Request
      */
     public function setType(string $type) :ApiRequest
     {
+        $type = str_replace('-', '_', $type);
         $this->type = $type;
 
         return $this;
@@ -176,6 +177,7 @@ class ApiRequest extends Request
      */
     public function setResource(string $resource) :ApiRequest
     {
+        $resource = str_replace('_', '-', $resource);
         $this->resource = $resource;
 
         return $this;

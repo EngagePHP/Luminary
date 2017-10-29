@@ -15,31 +15,31 @@ $router->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}'],
     function ($router) {
         // Retrieve a list for {{slug}}
         $router->get('/', [
-            'as' => '{{slug}}',
+            'as' => '{{routeName}}',
             'uses' => '{{controller}}@index'
         ]);
 
         // Create a new entity for {{slug}}
         $router->post('/', [
-            'as' => '{{slug}}.store',
+            'as' => '{{routeName}}.store',
             'uses' => '{{controller}}@store'
         ]);
 
         // Show an entity for {{slug}}
         $router->get('/{id}', [
-            'as' => '{{slug}}.show',
+            'as' => '{{routeName}}.show',
             'uses' => '{{controller}}@show'
         ]);
 
         // Update an entity for {{slug}}
         $router->patch('/{id}', [
-            'as' => '{{slug}}.update',
+            'as' => '{{routeName}}.update',
             'uses' => '{{controller}}@update'
         ]);
 
         // Delte an entity for {{slug}}
         $router->delete('/{id}', [
-            'as' => '{{slug}}.destroy',
+            'as' => '{{routeName}}.destroy',
             'uses' => '{{controller}}@destroy'
         ]);
     }
@@ -50,25 +50,25 @@ $router->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}/{id}'],
     function ($router) {
         // Retrieve a {{slug}} relationship
         $router->get('/relationships/{relationship}', [
-            'as' => '{{slug}}.relationships',
+            'as' => '{{routeName}}.relationships',
             'uses' => '{{relationshipController}}@index'
         ]);
 
         // Update a {{slug}} relationship
         $router->post('/relationships/{relationship}', [
-            'as' => '{{slug}}.relationships.create',
+            'as' => '{{routeName}}.relationships.create',
             'uses' => '{{relationshipController}}@store'
         ]);
 
         // Update a {{slug}} relationship
         $router->patch('/relationships/{relationship}', [
-            'as' => '{{slug}}.relationships.update',
+            'as' => '{{routeName}}.relationships.update',
             'uses' => '{{relationshipController}}@update'
         ]);
 
         // Delete a {{slug}} relationship
         $router->delete('/relationships/{relationship}', [
-            'as' => '{{slug}}.relationships.delete',
+            'as' => '{{routeName}}.relationships.delete',
             'uses' => '{{relationshipController}}@destroy'
         ]);
     }
@@ -79,31 +79,31 @@ $router->group(['namespace' => '{{namespace}}', 'prefix' => '{{slug}}/{id}'],
     function ($router) {
         // Retrieve a {{slug}} relationship
         $router->get('/{related}', [
-            'as' => '{{slug}}.related',
+            'as' => '{{routeName}}.related',
             'uses' => '{{relatedController}}@index'
         ]);
 
         // Retrieve the customer relationship record
         $router->get('/{related}/{relatedId}', [
-            'as' => '{{slug}}.related.show',
+            'as' => '{{routeName}}.related.show',
             'uses' => '{{relatedController}}@show'
         ]);
 
         // Update a {{slug}} relationship
         $router->post('/{related}', [
-            'as' => '{{slug}}.related.create',
+            'as' => '{{routeName}}.related.create',
             'uses' => '{{relatedController}}@store'
         ]);
 
         // Update a {{slug}} relationship
         $router->patch('/{related}/{relatedId}', [
-            'as' => '{{slug}}.related.update',
+            'as' => '{{routeName}}.related.update',
             'uses' => '{{relatedController}}@update'
         ]);
 
         // Delete a {{slug}} relationship
         $router->delete('/{related}/{relatedId}', [
-            'as' => '{{slug}}.related.delete',
+            'as' => '{{routeName}}.related.delete',
             'uses' => '{{relatedController}}@destroy'
         ]);
     }

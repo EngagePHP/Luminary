@@ -74,7 +74,19 @@ class ResponseHelper
     public static function resourceSelf($resourceId = null, string $resource = null) :string
     {
         $resource = $resource ?: static::resource();
+        $resource = static::formatResource($resource);
         return static::generateUrl([$resource, $resourceId]);
+    }
+
+    /**
+     * Format a resource name with dashes
+     *
+     * @param string $resource
+     * @return string
+     */
+    public static function formatResource(string $resource) :string
+    {
+        return str_replace(['_', ' '], '-', $resource);
     }
 
     /**
@@ -92,6 +104,8 @@ class ResponseHelper
         string $relationship,
         bool $plural = true
     ) :array {
+        $resource = static::formatResource($resource);
+        $relationship = static::formatResource($relationship);
         $relationship = $plural ? str_plural($relationship) : str_singular($relationship);
 
         return [
@@ -109,7 +123,12 @@ class ResponseHelper
      */
     public static function generateUrl(array $path)
     {
+        $path = array_map(function ($segment) {
+            return static::formatResource($segment ?: '');
+        }, $path);
+
         $path = array_merge([static::root()], [config('luminary.location')], $path);
+
         return implode('/', array_filter($path));
     }
 

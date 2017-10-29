@@ -16,7 +16,8 @@ class Routes extends StubCreator
         'relatedController' => '',
         'relationshipController' => '',
         'namespace' => '',
-        'slug' => ''
+        'slug' => '',
+        'routeName' => ''
     ];
 
     /**

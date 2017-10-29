@@ -19,6 +19,15 @@ trait ResponseModelTrait
     ];
 
     /**
+     * The default response type
+     * Useful if type needs to be
+     * different from the table
+     *
+     * @var array“lo;]
+     */
+    protected $type;
+
+    /**
      * Return the meta data
      *
      * @return array
@@ -43,6 +52,18 @@ trait ResponseModelTrait
         $this->meta = $keys;
 
         return $this;
+    }
+
+    /**
+     * Return the default response type
+     * Will return table name if type
+     * property is null
+     *
+     * @return string
+     */
+    public function getType() :string
+    {
+        return $this->type ?: $this->getTable();
     }
 
     /**
