@@ -18,7 +18,11 @@ class Scope extends BaseScope
     {
         $query = $this->scope->getQuery();
 
-        $includes = collect($query->includes())->flip()->map(
+        $includes = collect($query->includes())->map(
+            function($include) {
+                return camel_case($include);
+            }
+        )->flip()->map(
             function ($i, $include) {
                 return $this->mapIncludes($include);
             }

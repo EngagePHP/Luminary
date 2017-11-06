@@ -108,6 +108,9 @@ class ResponseHelper
         $relationship = static::formatResource($relationship);
         $relationship = $plural ? str_plural($relationship) : str_singular($relationship);
 
+        // Convert relationship name to slug
+        $relationship = str_slug(snake_case($relationship));
+
         return [
             'self' => static::generateUrl([$resource, $resourceId, 'relationships', $relationship]),
             'related' => static::generateUrl([$resource, $resourceId, $relationship])
