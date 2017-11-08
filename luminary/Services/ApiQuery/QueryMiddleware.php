@@ -21,7 +21,7 @@ class QueryMiddleware
             $query = $request->all();
             $resource = ['resource' => $request->segment(1) ];
 
-            app(ApiQuery::class)->setQuery(array_merge($query, $resource));
+            app(ApiQuery::class)->activate()->setQuery(array_merge($query, $resource));
         }
 
         // Pass down the response

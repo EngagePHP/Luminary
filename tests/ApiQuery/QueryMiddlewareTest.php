@@ -36,7 +36,6 @@ class QueryMiddlewareTest extends TestCase
     public function testQueryMiddlewareWillBeTriggeredOnGetRequest()
     {
         $this->get($this->url, ['content-type' => 'application/vnd.api+json']);
-
         $this->assertCount(2, $this->getQueryArray());
         $this->assertResponseOk();
     }
@@ -100,5 +99,48 @@ class QueryMiddlewareTest extends TestCase
 
         $this->assertCount(0, $this->getQueryArray());
         $this->assertResponseStatus(204);
+    }
+
+    /**
+     * Setup the routes for running middleware tests
+     *
+     * @return void
+     */
+    protected function setUpRoutes()
+    {
+        $app = app();
+        $router = $app->router;
+
+        $router->group(['middleware' => ['query']], function ($router) {
+            $router->get('api-query-middleware', function () {
+                return response('api query middleware', 200);
+            });
+
+            $router->post('api-query-middleware', function () {
+                return response('api query middleware', 200);
+            });
+
+            $router->put('api-query-middleware', function () {
+                return response('api query middleware', 200);
+            });
+
+            $router->patch('api-query-middleware', function () {
+                return response('api query middleware', 200);
+            });
+
+            $router->delete('api-query-middleware', function () {
+                return response('api query middleware', 200);
+            });
+        });
+    }
+
+    /**
+     * Create the HTTP url string w/parameters for testing
+     *
+     * @return void
+     */
+    protected function setUpUrl()
+    {
+        $this->url = '/api-query-middleware?' . http_build_query($this->queryString);
     }
 }

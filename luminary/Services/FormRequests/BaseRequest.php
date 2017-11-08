@@ -6,14 +6,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Validation\Validator;
 use Laravel\Lumen\Http\Redirector;
-use Luminary\Services\ApiQuery\ActivatesWhenResolvedTrait;
 use Luminary\Services\ApiRequest\ApiRequest;
 use Luminary\Services\Auth\AuthorizesWhenResolvedTrait;
 
 abstract class BaseRequest extends ApiRequest
 {
     use AuthorizesWhenResolvedTrait;
-    use ActivatesWhenResolvedTrait;
 
     /**
      * The container instance.
