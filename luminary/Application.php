@@ -14,6 +14,11 @@ class Application extends LaravelApplication
     use RoutesRequests;
 
     /**
+     * Laravel Lumen Version
+     */
+    const VERSION = 5.5;
+
+    /**
      * Additional bindings for luminary application
      *
      * @var array

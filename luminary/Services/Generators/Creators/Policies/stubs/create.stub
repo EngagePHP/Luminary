@@ -1,0 +1,46 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Permission;
+use DummyTable;
+
+class DummyClass extends Migration
+{
+    protected $permissions = ['view', 'create', 'update', 'delete'];
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        // Create default entity permissions
+        collect($this->permissions)->each(function($permission) {
+            Permission::create(['name' => $this->entity() . '.' . $permission ]);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $names = collect($this->permissions)->each(function($permission) {
+            return $this->entity() . '.' . $permission;
+        })->toArray();
+
+        Permission::whereIn('name', $names);
+    }
+
+    /**
+     *
+     *
+     */
+    protected function entity()
+    {
+        return (new DummyTable)->getType();
+    }
+}

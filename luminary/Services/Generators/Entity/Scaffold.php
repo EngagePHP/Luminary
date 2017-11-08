@@ -13,6 +13,9 @@ use Luminary\Services\Generators\Creators\Middleware\Middleware;
 use Luminary\Services\Generators\Creators\Middleware\Structure as MiddlewareStructure;
 use Luminary\Services\Generators\Creators\Models\Model;
 use Luminary\Services\Generators\Creators\Models\Structure as ModelStructure;
+use Luminary\Services\Generators\Creators\Policies\Migration as PolicyMigration;
+use Luminary\Services\Generators\Creators\Policies\Policy;
+use Luminary\Services\Generators\Creators\Policies\Structure as PolicyStructure;
 use Luminary\Services\Generators\Creators\Repositories\RelatedRepository;
 use Luminary\Services\Generators\Creators\Repositories\RelationshipRepository;
 use Luminary\Services\Generators\Creators\Repositories\Structure as RepositoryStructure;
@@ -35,6 +38,7 @@ class Scaffold implements CreatorInterface
         static::database(...$args);
         static::event(...$args);
         static::middleware(...$args);
+        static::policy(...$args);
         static::repository(...$args);
         static::tests(...$args);
     }
@@ -111,6 +115,24 @@ class Scaffold implements CreatorInterface
         Repository::create($singular.'Repository', $path.'/Repositories', ['model' => $model]);
         RelatedRepository::create($singular.'RelatedRepository', $path.'/Repositories', ['model' => $model]);
         RelationshipRepository::create($singular.'RelationshipRepository', $path.'/Repositories', ['model' => $model]);
+    }
+
+    /**
+     * Scaffold the policy folder
+     *
+     * @param string $name
+     * @param string $path
+     */
+    protected static function policy(string $name, string $path)
+    {
+        $lname = strtolower(snake_case($name));
+        $singular = str_singular($name);
+        $relative_path = str_replace(app_path().'/', 'Api/', $path);
+        $model = str_replace('/', '\\', $relative_path.'/Models/'.$singular);
+
+        PolicyStructure::create($path);
+        Policy::create($singular.'Policy', $path . '/Policies');
+        PolicyMigration::create('create_' . $lname . '_permissions', $path . '/Database/Migrations', $model);
     }
 
     /**
