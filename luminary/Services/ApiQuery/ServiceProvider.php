@@ -14,18 +14,6 @@ class ServiceProvider extends LaravelServiceProvider
     protected $defer = false;
 
     /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->app->afterResolving(ActivatesWhenResolvedTrait::class, function ($resolved) {
-            $resolved->activate();
-        });
-    }
-
-    /**
      * Register the service provider.
      *
      * @return void
@@ -35,7 +23,5 @@ class ServiceProvider extends LaravelServiceProvider
         $this->app->singleton(Query::class, function () {
             return new Query(new QueryCollection);
         });
-
-        $this->app->middleware(QueryMiddleware::class);
     }
 }
