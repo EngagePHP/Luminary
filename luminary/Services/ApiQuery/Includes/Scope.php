@@ -16,9 +16,7 @@ class Scope extends BaseScope
      */
     public function apply($builder, Model $model) :void
     {
-        $query = $this->scope->getQuery();
-
-        $includes = collect($query->includes())->flip()->map(
+        $includes = collect($this->includes())->flip()->map(
             function ($i, $include) {
                 return $this->mapIncludes($include);
             }
@@ -41,5 +39,38 @@ class Scope extends BaseScope
             $this->scope->setNamespace($include)
                 ->applyScope($builder, $model);
         };
+    }
+
+    /**
+     * Get the includes formatted for Query
+     *
+     * @return array
+     */
+    protected function includes() :array
+    {
+        $query = $this->scope->getQuery();
+
+        return collect($query->includes())
+            ->map(function ($include) {
+                return $this->formatInclude($include);
+            })->toArray();
+    }
+
+    /**
+     * Format the include keys as camelCase
+     *
+     * @param string $include
+     * @return string
+     */
+    protected function formatInclude(string $include) :string
+    {
+        $map = array_map(
+            function ($part) {
+                return camel_case($part);
+            },
+            explode('.', $include)
+        );
+
+        return implode('.', $map);
     }
 }
