@@ -61,7 +61,7 @@ class ApiResponseRelationshipPresenterTest extends TestCase
             }
         )->all();
 
-        $results = (new RelationshipPresenter(new ModelSerializer(new Customer), collect()))->formatModels($models);
+        $results = (new RelationshipPresenter(new ModelSerializer(new Customer), collect()))->formatModels($models, 'locations');
 
         $this->assertEquals($expected, $results);
     }

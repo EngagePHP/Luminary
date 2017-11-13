@@ -98,7 +98,7 @@ class ModelSerializer extends AbstractSerializer
             ->setMeta($data->meta())
             ->setRelations($data->getRelations())
             ->setRelationships($this->relations())
-            ->setIncluded($this->flattenedRelations());
+            ->setIncluded($this->flattenedRelations(true));
     }
 
     /**
@@ -208,11 +208,16 @@ class ModelSerializer extends AbstractSerializer
     /**
      * Flatten the relations collection
      *
+     * @param bool $nested
      * @return array
      */
-    public function flattenedRelations() :array
+    public function flattenedRelations($nested = false) :array
     {
-        return $this->relations()->flatten()->all();
+        $relations = $this->relations()->flatten();
+
+        return $nested
+            ? $this->includeNestedRelations($relations)->all()
+            : $relations->all();
     }
 
     /**
@@ -315,5 +320,22 @@ class ModelSerializer extends AbstractSerializer
             default:
                 return $models;
         }
+    }
+
+    /**
+     * Include the models nested relationships
+     *
+     * @param Collection $relations
+     * @return Collection
+     */
+    protected function includeNestedRelations(Collection $relations) :Collection
+    {
+        $models = $relations->map(function ($model) {
+            return $model->flattenedRelations();
+        })->filter(function ($relation) {
+            return ! empty($relation);
+        })->flatten();
+
+        return $relations->merge($models);
     }
 }
