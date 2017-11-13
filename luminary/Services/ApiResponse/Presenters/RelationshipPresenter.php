@@ -41,18 +41,18 @@ class RelationshipPresenter
      */
     public function format() :array
     {
-        return $this->relationships->map(
+        return $this->relationships->mapWithKeys(
+
             function ($models, $relationship) {
-                $models = !empty($models) ? $this->formatModels($models) : $this->formatEmptyModels();
+                $relationship = $this->formatRelationship($relationship);
+                $models = $this->formatModels($models, $relationship);
                 $links = $this->formatLinks($relationship);
 
-                if (str_singular($relationship) === $relationship && count($models) <= 1) {
-                    $models = empty($models) ? null : head($models);
-                }
-
                 return [
-                    'links' => $links,
-                    'data' => $models
+                    $relationship => [
+                        'links' => $links,
+                        'data' => $models
+                    ]
                 ];
             }
         )->all();
@@ -66,7 +66,7 @@ class RelationshipPresenter
      */
     public function formatLinks(string $relationship) :array
     {
-        $plural = $relationship == str_plural($relationship);
+        $plural = $this->isPluralRelationship($relationship);
 
         return ResponseHelper::generateRelationshipLinks(
             $this->parent->type(),
@@ -80,25 +80,23 @@ class RelationshipPresenter
      * Format the models by model serializer
      *
      * @param Collection $models
+     * @param string $relationship
      * @return array
      */
-    public function formatModels(Collection $models) :array
+    public function formatModels(Collection $models, string $relationship) :array
     {
-        return $models->map(
+        $models = $models->map(
             function (ModelSerializer $model) {
                 return $this->formatModel($model);
             }
-        )->all();
-    }
+        );
 
-    /**
-     * Return an empty model data attribute
-     *
-     * @return array
-     */
-    public function formatEmptyModels() :array
-    {
-        return [];
+        // Return one model or null if relationship is singular
+        if ($this->isSingularRelationship($relationship) && $models->count() <= 1) {
+            return $models->first() ?: null;
+        }
+
+        return $models->all();
     }
 
     /**
@@ -112,5 +110,40 @@ class RelationshipPresenter
         $id = $model->id();
 
         return compact('id', 'type');
+    }
+
+    /**
+     * Format the relationship name
+     *
+     * @param string $relationship
+     * @return string
+     */
+    public function formatRelationship(string $relationship) :string
+    {
+        $relationship = snake_case($relationship);
+        return str_replace(['_', ' '], '-', $relationship);
+    }
+
+    /**
+     * Is the relationship singular
+     *
+     * @param string $relationship
+     * @return bool
+     */
+    public function isSingularRelationship(string $relationship) :bool
+    {
+        return str_singular($relationship) === $relationship;
+    }
+
+    /**
+     * Is the relationship plural
+     *
+     * @param string $relationship
+     * @return bool
+     */
+
+    public function isPluralRelationship(string $relationship) :bool
+    {
+        return ! $this->isSingularRelationship($relationship);
     }
 }
