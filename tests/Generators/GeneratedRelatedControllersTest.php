@@ -92,7 +92,7 @@ class GeneratedRelatedControllersTest extends TestCase
         $attributes = array_get($results, 'attributes');
 
         $this->assertArrayHasKey('id', $results);
-        $this->assertEquals($user, array_except($attributes, ['customer_id']));
+        $this->assertEquals(array_except($user, ['password']), array_except($attributes, ['customer_id', 'password']));
         $this->assertEquals($customer->id, array_get($attributes, 'customer_id'));
         $this->assertResponseStatus(201);
     }

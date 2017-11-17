@@ -9,6 +9,13 @@ use Luminary\Services\ApiRequest\Exceptions\UnsupportedMediaType;
 class RequestHeaders
 {
     /**
+     * List of segments to ignore
+     *
+     * @var array
+     */
+    protected $ignore = ['auth'];
+
+    /**
      * Get the accepted vendor tree property
      *
      * @return string
@@ -58,13 +65,17 @@ class RequestHeaders
      */
     public function handle($request, Closure $next)
     {
-        $accept = $request->header('accept');
-        $content = $request->header('content-type');
+        // @todo: find a better place for this check
 
-        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])) {
-            $this->handleContentType($content);
+        if (! in_array($request->segment(1), $this->ignore)) {
+            $accept = $request->header('accept');
+            $content = $request->header('content-type');
+
+            if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])) {
+                $this->handleContentType($content);
+            }
+            $this->handleAcceptHeaders($accept);
         }
-        $this->handleAcceptHeaders($accept);
 
         return $next($request);
     }
