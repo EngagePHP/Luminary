@@ -29,6 +29,7 @@ $factory->define(User::class, function (Faker\Generator $faker) use ($tenant_id)
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
+        'password' => 'secret',
         'tenant_id' => $tenant_id()
     ];
 });

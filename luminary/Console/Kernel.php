@@ -4,6 +4,7 @@ namespace Luminary\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
+use Luminary\Console\Commands\RouteList;
 use Luminary\Services\ApiLoader\Console\Commands\LuminaryCache;
 use Luminary\Console\Commands\Config;
 use Luminary\Console\Commands\ConfigPublish;
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
         EntityCreator::class,
         ResourceCreator::class,
         ServiceCreator::class,
+        RouteList::class,
     ];
 
     /**

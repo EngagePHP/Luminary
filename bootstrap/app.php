@@ -152,7 +152,7 @@ $api->registerModelFactories();
 $api->registerMiddleware();
 $api->registerMigrations();
 $api->registerProviders();
-$api->registerRoutes(['request','query','response']);
+$api->registerRoutes(['jwt.auth', 'request','query','response']);
 $api->registerRouteMiddleware();
 $api->registerSanitizers();
 $api->registerSeeders();
