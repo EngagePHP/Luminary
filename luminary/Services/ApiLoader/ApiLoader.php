@@ -338,7 +338,7 @@ class ApiLoader
      * @param string $path
      * @return string
      */
-    protected function basePath(string $path) :string
+    public function basePath(string $path) :string
     {
         $basePath = base_path($this->basePath);
 
@@ -350,7 +350,7 @@ class ApiLoader
      *
      * @param string $path
      */
-    protected function loadRoutesFrom($path)
+    public function loadRoutesFrom($path)
     {
         $app = $this->app;
         $router = $app->router;

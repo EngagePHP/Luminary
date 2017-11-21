@@ -6,9 +6,11 @@ use Illuminate\Support\ServiceProvider;
 use Luminary\Services\ApiQuery\ServiceProvider as ApiQueryServiceProvider;
 use Luminary\Services\ApiRequest\ServiceProvider as ApiRequestServiceProvider;
 use Luminary\Services\ApiResponse\ServiceProvider as ApiResponseServiceProvider;
+use Luminary\Services\Auth\ServiceProvider as AuthServiceProvider;
 use Luminary\Services\Testing\ServiceProvider as TestingServiceProvider;
 use Luminary\Services\Filesystem\FilesystemServiceProvider;
 use Luminary\Services\FormRequests\ServiceProvider as FormReqeustsServiceProvider;
+use Tymon\JWTAuth\Providers\LumenServiceProvider as JWTAuthServiceProvider;
 
 class LuminaryServiceProvider extends ServiceProvider
 {
@@ -24,7 +26,9 @@ class LuminaryServiceProvider extends ServiceProvider
         ApiQueryServiceProvider::class,
         ApiRequestServiceProvider::class,
         ApiResponseServiceProvider::class,
-        TestingServiceProvider::class
+        TestingServiceProvider::class,
+        AuthServiceProvider::class,
+        JWTAuthServiceProvider::class,
     ];
 
     /**

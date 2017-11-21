@@ -62,11 +62,15 @@ class Scaffold implements CreatorInterface
     protected static function request(string $name, string $path) :void
     {
         $requestsPath = $path.'/Requests';
+        $name = studly_case(str_singular($name));
+        $relative_path = str_replace(app_path() . '/', 'Api/', $path);
+        $relative_path = str_replace('Resources', 'Entities', $relative_path);
+        $model = str_replace('/', '\\', $relative_path . '/Models/' . $name);
 
         RequestStructure::create($path);
         Validator::create('Store', $requestsPath . '/Validators');
         Validator::create('Update', $requestsPath . '/Validators');
-        Authorizer::create('Auth', $requestsPath);
+        Authorizer::create('Auth', $requestsPath, $model);
         Sanitizer::create('Sanitizer', $requestsPath);
     }
 

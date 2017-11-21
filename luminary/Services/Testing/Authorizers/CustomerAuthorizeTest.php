@@ -1,13 +1,12 @@
 <?php
 
-namespace DummyNamespace;
+namespace Luminary\Services\Testing\Authorizers;
 
-use Luminary\Services\Auth\Contracts\Authorize;
+use Luminary\Services\Auth\Authorize;
 use Illuminate\Support\Facades\Gate;
+use Luminary\Services\Testing\Models\Customer as Model;
 
-use ModelClassNamespace as Model;
-
-class DummyClass implements Authorize
+class CustomerAuthorizeTest extends Authorize
 {
     /**
      * Can created a record
