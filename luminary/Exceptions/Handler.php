@@ -4,6 +4,7 @@ namespace Luminary\Exceptions;
 
 use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -33,7 +34,8 @@ class Handler extends ExceptionHandler
      */
     protected $presenters = [
         MultiException::class => Presenters\MultiExceptionPresenter::class,
-        HttpException::class => Presenters\HttpExceptionPresenter::class
+        HttpException::class => Presenters\HttpExceptionPresenter::class,
+        UnauthorizedException::class => Presenters\UnauthorizedPresenter::class
     ];
 
     /**
