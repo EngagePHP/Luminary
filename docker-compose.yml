@@ -15,6 +15,7 @@ services:
       DB_DATABASE: luminary_test
       DB_CONNECTION: pgsql
       XDEBUG_CONFIG: "idekey=luminary remote_host=${LOCAL_IP}"
+      JWT_SECRET: IO587HhRfmBfDnzLNFKcQvH1lyOIBWID
     volumes:
       - .:/var/www
     expose:

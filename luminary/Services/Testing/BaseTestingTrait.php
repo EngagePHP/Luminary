@@ -9,6 +9,8 @@ use Luminary\Services\Testing\Models\Customer;
 use Luminary\Services\Testing\Models\Interest;
 use Luminary\Services\Testing\Models\Location;
 use Luminary\Services\Testing\Models\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 trait BaseTestingTrait
 {
@@ -109,6 +111,8 @@ trait BaseTestingTrait
      */
     protected function seed(int $customerCount = 20, int $userCount = 3, $locationCount = 5)
     {
+        $this->createRolesAndPermissions();
+
         $users = collect();
         $locations = factory(Location::class, $locationCount)->create();
         $interests = factory(Interest::class, 10)->create();
@@ -136,5 +140,45 @@ trait BaseTestingTrait
         $this->locations = collect($locations);
         $this->interests = $interests;
         $this->users = $users;
+    }
+
+    /**
+     * Create roles and permissions for testing
+     *
+     * @return void
+     */
+    protected function createRolesAndPermissions()
+    {
+        $roles = ['user', 'admin'];
+        $entities = ['customers', 'locations', 'interests', 'users'];
+        $permissions = ['view', 'create', 'update', 'delete'];
+        $rolePermissions = [
+            'user' =>  [
+                'locations.view', 'interests.view'
+            ],
+            'admin' => [
+                'customers.view', 'customers.create', 'customers.update', 'customers.delete',
+                'locations.view', 'locations.create', 'locations.update', 'locations.delete',
+                'interests.view', 'interests.create', 'interests.update', 'interests.delete',
+                'users.view', 'users.create', 'users.update', 'users.delete',
+            ]
+        ];
+
+        // Create Roles
+        $roles = collect($roles)->flip()->transform(function ($value, $role) use ($permissions) {
+            return Role::create(['name' => $role]);
+        });
+
+        // Create permissions
+        collect($entities)->flip()->transform(function ($value, $entity) use ($permissions) {
+            return collect($permissions)->each(function ($permission) use ($entity) {
+                Permission::create(['name' => $entity . '.' . $permission ]);
+            });
+        });
+
+        // Attache Roles and Permissions
+        $roles->each(function ($role) use ($rolePermissions) {
+            $role->givePermissionTo($rolePermissions[$role->name]);
+        });
     }
 }

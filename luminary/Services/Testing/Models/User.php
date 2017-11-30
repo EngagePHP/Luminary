@@ -2,11 +2,11 @@
 
 namespace Luminary\Services\Testing\Models;
 
-use Luminary\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Luminary\Services\Tenants\ByTenant;
+use Luminary\Services\Users\User as LuminaryUser;
 
-class User extends Model
+class User extends LuminaryUser
 {
     use ByTenant;
     use SoftDeletes;

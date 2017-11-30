@@ -114,6 +114,7 @@ $app->routeMiddleware([
 $app->register(Luminary\Providers\LuminaryServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
+$app->register(Spatie\Permission\PermissionServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -151,7 +152,7 @@ $api->registerModelFactories();
 $api->registerMiddleware();
 $api->registerMigrations();
 $api->registerProviders();
-$api->registerRoutes(['request','query','response']);
+$api->registerRoutes(['jwt.auth', 'request','query','response']);
 $api->registerRouteMiddleware();
 $api->registerSanitizers();
 $api->registerSeeders();
