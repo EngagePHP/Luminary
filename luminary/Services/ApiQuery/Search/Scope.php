@@ -23,16 +23,20 @@ class Scope extends BaseScope
      */
     public function apply($builder, Model $model) :void
     {
-        $terms = $this->search();
+        $terms = $this->searchQuery();
 
         if (empty($terms)) {
             return;
         }
 
-        if ($this->hasSearchMethod($builder)) {
-            $builder->search($terms);
-        } elseif ($this->hasSearchMethod($model)) {
-            $model->search($terms);
+        if ($method = $this->getSearchMethod($builder)) {
+            $method == 'scopeSearch'
+                ? $builder->{$method}($builder, $terms)
+                : $builder->{$method}($terms);
+        } elseif ($method = $this->getSearchMethod($model)) {
+            $method == 'scopeSearch'
+                ? $model->{$method}($builder, $terms)
+                : $model->{$method}($terms);
         }
     }
 
@@ -41,19 +45,25 @@ class Scope extends BaseScope
      *
      * @return string
      */
-    protected function search()
+    protected function searchQuery()
     {
         return $this->query()->search();
     }
 
     /**
-     * Does the provided object have a search method?
+     * Get the builder/model search method
      *
-     * @param object $object
-     * @return bool
+     * @param $object
+     * @return null|string
      */
-    protected function hasSearchMethod(object $object)
+    protected function getSearchMethod($object)
     {
-        return method_exists($object, 'search') || method_exists($object, 'scopeSearch');
+        if (method_exists($object, 'search')) {
+            return 'search';
+        } elseif (method_exists($object, 'scopeSearch')) {
+            return 'scopeSearch';
+        }
+
+        return null;
     }
 }
