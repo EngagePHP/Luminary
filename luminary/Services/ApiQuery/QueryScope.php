@@ -58,6 +58,7 @@ class QueryScope implements Scope
         // Apply scopes available to parent
         $this->applyScope($builder, $model);
         $this->eagerLoad($builder, $model);
+        $this->scopeSearch();
         $this->scopePagination();
     }
 
@@ -165,6 +166,17 @@ class QueryScope implements Scope
     protected function scopePagination() :void
     {
         (new Pagination\Scope($this))->apply($this->builder, $this->model);
+    }
+
+    /**
+     * Return only the selected fields
+     * from the query
+     *
+     * @return void
+     */
+    protected function scopeSearch() :void
+    {
+        (new Search\Scope($this))->apply($this->builder, $this->model);
     }
 
     /**

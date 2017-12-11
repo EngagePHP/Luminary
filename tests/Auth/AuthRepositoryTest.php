@@ -58,7 +58,7 @@ class AuthRepositoryTest extends TestCase
     public function testAuthLoginFailure()
     {
         $this->expectException(UnauthorizedException::class);
-        $this->expectExceptionMessage('Unauthorized');
+        $this->expectExceptionMessage('The username/email or assword are incorrect');
 
         $user = $this->users->first();
         AuthRepository::login(['email' => $user->email, 'password' => 'bar']);

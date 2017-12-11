@@ -158,6 +158,16 @@ class Query
     }
 
     /**
+     * Return the query search
+     *
+     * @return string
+     */
+    public function search() :string
+    {
+        return $this->query->searchStr();
+    }
+
+    /**
      * Return the query sorting array
      *
      * @param string $resource
