@@ -29,9 +29,9 @@ class Scope extends BaseScope
             return;
         }
 
-        if (method_exists($builder, 'search')) {
+        if ($this->hasSearchMethod($builder)) {
             $builder->search($terms);
-        } elseif (method_exists($model, 'search')) {
+        } elseif ($this->hasSearchMethod($model)) {
             $model->search($terms);
         }
     }
@@ -44,5 +44,16 @@ class Scope extends BaseScope
     protected function search()
     {
         return $this->query()->search();
+    }
+
+    /**
+     * Does the provided object have a search method?
+     *
+     * @param object $object
+     * @return bool
+     */
+    protected function hasSearchMethod(object $object)
+    {
+        return method_exists($object, 'search') || method_exists($object, 'scopeSearch');
     }
 }
