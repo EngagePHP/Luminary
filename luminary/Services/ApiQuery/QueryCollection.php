@@ -23,7 +23,8 @@ class QueryCollection extends Collection
         'include',
         'page',
         'resource',
-        'sort'
+        'search',
+        'sort',
     ];
 
     /**
@@ -121,6 +122,16 @@ class QueryCollection extends Collection
     public function resource() :string
     {
         return (string) $this->get('resource', 'default');
+    }
+
+    /**
+     * Return the query search term
+     *
+     * @return string
+     */
+    public function searchStr() :string
+    {
+        return (string) $this->get('search');
     }
 
     /**
