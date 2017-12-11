@@ -19,7 +19,10 @@ class EntityCreator extends Command
      *
      * @var string
      */
-    protected $signature = 'make:entity {name : Name of the entity to create}';
+    protected $signature = 'make:entity 
+        {name : Name of the entity to create}
+        {--singular : Keep the name singular}
+    ';
 
     /**
      * The console command description.
@@ -36,7 +39,7 @@ class EntityCreator extends Command
     public function handle()
     {
         $name = $this->argument('name');
-        $name = str_plural($name);
+        $name = $this->option('singular') ? str_singular($name) : str_plural($name);
         $name = studly_case($name);
 
         Scaffold::create($name, app_path('Entities/'.$name));
