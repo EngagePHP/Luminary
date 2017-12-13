@@ -37,6 +37,27 @@ class Registry
     protected $consoleKernels;
 
     /**
+     * A list of event listeners
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $eventListeners;
+
+    /**
+     * A list of mapped event names
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $eventMaps;
+
+    /**
+     * A list of event subscribers
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $eventSubscribers;
+
+    /**
      * A list of model factories
      *
      * @var \Illuminate\Support\Collection

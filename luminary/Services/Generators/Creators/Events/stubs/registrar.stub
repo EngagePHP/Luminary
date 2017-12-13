@@ -1,0 +1,30 @@
+<?php
+
+namespace DummyNamespace;
+
+use Luminary\Events\EventRegistrar as LuminaryEventRegistrar;
+
+class EventRegistrar extends LuminaryEventRegistrar
+{
+    /**
+     * The event handler mappings
+     *
+     * @var array
+     */
+    protected $listen = [];
+
+    /**
+     * Mapp Events to names for
+     * quick dispatching
+     *
+     * @var array
+     */
+    protected $map = [];
+
+    /**
+     * The subscriber classes to register.
+     *
+     * @var array
+     */
+    protected $subscribe = [];
+}
