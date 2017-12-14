@@ -1,6 +1,7 @@
 <?php
 
-$router->group(['namespace' => 'Luminary\Events', 'middleware' => ['hook'],  'prefix' => 'events'],
+$router->group(
+    ['namespace' => 'Luminary\Events', 'middleware' => ['hook'],  'prefix' => 'events'],
     function ($router) {
         // Trigger an event
         $router->post('/', [

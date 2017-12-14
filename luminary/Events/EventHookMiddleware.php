@@ -17,7 +17,7 @@ class EventHookMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(! $event = Event::find($request->get('event'))) {
+        if (! $event = Event::find($request->get('event'))) {
             throw new NotFoundHttpException('The event requested does not exist');
         }
 
