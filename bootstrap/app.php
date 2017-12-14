@@ -148,6 +148,7 @@ $api = $app->loadApi([
 $api->registerAuthorizers();
 $api->registerConfigs();
 $api->registerConsole();
+$api->registerEvents();
 $api->registerModelFactories();
 $api->registerMiddleware();
 $api->registerMigrations();

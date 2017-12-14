@@ -192,6 +192,75 @@ class Registrar
     }
 
     /**
+     * Register Application Events
+     *
+     * @param string $eventRegistrar
+     * @return void
+     */
+    public function registerEvents(string $eventRegistrar) :void
+    {
+        $registrar = $this->path($eventRegistrar);
+
+        if (! file_exists($registrar)) {
+            return;
+        }
+
+        $dir = dirname($registrar);
+        $basename = basename($registrar, ".php");
+        $registrar = $this->directory->make($dir)->class($basename);
+
+        if (! class_exists($registrar)) {
+            return;
+        }
+
+        // Instantiate the registrar class
+        $registrar = new $registrar;
+
+        $this->registerEventListeners($registrar->listeners());
+        $this->registerEventSubscribers($registrar->subscribers());
+        $this->registerEventMaps($registrar->mapped());
+    }
+
+    /**
+     * Register the application event listeners
+     *
+     * @param array $listeners
+     */
+    public function registerEventListeners(array $listeners) :void
+    {
+        $this->registry->eventListeners = array_merge_recursive(
+            $this->registry->eventListeners->all(),
+            $listeners
+        );
+    }
+
+    /**
+     * Register the application event maps
+     *
+     * @param array $map
+     */
+    public function registerEventMaps(array $map) :void
+    {
+        $this->registry->eventMaps = array_merge_recursive(
+            $this->registry->eventMaps->all(),
+            $map
+        );
+    }
+
+    /**
+     * Register the application event subscribers
+     *
+     * @param array $subscribers
+     */
+    public function registerEventSubscribers(array $subscribers) :void
+    {
+        $this->registry->eventSubscribers = array_merge_recursive(
+            $this->registry->eventSubscribers->all(),
+            $subscribers
+        );
+    }
+
+    /**
      * Register a model factory path
      *
      * @param string $path

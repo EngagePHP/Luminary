@@ -2,12 +2,12 @@
 
 namespace Luminary\Services\ApiLoader;
 
-use Faker\Generator;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Factory as ModelFactory;
 use Luminary\Application;
 use Luminary\Contracts\Console\Kernel;
+use Luminary\Events\EventMapper;
 use Luminary\Services\ApiLoader\Helpers\Cache;
 use Luminary\Services\ApiLoader\Helpers\Directory;
 use Luminary\Services\ApiLoader\Registry\Registrar;
@@ -187,6 +187,73 @@ class ApiLoader
         Artisan::starting(function ($artisan) use ($commands) {
             $artisan->resolveCommands($commands);
         });
+    }
+
+    /**
+     * Register Application Event Maps, Listeners and Subscribers
+     *
+     * @return void
+     */
+    public function registerEvents() :void
+    {
+        $this->registerEventListeners(
+            $this->registry('eventListeners')->toArray()
+        );
+
+        $this->registerEventMaps(
+            $this->registry('eventMaps')->toArray()
+        );
+
+        $this->registerEventSubscribers(
+            $this->registry('eventSubscribers')->toArray()
+        );
+    }
+
+    /**
+     * Register Application Event Listeners
+     *
+     * @param array $listen
+     * @return void
+     */
+    public function registerEventListeners(array $listen) :void
+    {
+        $events = $this->app['events'];
+
+        foreach ($listen as $event => $listeners) {
+            foreach ($listeners as $listener) {
+                $events->listen($event, $listener);
+            }
+        }
+    }
+
+    /**
+     * Register Application Event maps
+     *
+     * @param array $map
+     * @return void
+     */
+    public function registerEventMaps(array $map) :void
+    {
+        $mapper = $this->app->make(EventMapper::class);
+
+        foreach ($map as $name => $dispatcher) {
+            $mapper->map($name, $dispatcher);
+        }
+    }
+
+    /**
+     * Register Application Event Subscribers
+     *
+     * @param array $subscribe
+     * @return void
+     */
+    public function registerEventSubscribers(array $subscribe) :void
+    {
+        $events = $this->app['events'];
+
+        foreach ($subscribe as $subscriber) {
+            $events->subscribe($subscriber);
+        }
     }
 
     /**

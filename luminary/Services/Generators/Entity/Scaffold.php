@@ -8,6 +8,7 @@ use Luminary\Services\Generators\Creators\Database\Factory;
 use Luminary\Services\Generators\Creators\Database\Migration;
 use Luminary\Services\Generators\Creators\Database\Seeder;
 use Luminary\Services\Generators\Creators\Database\Structure as DatabaseStructure;
+use Luminary\Services\Generators\Creators\Events\Registrar as EventRegistrar;
 use Luminary\Services\Generators\Creators\Events\Structure as EventStructure;
 use Luminary\Services\Generators\Creators\Middleware\Middleware;
 use Luminary\Services\Generators\Creators\Middleware\Structure as MiddlewareStructure;
@@ -79,6 +80,7 @@ class Scaffold implements CreatorInterface
     protected static function event(string $name, string $path) :void
     {
         EventStructure::create($path);
+        EventRegistrar::create('EventRegistrar', $path.'/Events');
         Storage::gitKeep($path.'/Events/Jobs');
         Storage::gitKeep($path.'/Events/Messages');
     }
