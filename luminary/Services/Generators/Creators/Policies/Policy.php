@@ -24,5 +24,4 @@ class Policy extends StubCreator
     {
         return __DIR__.'/stubs/policy.stub';
     }
-
 }
