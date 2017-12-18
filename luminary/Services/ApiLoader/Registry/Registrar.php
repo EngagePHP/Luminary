@@ -314,6 +314,33 @@ class Registrar
     /**
      * Register a provider file
      *
+     * @param string $policyRegistrar
+     */
+    public function registerPolicies(string $policyRegistrar) :void
+    {
+        $registrar = $this->path($policyRegistrar);
+
+        if (! file_exists($registrar)) {
+            return;
+        }
+
+        $dir = dirname($registrar);
+        $basename = basename($registrar, ".php");
+        $registrar = $this->directory->make($dir)->class($basename);
+
+        if (! class_exists($registrar)) {
+            return;
+        }
+
+        // Instantiate the registrar class
+        $registrar = new $registrar;
+
+        $this->registry->policies = $registrar->policies();
+    }
+
+    /**
+     * Register a provider file
+     *
      * @param string $provider
      * @return void
      */

@@ -28,6 +28,7 @@ class EntityLoader extends AbstractApiLoader
         $registrar->registerModelFactories('Database/Factories');
         $registrar->registerMigrations('Database/Migrations');
         $registrar->registerMiddleware('Middleware');
+        $registrar->registerPolicies('Policies/PolicyRegistrar.php');
         $registrar->registerSeeders('Database/Seeds');
         $registrar->registerEvents('Events/EventRegistrar.php');
     }

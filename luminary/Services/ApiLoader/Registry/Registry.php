@@ -79,6 +79,13 @@ class Registry
     protected $migrations;
 
     /**
+     * The registered policies
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $policies;
+
+    /**
      * The registered providers
      *
      * @var \Illuminate\Support\Collection
