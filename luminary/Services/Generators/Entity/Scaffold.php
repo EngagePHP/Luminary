@@ -16,6 +16,7 @@ use Luminary\Services\Generators\Creators\Models\Model;
 use Luminary\Services\Generators\Creators\Models\Structure as ModelStructure;
 use Luminary\Services\Generators\Creators\Policies\Migration as PolicyMigration;
 use Luminary\Services\Generators\Creators\Policies\Policy;
+use Luminary\Services\Generators\Creators\Policies\PolicyRegistrar;
 use Luminary\Services\Generators\Creators\Policies\Structure as PolicyStructure;
 use Luminary\Services\Generators\Creators\Repositories\RelatedRepository;
 use Luminary\Services\Generators\Creators\Repositories\RelationshipRepository;
@@ -133,8 +134,17 @@ class Scaffold implements CreatorInterface
         $model = str_replace('/', '\\', $relative_path.'/Models/'.$singular);
 
         PolicyStructure::create($path);
-        Policy::create($singular.'Policy', $path . '/Policies');
+
+        Policy::create($singular . 'Policy', $path . '/Policies', [
+            'model' => $model,
+        ]);
+
         PolicyMigration::create('create_' . $lname . '_permissions', $path . '/Database/Migrations', $model);
+
+        PolicyRegistrar::create('PolicyRegistrar', $path . '/Policies', [
+            'model' => $model,
+            'policy' => $singular . 'Policy'
+        ]);
     }
 
     /**

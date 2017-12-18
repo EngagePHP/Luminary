@@ -4,7 +4,7 @@ namespace Luminary\Services\Generators\Creators\Policies;
 
 use Luminary\Services\Generators\Creators\StubCreator;
 
-class Policy extends StubCreator
+class PolicyRegistrar extends StubCreator
 {
     /**
      * An array of replaceable attributes
@@ -13,6 +13,7 @@ class Policy extends StubCreator
      */
     protected $attributes = [
         'model' => '',
+        'policy' => '',
     ];
 
     /**
@@ -22,7 +23,6 @@ class Policy extends StubCreator
      */
     protected function getStub() :string
     {
-        return __DIR__.'/stubs/policy.stub';
+        return __DIR__.'/stubs/policy-registrar.stub';
     }
-
 }

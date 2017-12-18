@@ -301,6 +301,22 @@ class ApiLoader
     }
 
     /**
+     * Register Entity Policies
+     *
+     * @return void
+     */
+    public function registerPolicies() :void
+    {
+        $gate = $this->app->make(\Illuminate\Contracts\Auth\Access\Gate::class);
+
+        $this->registry('policies')->each(
+            function ($policy, $model) use($gate) {
+                $gate->policy($model, $policy);
+            }
+        );
+    }
+
+    /**
      * Register API Service Providers
      *
      * @return void

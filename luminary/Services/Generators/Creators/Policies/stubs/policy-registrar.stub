@@ -1,0 +1,18 @@
+<?php
+
+namespace DummyNamespace;
+
+use {{model}} as Model;
+use Luminary\Policies\PolicyRegistrar as LuminaryPolicyRegistrar;
+
+class PolicyRegistrar extends LuminaryPolicyRegistrar
+{
+    /**
+     * The list of Policies to register
+     *
+     * @var array
+     */
+    protected $policies = [
+        Model::class => {{policy}}::class,
+    ];
+}
