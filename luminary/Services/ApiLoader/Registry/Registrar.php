@@ -373,6 +373,23 @@ class Registrar
     }
 
     /**
+     * Register a custom routes file
+     *
+     * @param string $path
+     * @return void
+     */
+    public function registerCustomRoutes(string $path) :void
+    {
+        $path = $this->path($path);
+
+        if (! $this->isFile($path)) {
+            return;
+        }
+
+        $this->registry->customRoutes = (array) $path;
+    }
+
+    /**
      * Register Route Middleware
      *
      * @param string $path
