@@ -310,7 +310,7 @@ class ApiLoader
         $gate = $this->app->make(\Illuminate\Contracts\Auth\Access\Gate::class);
 
         $this->registry('policies')->each(
-            function ($policy, $model) use($gate) {
+            function ($policy, $model) use ($gate) {
                 $gate->policy($model, $policy);
             }
         );
