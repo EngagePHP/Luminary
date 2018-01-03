@@ -100,6 +100,13 @@ class Registry
     protected $routes;
 
     /**
+     * The list of custom routes
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $customRoutes;
+
+    /**
      * The registered route middleware
      *
      * @var \Illuminate\Support\Collection

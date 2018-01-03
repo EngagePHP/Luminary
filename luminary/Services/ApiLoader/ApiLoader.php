@@ -357,6 +357,12 @@ class ApiLoader
                 }
             );
         });
+
+        $this->registry('customRoutes')->each(
+            function ($route) {
+                $this->loadRoutesFrom($route);
+            }
+        );
     }
 
     /**
