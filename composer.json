@@ -2,15 +2,15 @@
     "name": "engage-php/luminary",
     "description": "An api service based on laravel lumen",
     "require": {
-        "laravel/lumen": "5.5.*",
+        "laravel/lumen": "^5.5",
         "wikimedia/composer-merge-plugin": "^1.4",
         "league/flysystem-aws-s3-v3": "~1.0",
         "eddturtle/direct-upload": "^1.6",
         "illuminate/redis": "5.5.*",
         "barryvdh/laravel-cors": "^0.9.0@dev",
         "symfony/var-dumper": "^4.0@dev",
-        "spatie/laravel-permission": "dev-master",
-        "tymon/jwt-auth": "1.0.*",
+        "spatie/laravel-permission": "~2.0",
+        "tymon/jwt-auth": "1.0.*@dev",
         "nicolaslopezj/searchable": "1.*"
     },
     "require-dev": {
@@ -55,5 +55,5 @@
             "email": "matt@enctypeapparel.com"
         }
     ],
-    "minimum-stability" : "dev"
+    "minimum-stability" : "stable"
 }
