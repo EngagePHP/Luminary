@@ -39,6 +39,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        // Register the api loader console kernels
+        app('api.loader')->registerConsoleKernels();
     }
 }
