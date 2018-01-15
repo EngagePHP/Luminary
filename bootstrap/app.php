@@ -37,6 +37,7 @@ $app = new Luminary\Application(
 );
 
 $app->configure('view');
+$app->configure('permission');
 
 $app->withEloquent();
 
@@ -124,7 +125,6 @@ $app->register(Spatie\Permission\PermissionServiceProvider::class);
 | Here we will can load registered provider configs for the application
 |
 */
-
 $app->configure('luminary');
 $app->configure('cors');
 
