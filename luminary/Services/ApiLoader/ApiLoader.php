@@ -141,7 +141,6 @@ class ApiLoader
      */
     public function registerConsole() :void
     {
-        $this->registerConsoleKernels();
         $this->registerCommands(
             $this->registry('commands')->toArray()
         );
