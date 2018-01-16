@@ -3,6 +3,7 @@
 namespace Luminary\Services\Auth;
 
 use Illuminate\Validation\UnauthorizedException;
+use Luminary\Database\Eloquent\Model;
 
 trait AuthorizesWhenResolvedTrait
 {
@@ -14,8 +15,11 @@ trait AuthorizesWhenResolvedTrait
     public function authorizeInstance()
     {
         $this->prepareForAuthorization();
+        $passes = $this->passesAuthorization();
 
-        if (! $this->passesAuthorization()) {
+        Model::clearBootedModels();
+
+        if (! $passes) {
             $this->failedAuthorization();
         }
     }
