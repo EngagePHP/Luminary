@@ -93,7 +93,7 @@ class RelationshipPresenter
 
         // Return one model or null if relationship is singular
         if ($this->isSingularRelationship($relationship) && $models->count() <= 1) {
-            return $models->first() ?: null;
+            return $models->first() ?: [];
         }
 
         return $models->all();
