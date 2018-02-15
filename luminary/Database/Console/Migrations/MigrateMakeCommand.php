@@ -15,7 +15,8 @@ class MigrateMakeCommand extends LaravelMigrateMakeCommand
     protected $signature = 'make:migration {entity : The entity for the migration.}
         {name : The name of the migration.}
         {--create= : The table to be created.}
-        {--table= : The table to migrate.}';
+        {--table= : The table to migrate.}
+        {--singular : Keep the name singular}';
 
     /**
      * Get migration path (specified by the entity name).
@@ -25,7 +26,8 @@ class MigrateMakeCommand extends LaravelMigrateMakeCommand
     protected function getMigrationPath()
     {
         $entity = trim($this->input->getArgument('entity'));
-        $entity = studly_case(str_plural($entity));
+        $entity = $this->option('singular') ? str_singular($entity) : str_plural($entity);
+        $entity = studly_case($entity);
 
         $dir = $this->laravel->basePath() . '/api/Entities/' . $entity . '/Database/Migrations';
 

@@ -19,7 +19,10 @@ class ResourceCreator extends Command
      *
      * @var string
      */
-    protected $signature = 'make:resource {name : Name of the resource to create}';
+    protected $signature = 'make:resource 
+        {name : Name of the resource to create}
+        {--singular : Keep the name singular}
+    ';
 
     /**
      * The console command description.
@@ -36,7 +39,7 @@ class ResourceCreator extends Command
     public function handle()
     {
         $name = $this->argument('name');
-        $name = str_plural($name);
+        $name = $this->option('singular') ? str_singular($name) : str_plural($name);
         $studly = studly_case($name);
 
         Scaffold::create($name, app_path('Resources/'.$studly));

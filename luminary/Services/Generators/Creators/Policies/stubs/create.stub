@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Permission;
 use DummyTable;
+use Spatie\Permission\PermissionRegistrar;
 
 class DummyClass extends Migration
 {
@@ -28,16 +29,18 @@ class DummyClass extends Migration
      */
     public function down()
     {
-        $names = collect($this->permissions)->each(function($permission) {
+        $names = collect($this->permissions)->map(function($permission) {
             return $this->entity() . '.' . $permission;
         })->toArray();
 
-        Permission::whereIn('name', $names);
+        Permission::whereIn('name', $names)->delete();
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**
+     * Get the entity type
      *
-     *
+     * @return string
      */
     protected function entity()
     {
