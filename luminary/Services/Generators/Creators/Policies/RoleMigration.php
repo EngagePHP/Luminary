@@ -17,20 +17,7 @@ class Migration extends LuminaryMigration
      */
     public static function create(string $name, string $path, $class = null) :string
     {
-        return parent::create($name, $path, $class, true, true);
-    }
-
-    /**
-     * Create a new migration for seeding default permissions to roles
-     *
-     * @param  string $name
-     * @param  string $path
-     * @param  string $class
-     * @return string
-     */
-    public static function seed(string $name, string $path, $table = null) :string
-    {
-        return parent::create($name, $path, $table, false, true);
+        return parent::create($name, $path, $class, true);
     }
 
     /**

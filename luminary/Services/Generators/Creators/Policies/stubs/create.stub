@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Permission;
-use DummyTable;
+use DummyTable as Entity;
 use Spatie\Permission\PermissionRegistrar;
 
 class DummyClass extends Migration
@@ -44,6 +44,6 @@ class DummyClass extends Migration
      */
     protected function entity()
     {
-        return (new DummyTable)->getType();
+        return (new Entity)->getType();
     }
 }

@@ -118,7 +118,7 @@ class Scaffold implements CreatorInterface
      */
     protected static function route(string $name, string $path) :void
     {
-        $slug = str_slug(str_plural($name));
+        $slug = str_slug($name);
         $routeName = snake_case(str_replace(['-', ' '], '.', $name));
         $name = studly_case(str_singular($name));
         $relative_path = str_replace(app_path().'/', 'Api/', $path);

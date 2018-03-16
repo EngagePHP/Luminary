@@ -1,0 +1,30 @@
+<?php
+
+use Api\Services\Roles\RoleMigration;
+use Illuminate\Database\Migrations\Migration;
+
+class DummyClass extends Migration
+{
+    use RoleMigration;
+
+    /**
+     * The base role name
+     *
+     * @var string
+     */
+    protected $base = 'DummyTable';
+
+    /**
+     * The role permission assignments
+     *
+     * @var array
+     */
+    protected $assign = [
+        'admin' => ['view', 'create', 'update', 'delete'],
+        'clinician' => [],
+        'clinician.supervisor' => [],
+        'school' => [],
+        'parent' => [],
+        'student' => []
+    ];
+}

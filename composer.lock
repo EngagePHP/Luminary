@@ -2945,6 +2945,50 @@
             "time": "2017-01-02T13:31:39+00:00"
         },
         {
+            "name": "rlanvin/php-rrule",
+            "version": "v1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rlanvin/php-rrule.git",
+                "reference": "c543bda87d2f8b6c490210f1a6e2bf0d79162a4a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rlanvin/php-rrule/zipball/c543bda87d2f8b6c490210f1a6e2bf0d79162a4a",
+                "reference": "c543bda87d2f8b6c490210f1a6e2bf0d79162a4a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "<6"
+            },
+            "suggest": {
+                "ext-intl": "Intl extension is needed for humanReadable()"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RRule\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Lightweight and fast recurrence rules for PHP (RFC 5545)",
+            "homepage": "https://github.com/rlanvin/php-rrule",
+            "keywords": [
+                "date",
+                "ical",
+                "recurrence",
+                "recurring",
+                "rrule"
+            ],
+            "time": "2017-10-11T12:23:40+00:00"
+        },
+        {
             "name": "spatie/laravel-permission",
             "version": "2.7.8",
             "source": {
