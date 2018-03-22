@@ -152,7 +152,12 @@ class ModelSerializer extends AbstractSerializer
      */
     public function setAttributes(array $attributes) :ModelSerializer
     {
-        $this->attributes = array_except($attributes, ['id', 'type']);
+        $attributes = array_except($attributes, ['id', 'type']);
+
+        // Convert all integers larger than 16 to a string
+        $this->attributes = collect($attributes)->transform(function($item) {
+            return is_int($item) && strlen((string) $item) > 16 ? (string) $item : $item;
+        })->all();
 
         return $this;
     }
