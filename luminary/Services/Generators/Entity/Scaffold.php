@@ -140,7 +140,7 @@ class Scaffold implements CreatorInterface
         ]);
 
         PolicyMigration::create('create_' . $lname . '_permissions', $path . '/Database/Migrations', $model);
-        PolicyMigration::seed('seed_' .$lname . '_permissions_to_roles', $path . '/Database/Migrations', $lname);
+        PolicyMigration::seed('seed_' .$lname . '_permissions_to_roles', $path . '/Database/Migrations', str_slug($lname));
 
         PolicyRegistrar::create('PolicyRegistrar', $path . '/Policies', [
             'model' => $model,

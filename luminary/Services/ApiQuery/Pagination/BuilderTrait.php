@@ -103,7 +103,7 @@ trait BuilderTrait
      */
     public function getPaginationCount() :int
     {
-        return $this->getQuery()->getCountForPagination();
+        return $this->applyScopes()->getQuery()->getCountForPagination();
     }
 
     /**

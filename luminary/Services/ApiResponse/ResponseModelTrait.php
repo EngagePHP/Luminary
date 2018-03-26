@@ -63,7 +63,7 @@ trait ResponseModelTrait
      */
     public function getType() :string
     {
-        return $this->type ?: $this->getTable();
+        return str_slug($this->type ?: $this->getTable());
     }
 
     /**

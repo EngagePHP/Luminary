@@ -37,7 +37,7 @@ class AuthRepository
         $token = static::guard()->attempt($credentials);
 
         if (!$token) {
-            throw new UnauthorizedException('The username/email or assword are incorrect');
+            throw new UnauthorizedException('The username/email or password are incorrect');
         }
 
         return static::tokenResponse($token);
