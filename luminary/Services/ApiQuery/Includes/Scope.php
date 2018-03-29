@@ -32,6 +32,26 @@ class Scope extends BaseScope
     }
 
     /**
+     * Apply the main query scope to the
+     * sub query
+     *
+     * @param $builder
+     * @param Model $model
+     * @param string $include
+     * @return void
+     */
+    protected function applyScope($builder, Model $model, string $include)
+    {
+        $scope = $this->scope;
+        $namespace = $scope->getNamespace();
+
+        $scope->setNamespace($include)
+            ->applyScope($builder, $model);
+
+        $scope->setNamespace($namespace);
+    }
+
+    /**
      * Return the closure for mapping an
      * individual include
      *
@@ -41,9 +61,7 @@ class Scope extends BaseScope
     {
         return function ($builder) use ($include) {
             $model = $builder->getModel();
-
-            $this->scope->setNamespace($include)
-                ->applyScope($builder, $model);
+            $this->applyScope($builder, $model, $include);
         };
     }
 

@@ -15,9 +15,20 @@ trait QueryTrait
     {
         $apiQuery = app(Query::class);
 
-        if ($apiQuery->isActive() && static::isParent()) {
+        if (static::shouldApplyApiQuery($apiQuery)) {
             static::addGlobalScope(new QueryScope($apiQuery));
         }
+    }
+
+    /**
+     * Check if the Api Query scopes should run
+     *
+     * @param Query $apiQuery
+     * @return bool
+     */
+    public static function shouldApplyApiQuery(Query $apiQuery) :bool
+    {
+        return ($apiQuery->isActive() && static::isParent());
     }
 
     /**

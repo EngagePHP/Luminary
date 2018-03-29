@@ -120,7 +120,14 @@ class QueryScope implements Scope
      */
     public function resource() :string
     {
-        return $this->getNamespace() ?: $this->query->resource();
+        $namespace = $this->getNamespace();
+
+        if(is_null($namespace)) {
+            $namespace = $this->query->resource();
+            $this->setNamespace($namespace);
+        }
+
+        return  $namespace;
     }
 
     /**

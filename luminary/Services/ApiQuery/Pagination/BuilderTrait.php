@@ -4,6 +4,7 @@ namespace Luminary\Services\ApiQuery\Pagination;
 
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as SupportCollection;
 use Luminary\Services\ApiQuery\Pagination\Paginators\LengthAwarePaginator;
 use Luminary\Services\ApiQuery\Query;
@@ -15,7 +16,7 @@ trait BuilderTrait
      *
      * @var bool
      */
-    protected static $paginated = false;
+    protected static $paginated;
 
     /**
      * Return and instance of paginator if paginate scope query
@@ -28,7 +29,7 @@ trait BuilderTrait
     {
         $collection = parent::get($columns);
 
-        return $this->getPaginated() ? $this->paginateCollection($collection) : $collection;
+        return $this->isPaginated($this->getModel()) ? $this->paginateCollection($collection) : $collection;
     }
 
     /**
@@ -44,12 +45,17 @@ trait BuilderTrait
     /**
      * Set the paginated property
      *
-     * @param $bool
+     * @param string $class
      * @return void
      */
-    public static function setPaginated(bool $bool) :void
+    public static function setPaginated(string $class) :void
     {
-        static::$paginated = $bool;
+        static::$paginated = $class;
+    }
+
+    public static function isPaginated(Model $model) :bool
+    {
+        return static::$paginated ? $model instanceof static::$paginated : false;
     }
 
     /**
@@ -103,7 +109,8 @@ trait BuilderTrait
      */
     public function getPaginationCount() :int
     {
-        return $this->applyScopes()->getQuery()->getCountForPagination();
+        $query = $this->applyScopes()->getQuery();
+        return $query->getCountForPagination();
     }
 
     /**

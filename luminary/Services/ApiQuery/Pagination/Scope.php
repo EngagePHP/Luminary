@@ -19,7 +19,7 @@ class Scope extends BaseScope
     {
         if ($this->paginated()) {
             $builder->forPage(...$this->pagination());
-            $builder->setPaginated(true);
+            $builder->setPaginated(get_class($model));
         }
     }
 
