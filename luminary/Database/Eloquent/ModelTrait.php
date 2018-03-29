@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Luminary\Services\ApiQuery\QueryTrait;
 use Luminary\Services\ApiResponse\ResponseModelTrait;
 use Luminary\Services\Timezone\TimezoneModelTrait;
+use Spatie\Permission\Models\Role;
 
 trait ModelTrait
 {
+    use MorphTrait;
     use QueryTrait;
     use ResponseModelTrait;
     use TimezoneModelTrait;
@@ -35,19 +37,19 @@ trait ModelTrait
     }
 
     /**
-     * Get the class name for polymorphic relations.
+     * Check whether the model is the parent
+     * model excluding specific models
      *
-     * @return string
+     * @return bool
      */
-    public function getMorphClass()
+    public static function isParent()
     {
-        $morphMap = Relation::morphMap();
-        $class = $this->morphClass ?: static::class;
+        $booted = array_except(
+            static::$booted, [
+                Role::class
+            ]
+        );
 
-        if (! empty($morphMap) && in_array($class, $morphMap)) {
-            return array_search($class, $morphMap, true);
-        }
-
-        return $class;
+        return count($booted) === 1;
     }
 }

@@ -62,7 +62,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => \Api\Entities\Users\Models\User::class
+            'model' => \Api\Entities\Auth\Models\User::class
         ],
     ],
 

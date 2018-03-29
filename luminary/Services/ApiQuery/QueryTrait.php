@@ -3,7 +3,6 @@
 namespace Luminary\Services\ApiQuery;
 
 use Luminary\Services\ApiQuery\Eloquent\Builder;
-use Spatie\Permission\Models\Role;
 
 trait QueryTrait
 {
@@ -15,10 +14,9 @@ trait QueryTrait
     public static function bootQueryTrait()
     {
         $apiQuery = app(Query::class);
-        $isParent = static::isParent();
 
-        if ($apiQuery->isActive() && $isParent) {
-            static::addGlobalScope(new QueryScope($apiQuery, $isParent));
+        if ($apiQuery->isActive() && static::isParent()) {
+            static::addGlobalScope(new QueryScope($apiQuery));
         }
     }
 
@@ -31,23 +29,6 @@ trait QueryTrait
     public function newEloquentBuilder($query)
     {
         return new Builder($query);
-    }
-
-    /**
-     * Check whether the model is the parent
-     * model excluding specific models
-     *
-     * @return bool
-     */
-    public static function isParent()
-    {
-        $booted = array_except(
-            static::$booted, [
-                Role::class
-            ]
-        );
-
-        return count($booted) === 1;
     }
 
     /**
