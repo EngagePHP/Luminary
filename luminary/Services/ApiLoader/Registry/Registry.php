@@ -65,6 +65,13 @@ class Registry
     protected $modelFactories;
 
     /**
+     * A list of MorphMaps for Models
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $morphMaps;
+
+    /**
      * The registered middleware
      *
      * @var \Illuminate\Support\Collection
@@ -84,6 +91,13 @@ class Registry
      * @var \Illuminate\Support\Collection
      */
     protected $policies;
+
+    /**
+     * The policy registrars
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $policyRegistrars;
 
     /**
      * The registered providers

@@ -152,6 +152,7 @@ $api->registerEvents();
 $api->registerModelFactories();
 $api->registerMiddleware();
 $api->registerMigrations();
+$api->registerMorphMaps();
 $api->registerPolicies();
 $api->registerProviders();
 $api->registerRoutes(['jwt.auth', 'request','query','response']);

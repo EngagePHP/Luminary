@@ -31,5 +31,6 @@ class EntityLoader extends AbstractApiLoader
         $registrar->registerPolicies('Policies/PolicyRegistrar.php');
         $registrar->registerSeeders('Database/Seeds');
         $registrar->registerEvents('Events/EventRegistrar.php');
+        $registrar->registerMorphMap('Models');
     }
 }

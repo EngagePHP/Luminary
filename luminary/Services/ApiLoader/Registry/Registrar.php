@@ -88,6 +88,16 @@ class Registrar
     }
 
     /**
+     * Get the path Basename
+     *
+     * @return string
+     */
+    public function baseName()
+    {
+        return basename($this->path());
+    }
+
+    /**
      * Register a resource authorizer
      *
      * @param string $path
@@ -312,6 +322,29 @@ class Registrar
     }
 
     /**
+     * Regist model morph maps
+     *
+     * @param $path
+     */
+    public function registerMorphMap($path) :void
+    {
+        $path = $this->path($path);
+
+        if(! $this->isDirectory($path)) {
+            return;
+        }
+
+        $basename = $this->baseName($path);
+        $singular = str_singular($basename);
+        $class = $this->getDirectory()->make($path)->class($this->path($singular));
+
+        if(class_exists($class)) {
+            $name = str_slug(snake_case($basename));
+            $this->registry->morphMaps = (array) [$name => $class];
+        }
+    }
+
+    /**
      * Register a provider file
      *
      * @param string $policyRegistrar
@@ -333,9 +366,10 @@ class Registrar
         }
 
         // Instantiate the registrar class
-        $registrar = new $registrar;
+        $registrarInstance = new $registrar;
 
-        $this->registry->policies = $registrar->policies();
+        $this->registry->policyRegistrars = (array) $registrar;
+        $this->registry->policies = $registrarInstance->policies();
     }
 
     /**

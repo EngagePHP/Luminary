@@ -5,6 +5,7 @@ namespace Luminary\Services\ApiLoader;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Factory as ModelFactory;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Luminary\Application;
 use Luminary\Contracts\Console\Kernel;
 use Luminary\Events\EventMapper;
@@ -297,6 +298,18 @@ class ApiLoader
                 }
             );
         });
+    }
+
+    /**
+     * Register API Migrations
+     *
+     * @return void
+     */
+    public function registerMorphMaps() :void
+    {
+        $morphMaps = $this->registry('morphMaps')->all();
+
+        Relation::morphMap($morphMaps);
     }
 
     /**
