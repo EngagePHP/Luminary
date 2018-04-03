@@ -8,6 +8,16 @@ use Luminary\Policies\PolicyRegistrar as LuminaryPolicyRegistrar;
 class PolicyRegistrar extends LuminaryPolicyRegistrar
 {
     /**
+     * The Policies permissions
+     * to sync with the database
+     *
+     * Role => (array) permissions
+     *
+     * @var array
+     */
+    public $permissions = [];
+
+    /**
      * The list of Policies to register
      *
      * @var array
@@ -15,4 +25,15 @@ class PolicyRegistrar extends LuminaryPolicyRegistrar
     protected $policies = [
         Model::class => {{policy}}::class,
     ];
+
+    /**
+     * Get a policy registrar
+     * model instance
+     *
+     * @return Model
+     */
+    public function model()
+    {
+        return new Model;
+    }
 }
