@@ -130,6 +130,22 @@ $app->configure('cors');
 
 /*
 |--------------------------------------------------------------------------
+| Load A Custom Bootstrap file
+|--------------------------------------------------------------------------
+|
+| Next we will include a custom bootstrap.php file if it exists in the
+| api directory
+|
+*/
+
+$boostrap = realpath(__DIR__ . '/../api/bootstrap.php');
+
+if (file_exists($boostrap)) {
+    include $boostrap;
+}
+
+/*
+|--------------------------------------------------------------------------
 | Load the Api
 |--------------------------------------------------------------------------
 |
@@ -160,21 +176,5 @@ $api->registerRouteMiddleware();
 $api->registerSanitizers();
 $api->registerSeeders();
 $api->registerValidators();
-
-/*
-|--------------------------------------------------------------------------
-| Load A Custom Bootstrap file
-|--------------------------------------------------------------------------
-|
-| Next we will include a custom bootstrap.php file if it exists in the
-| api directory
-|
-*/
-
-$boostrap = realpath(__DIR__ . '/../api/bootstrap.php');
-
-if (file_exists($boostrap)) {
-    include $boostrap;
-}
 
 return $app;
