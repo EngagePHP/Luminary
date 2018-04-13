@@ -116,7 +116,7 @@ class ModelSerializer extends AbstractSerializer
      *
      * @return string
      */
-    public function id() :string
+    public function id()
     {
         return  $this->id;
     }
@@ -129,8 +129,8 @@ class ModelSerializer extends AbstractSerializer
      */
     public function setId($id) :ModelSerializer
     {
-        $this->id = (string) $id;
         $this->id = is_int($id) && strlen((string) $id) > 16 ? (string) $id : $id;
+
         return $this;
     }
 
