@@ -129,7 +129,7 @@ class ModelSerializer extends AbstractSerializer
      */
     public function setId($id) :ModelSerializer
     {
-        $this->id = is_int($id) && strlen((string) $id) > 16 ? (string) $id : $id;
+        $this->id = (string) $id;
 
         return $this;
     }
@@ -156,7 +156,7 @@ class ModelSerializer extends AbstractSerializer
 
         // Convert all integers larger than 16 to a string
         $this->attributes = collect($attributes)->transform(function($item) {
-            return is_int($item) && strlen((string) $item) > 16 ? (string) $item : $item;
+            return is_int($item) ? (string) $item : $item;
         })->all();
 
         return $this;
