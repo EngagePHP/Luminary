@@ -97,7 +97,7 @@ class QueryScope implements Scope
      */
     public function setNamespace(string $namespace) :QueryScope
     {
-        $this->namespace = $namespace;
+        $this->namespace = str_replace(['-', ' '], '_', $namespace);
 
         return $this;
     }
