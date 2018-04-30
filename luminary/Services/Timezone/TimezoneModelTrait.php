@@ -2,7 +2,8 @@
 
 namespace Luminary\Services\Timezone;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 trait TimezoneModelTrait
 {
@@ -12,6 +13,18 @@ trait TimezoneModelTrait
      * @var string
      */
     public static $timezone;
+
+    /**
+     * Set the Auth User Timezone
+     *
+     * @return void
+     */
+    public static function setAuthUserTimezone()
+    {
+        if($user = Auth::user()) {
+            static::setTimezone($user->timezone);
+        }
+    }
 
     /**
      * Return the timezone property
@@ -55,26 +68,15 @@ trait TimezoneModelTrait
     {
         switch (true) {
             case is_null(static::$timezone):
-                return $timestamp;
+                $return =  $timestamp;
                 break;
             case $timestamp instanceof Carbon:
-                return $timestamp->timezone(static::$timezone);
+                $return =  $timestamp->setTimezone(static::$timezone);
                 break;
             default:
-                return $this->asDateTime($timestamp)->timezone(static::$timezone);
+                $return =  $this->asDateTime($timestamp)->setTimezone(static::$timezone);
         }
-    }
 
-    /**
-     * Return a timestamp as DateTime object
-     * with converted timezone
-     *
-     * @param  mixed  $value
-     * @return \Carbon\Carbon
-     */
-    protected function asDateTime($value)
-    {
-        $value = parent::asDateTime($value);
-        return $this->convertToTimezone($value);
+        return $return;
     }
 }
