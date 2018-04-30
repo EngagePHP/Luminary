@@ -54,7 +54,11 @@ class Content
             }
         )->toArray();
 
-        return $relationships;
+        $keys = array_map(function($key) {
+            return camel_case($key);
+        }, array_keys($relationships));
+
+        return array_combine($keys, array_values($relationships));
     }
 
     /**
