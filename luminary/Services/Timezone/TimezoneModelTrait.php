@@ -68,7 +68,7 @@ trait TimezoneModelTrait
     {
         switch (true) {
             case is_null(static::$timezone):
-                $return =  $timestamp;
+                $return = Carbon::parse($timestamp);
                 break;
             case $timestamp instanceof Carbon:
                 $return =  $timestamp->setTimezone(static::$timezone);
