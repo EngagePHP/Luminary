@@ -118,6 +118,24 @@ class Query
     }
 
     /**
+     * Return the has query
+     *
+     * @return array
+     */
+    public function has() :array
+    {
+        $filters = collect($this->query->hasFilters());
+        $output = [];
+
+        collect($this->query->hasQuery())
+            ->each(function($has) use($filters, &$output) {
+                $output[$has] = $filters->get($has);
+            });
+
+        return $output;
+    }
+
+    /**
      * Return the includes array
      *
      * @return array

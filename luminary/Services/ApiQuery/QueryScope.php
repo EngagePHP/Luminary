@@ -58,6 +58,7 @@ class QueryScope implements Scope
         // Apply scopes available to parent
         $this->applyScope($builder, $model);
         $this->eagerLoad($builder, $model);
+        $this->scopeHasFilters();
         $this->scopeSearch();
         $this->scopePagination();
     }
@@ -162,6 +163,16 @@ class QueryScope implements Scope
     protected function scopeFilters() :void
     {
         (new Filters\Scope($this))->apply($this->builder, $this->model);
+    }
+
+    /**
+     * Filter the query
+     *
+     * @return void
+     */
+    protected function scopeHasFilters() :void
+    {
+        (new Filters\ScopeHas($this))->apply($this->builder, $this->model);
     }
 
     /**

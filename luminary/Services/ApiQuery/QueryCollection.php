@@ -20,6 +20,8 @@ class QueryCollection extends Collection
     protected $keys = [
         'fields',
         'filter',
+        'has',
+        'has_filter',
         'include',
         'page',
         'resource',
@@ -80,6 +82,38 @@ class QueryCollection extends Collection
     public function filters(string $resource = null) :array
     {
         $filters = new FilterCollection($this->get('filter', []), $this->resource());
+
+        if (is_null($resource)) {
+            return $filters->map(
+                function ($resource) {
+                    return FilterParser::parse($resource);
+                }
+            )->toArray();
+        }
+
+        return FilterParser::parse($filters->get($resource, []));
+    }
+
+    /**
+     * Return the includes array
+     *
+     * @return array
+     */
+    public function hasQuery() :array
+    {
+        return (array) $this->get('has', []);
+    }
+
+    /**
+     * Return all of the filters or
+     * filters by resource name
+     *
+     * @param string|null $resource
+     * @return array
+     */
+    public function hasFilters(string $resource = null) :array
+    {
+        $filters = new FilterCollection($this->get('has_filter', []), $this->resource());
 
         if (is_null($resource)) {
             return $filters->map(

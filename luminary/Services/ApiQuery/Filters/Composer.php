@@ -146,7 +146,7 @@ class Composer
             function ($v) use ($operator) {
                 return $this->formatValue($v, $operator);
             },
-            head($value)
+            $value
         );
     }
 }
