@@ -20,7 +20,8 @@
         "phpunit/phpunit": "~6.0",
         "mockery/mockery": "~0.9",
         "symfony/routing": "^3.0",
-        "filp/whoops": "~2.0"
+        "filp/whoops": "~2.0",
+        "pda/pheanstalk": "^3.1"
     },
     "extra": {
         "merge-plugin": {
