@@ -13,7 +13,7 @@ class RequestHeaders
      *
      * @var array
      */
-    protected $ignore = ['auth', 'events'];
+    protected $ignore = ['auth', 'event-hooks'];
 
     /**
      * Get the accepted vendor tree property
