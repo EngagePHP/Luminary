@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factory as ModelFactory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Luminary\Application;
 use Luminary\Contracts\Console\Kernel;
-use Luminary\Events\EventMapper;
+use Luminary\EventHooks\EventMapper;
 use Luminary\Services\ApiLoader\Helpers\Cache;
 use Luminary\Services\ApiLoader\Helpers\Directory;
 use Luminary\Services\ApiLoader\Registry\Registrar;

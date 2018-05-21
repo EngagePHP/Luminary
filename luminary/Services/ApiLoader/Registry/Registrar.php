@@ -264,10 +264,12 @@ class Registrar
      */
     public function registerEventSubscribers(array $subscribers) :void
     {
-        $this->registry->eventSubscribers = array_merge_recursive(
-            $this->registry->eventSubscribers->all(),
-            $subscribers
+        $subscribers = array_diff(
+            $subscribers,
+            $this->registry->eventSubscribers->all()
         );
+
+        $this->registry->eventSubscribers = array_unique($subscribers);
     }
 
     /**

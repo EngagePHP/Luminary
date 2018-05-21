@@ -1,6 +1,6 @@
 <?php
 
-namespace Luminary\Events;
+namespace Luminary\EventHooks;
 
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 

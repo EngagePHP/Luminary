@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use Luminary\Events\EventRegistrar as LuminaryEventRegistrar;
+use Luminary\EventHooks\EventRegistrar as LuminaryEventRegistrar;
 
 class EventRegistrar extends LuminaryEventRegistrar
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace  Luminary\Events;
+namespace  Luminary\EventHooks;
 
 use Closure;
 use Illuminate\Http\Request;

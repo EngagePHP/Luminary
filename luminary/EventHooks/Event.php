@@ -1,6 +1,6 @@
 <?php
 
-namespace Luminary\Events;
+namespace Luminary\EventHooks;
 
 class Event
 {
@@ -11,7 +11,7 @@ class Event
      * @param $arguments
      * @return mixed
      */
-    public function __callStatic($name, $arguments)
+    public static function __callStatic($name, $arguments)
     {
         $mapper = app(EventMapper::class);
         return call_user_func_array([$mapper, $name], $arguments);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Luminary\Events;
+namespace Luminary\EventHooks;
 
 use Illuminate\Http\Request;
 use Luminary\Http\Controllers\Controller;
