@@ -41,12 +41,11 @@ class DummyClass extends Migration
      */
     public function createTable() :void
     {
-        Schema::create('DummyTable', function (Blueprint $table) {
+        Schema::create($this->table, function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->primary('id');
             $table->index(['created_at', 'updated_at', 'deleted_at']);
             //$table->foreign('tablenameSingular_id')->references('id')->on('tablename');
         });
