@@ -19,6 +19,13 @@ trait ResponseModelTrait
     ];
 
     /**
+     * The pivot meta keys to return
+     *
+     * @var array
+     */
+    protected $pivotMeta = [];
+
+    /**
      * The default response type
      * Useful if type needs to be
      * different from the table
@@ -34,11 +41,54 @@ trait ResponseModelTrait
      */
     public function meta() :array
     {
+        return array_merge(
+            $this->modelMeta(),
+            $this->pivotMeta()
+        );
+    }
+
+    /**
+     * Get the model meta to return
+     *
+     * @return array
+     */
+    public function modelMeta() :array
+    {
         return collect($this->meta)->flip()->map(
             function ($key, $meta) {
                 return $this->getAttributeValue($meta);
             }
         )->toArray();
+    }
+
+    /**
+     * Get the pivot meta to return
+     * if exists
+     *
+     * @return array
+     */
+    public function pivotMeta() :array
+    {
+        if(!method_exists($this->pivot, 'getPivotMetaKeys')) {
+            return [];
+        }
+
+        return collect($this->pivot->getPivotMetaKeys())->flip()->map(
+            function ($key, $meta) {
+                return $this->pivot->getAttributeValue($meta);
+            }
+        )->toArray();
+    }
+
+    /**
+     * Get the pivot meta key
+     * array
+     *
+     * @return array
+     */
+    public function getPivotMetaKeys() :array
+    {
+        return $this->pivotMeta;
     }
 
     /**
