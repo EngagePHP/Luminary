@@ -107,6 +107,10 @@ class Parser
     {
         $query = $this->filter($query);
 
+        if($this->isMultiNestedQuery($query)) {
+            return $this->parseMultiNestedQuery($query, 'and');
+        }
+
         return array_map(
             function ($values, $key) {
                 $values = static::parse($values);
@@ -115,6 +119,41 @@ class Parser
             $query,
             array_keys($query)
         );
+    }
+
+    /**
+     * Check if the nested query has
+     * multiple query arguments
+     *
+     * @param $query
+     * @return bool
+     */
+    public function isMultiNestedQuery($query)
+    {
+        $keys = array_keys($query);
+        $key = head($keys);
+
+        $query = head($query);
+        $subKeys = is_array($query) ? array_keys(head($query)) : [];
+        $subKey = !empty($subKeys) ? head($subKeys) : null;
+
+        return !is_int($key) && (!is_null($subKey) && !is_int($subKey));
+    }
+
+    /**
+     * Parse a multi nested query
+     *
+     * @param $query
+     * @param string $key
+     * @return array
+     */
+    public function parseMultiNestedQuery($query, $key = 'key')
+    {
+        $query = head($query);
+        $query = array_first($query);
+        $query = [$key => $query];
+
+        return static::parseNestedQuery($query);
     }
 
     /**
@@ -127,6 +166,10 @@ class Parser
     {
         $query = $this->filter($query);
 
+        if($this->isMultiNestedQuery($query)) {
+            return $this->parseMultiNestedQuery($query, 'or');
+        }
+
         return array_map(
             function ($values, $key) {
                 $values = static::parse($values);
@@ -136,6 +179,8 @@ class Parser
             array_keys($query)
         );
     }
+
+
 
     /**
      * Parse an `OR` query
