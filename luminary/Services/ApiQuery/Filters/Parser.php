@@ -147,14 +147,16 @@ class Parser
      * @param string $key
      * @return array
      */
-    public function parseMultiNestedQuery($query, $key = 'key')
+    public function parseMultiNestedQuery($query, $key = 'and')
     {
-        $query = head($query);
-        $query = array_first($query);
-        $query = [$key => $query];
-
-        return static::parseNestedQuery($query);
+        return collect($query)->map(function($q) use($key) {
+             return collect($q)->map(function($item) use($key) {
+                $item = [$key => $item];
+                return head(static::parseNestedQuery($item));
+            })->all();
+        })->first();
     }
+
 
     /**
      * Parse a `nested` query
