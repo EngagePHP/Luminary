@@ -50,6 +50,40 @@ class Composer
     }
 
     /**
+     * Return the formatting for a between query
+     *
+     * @param $type
+     * @param $query
+     * @return array
+     */
+    public static function formatBetween($type, $query)
+    {
+        return [
+            'attribute' => $type,
+            'operator' => null,
+            'value' => $query,
+            'type' => 'between'
+        ];
+    }
+
+    /**
+     * Return the formatting for an or between query
+     *
+     * @param $type
+     * @param $query
+     * @return array
+     */
+    public static function formatOrBetween($type, $query)
+    {
+        return [
+            'attribute' => $type,
+            'operator' => null,
+            'value' => $query,
+            'type' => 'or_between'
+        ];
+    }
+
+    /**
      * Return the formatting for an has query
      *
      * @param $type
@@ -80,6 +114,23 @@ class Composer
             'operator' => null,
             'value' => $query,
             'type' => 'nested'
+        ];
+    }
+
+    /**
+     * Return the formatting for a nested query
+     *
+     * @param $type
+     * @param $query
+     * @return array
+     */
+    public static function formatOrNested($type, $query) :array
+    {
+        return [
+            'attribute' => $type,
+            'operator' => null,
+            'value' => $query,
+            'type' => 'or_nested'
         ];
     }
 

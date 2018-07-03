@@ -58,36 +58,92 @@ class Scope extends BaseScope
     }
 
     /**
+     * Apply `between` query filters
+     *
+     * @param array $filters
+     * @param string $boolean
+     * @return void
+     */
+    protected function applyBetweenQueries(array $filters, $boolean = 'and') :void
+    {
+        collect($filters)->each(
+            function ($filter) use($boolean) {
+                $this->applyBetweenQuery($filter, $boolean);
+            }
+        );
+    }
+
+    /**
+     * Apply `Between` query filter
+     *
+     * @param array $query
+     * @param string $boolean
+     * @return void
+     */
+    protected function applyBetweenQuery(array $query, $boolean = 'and') :void
+    {
+        $value = array_get($query, 'value');
+        $column = array_shift($value);
+
+        $this->builder->whereBetween($column, $value, $boolean);
+    }
+
+    /**
+     * Apply `between` query filters
+     *
+     * @param array $filters
+     * @return void
+     */
+    protected function applyOrBetweenQueries(array $filters) :void
+    {
+        $this->applyBetweenQueries($filters, 'or');
+    }
+
+    /**
+     * Apply `Nested` query filters
+     *
+     * @param array $filters
+     * @param string $boolean
+     * @return void
+     */
+    protected function applyNestedQueries(array $filters, $boolean = 'and') :void
+    {
+        collect($filters)->each(
+            function ($filter) use($boolean) {
+                $this->applyNestedQuery($filter, $boolean);
+            }
+        );
+    }
+
+    /**
      * Apply `Nested` query filters
      *
      * @param array $filters
      * @return void
      */
-    protected function applyNestedQueries(array $filters) :void
+    protected function applyOrNestedQueries(array $filters) :void
     {
-        collect($filters)->each(
-            function ($filter) {
-                $this->applyNestedQuery($filter);
-            }
-        );
+        $this->applyNestedQueries($filters, 'or');
     }
 
     /**
      * Apply `Nested` query filter
      *
      * @param array $query
+     * @param string $boolean
      * @return void
      */
-    protected function applyNestedQuery(array $query) :void
+    protected function applyNestedQuery(array $query, $boolean = 'and') :void
     {
-        $boolean = array_get($query, 'attribute');
+        $bool = array_get($query, 'attribute');
         $queries = array_get($query, 'value');
         $closure = function ($query) use ($queries) {
             $scope = new static($this->scope);
             $scope->apply($query, $query->getModel(), $queries);
         };
+        $args = [$closure, null, null, $bool];
 
-        $this->builder->where($closure, null, null, $boolean);
+        $boolean == 'or' ? $this->builder->orWhere(...$args) : $this->builder->where(...$args);
     }
 
     /**
