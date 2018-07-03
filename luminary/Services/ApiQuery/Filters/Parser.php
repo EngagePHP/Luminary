@@ -9,7 +9,7 @@ class Parser
      *
      * @var array
      */
-    protected $filterTypes = ['and', 'or', 'nested', 'has'];
+    protected $filterTypes = ['and', 'or', 'between', 'or_between', 'nested', 'or_nested', 'has'];
 
     /**
      * Parse a query array to return the
@@ -48,6 +48,38 @@ class Parser
     }
 
     /**
+     * Parse an `between` query
+     *
+     * @param array $query
+     * @return array
+     */
+    public function parseBetweenQuery(array $query)
+    {
+        return array_map(
+            function (array $item) {
+                return Composer::formatBetween('between', $item);
+            },
+            $query
+        );
+    }
+
+    /**
+     * Parse an `between` query
+     *
+     * @param array $query
+     * @return array
+     */
+    public function parseOrBetweenQuery(array $query)
+    {
+        return array_map(
+            function (array $item) {
+                return Composer::formatOrBetween('between', $item);
+            },
+            $query
+        );
+    }
+
+    /**
      * Parse a `has` query
      *
      * @param array $query
@@ -79,6 +111,26 @@ class Parser
             function ($values, $key) {
                 $values = static::parse($values);
                 return Composer::formatNested($key, $values);
+            },
+            $query,
+            array_keys($query)
+        );
+    }
+
+    /**
+     * Parse a `nested` query
+     *
+     * @param array $query
+     * @return array
+     */
+    public function parseOrNestedQuery(array $query)
+    {
+        $query = $this->filter($query);
+
+        return array_map(
+            function ($values, $key) {
+                $values = static::parse($values);
+                return Composer::formatOrNested($key, $values);
             },
             $query,
             array_keys($query)
