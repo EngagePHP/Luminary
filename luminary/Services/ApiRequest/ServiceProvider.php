@@ -46,7 +46,6 @@ class ServiceProvider extends LaravelServiceProvider
     public function register()
     {
         $this->app->middleware([
-            \Luminary\Services\ApiRequest\Middleware\RequestHeaders::class,
             \Luminary\Services\ApiRequest\Middleware\SetApiRequest::class,
         ]);
     }

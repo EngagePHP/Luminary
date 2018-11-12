@@ -96,7 +96,8 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    'request' => Luminary\Services\ApiRequest\Middleware\RequestRouteMiddleware::class,
+    'request.headers' => \Luminary\Services\ApiRequest\Middleware\RequestHeaders::class,
+    'request.middleware' => Luminary\Services\ApiRequest\Middleware\RequestRouteMiddleware::class,
     'query' => \Luminary\Services\ApiQuery\QueryMiddleware::class,
     'response' => Luminary\Services\ApiResponse\ResponseRouteMiddleware::class,
 ]);
@@ -171,7 +172,7 @@ $api->registerMigrations();
 $api->registerMorphMaps();
 $api->registerPolicies();
 $api->registerProviders();
-$api->registerRoutes(['jwt.auth', 'request','query','response']);
+$api->registerRoutes(['jwt.auth', 'request.headers', 'request.middleware','query','response']);
 $api->registerRouteMiddleware();
 $api->registerSanitizers();
 $api->registerSeeders();
