@@ -261,6 +261,8 @@ class Scope extends BaseScope
     protected function filters() :array
     {
         $resource = $this->resource();
+        $resource = snake_case($resource);
+
         return collect($this->query()->filters($resource))->except('has')->toArray();
     }
 }
