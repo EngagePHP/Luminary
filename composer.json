@@ -12,11 +12,11 @@
         "spatie/laravel-permission": "~2.0",
         "tymon/jwt-auth": "1.0.*@dev",
         "nicolaslopezj/searchable": "1.*",
-        "doctrine/dbal": "^2.6"
+        "doctrine/dbal": "^2.6",
+        "fzaninotto/faker": "~1.4"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "3.*",
-        "fzaninotto/faker": "~1.4",
         "phpunit/phpunit": "~6.0",
         "mockery/mockery": "~0.9",
         "symfony/routing": "^3.0",
