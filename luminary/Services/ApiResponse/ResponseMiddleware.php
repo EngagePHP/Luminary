@@ -37,6 +37,10 @@ class ResponseMiddleware
     {
         $response = $next($request);
 
+        if ($response->headers->has('content-disposition')) {
+            return $response;
+        }
+
         if (! $response instanceof JsonResponse) {
             $serializer = $this->content($response, $request);
 

@@ -395,13 +395,14 @@ trait ManageRelations
      */
     public static function getRelationship(Model $model, $id, string $relationship, array $columns = [])
     {
+        $primaryKey = $model->getQualifiedKeyName();
         $get = array_filter(['id', static::getForeignKey($relationship, $model)]);
 
         $results = $model->with([
             $relationship => function ($query) use ($model, $columns) {
                 empty($columns) ?: static::addQuerySelect($model, $query, $columns);
             }
-        ])->whereId($id)->first($get);
+        ])->where($primaryKey, $id)->first($get);
 
         return $results->getRelation($relationship);
     }
