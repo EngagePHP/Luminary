@@ -105,7 +105,12 @@ class Registrar
      */
     public function registerAuthorizer($path)
     {
-        $resource = strtolower(basename($this->path()));
+        $resource = function($path) {
+            $basename = basename($path);
+            $split = snake_case($basename);
+            return str_slug($split);
+        };
+
         $path = $this->path($path);
 
         if (! $this->isFile($path)) {
@@ -116,7 +121,7 @@ class Registrar
         $basename = basename($path, ".php");
         $authorizer = $this->directory->make($dir)->class($basename);
 
-        $this->registry->authorizers = [[$resource, $authorizer]];
+        $this->registry->authorizers = [[$resource($this->path()), $authorizer]];
     }
 
     /**
