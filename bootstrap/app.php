@@ -40,6 +40,7 @@ $app->configure('view');
 $app->configure('permission');
 
 $app->withEloquent();
+$app->alias('cache', \Illuminate\Cache\CacheManager::class);
 
 // Set the application start time
 config(['app' => ['start' => $start]]);
