@@ -1,5 +1,6 @@
+repos:
 - repo: git@github.com:pre-commit/pre-commit-hooks
-  sha: "20f04626a1ee7eb34955d775a37aa9a56a0a7448"
+  rev: v2.1.0
   hooks:
   - id: check-json
     stages: [commit]
@@ -18,7 +19,7 @@
   - id: check-added-large-files
     stages: [commit]
 - repo: git@github.com:hootsuite/pre-commit-php.git
-  sha: "9a3b92d6e3368c74df50d84a877fd72a61ae1f9b"
+  rev: 9a3b92d6e3368c74df50d84a877fd72a61ae1f9b
   hooks:
   - id: php-lint-all
     stages: [commit]
@@ -32,7 +33,7 @@
     files: \.(php)$
     args: ["--ignore=tests,*/migrations,luminary/Services/Generators/templates", "--standard=PSR2", "-p"]
 - repo: git://github.com/Lucas-C/pre-commit-hooks
-  sha: "1e30aa4c88cefe2e65aca072fcb2347f43ace870"
+  rev: v1.1.6
   hooks:
   - id: remove-crlf
     stages: [commit]
