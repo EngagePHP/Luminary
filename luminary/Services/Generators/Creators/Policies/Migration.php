@@ -13,11 +13,13 @@ class Migration extends LuminaryMigration
      * @param  string $name
      * @param  string $path
      * @param  string $class
+     * @param bool $create
+     * @param bool $match
      * @return string
      */
-    public static function create(string $name, string $path, $class = null) :string
+    public static function create(string $name, string $path, $class = null, $create = true, $match = true) :string
     {
-        return parent::create($name, $path, $class, true, true);
+        return parent::create($name, $path, $class, $create, $match);
     }
 
     /**
