@@ -29,13 +29,13 @@ class QueryFilterComposerTest extends TestCase
             [
                 'attribute' => 'title',
                 'operator' => 'IN',
-                'value' => ['mr', 'Mr', 'MR'],
+                'value' => [['mr', 'Mr', 'MR']],
                 'type' => 'and'
             ],
             [
                 'attribute' => 'id',
                 'operator' => 'IN',
-                'value' => [1234, 5678],
+                'value' => [[1234, 5678]],
                 'type' => 'and'
             ],
             [
@@ -80,13 +80,13 @@ class QueryFilterComposerTest extends TestCase
             [
                 'attribute' => 'title',
                 'operator' => 'IN',
-                'value' => ['mr', 'Mr', 'MR'],
+                'value' => [['mr', 'Mr', 'MR']],
                 'type' => 'or'
             ],
             [
                 'attribute' => 'id',
                 'operator' => 'IN',
-                'value' => [1234, 5678],
+                'value' => [[1234, 5678]],
                 'type' => 'or'
             ],
             [

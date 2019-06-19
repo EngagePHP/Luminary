@@ -36,10 +36,10 @@ class QueryFilterParserTest extends TestCase
         $filters = $parser->getQueryTypes();
 
         // Check the keys should be the same
-        $this->assertEquals(['and', 'or', 'nested', 'has'], $filters);
+        $this->assertEquals(['and', 'or', 'between', 'or_between', 'nested', 'or_nested', 'has'], $filters);
 
         // Return requested query types except those given
-        $this->assertEquals(['and', 'has'], $parser->getQueryTypes(['or', 'nested']));
+        $this->assertEquals(['and', 'between', 'or_between', 'or_nested', 'has'], $parser->getQueryTypes(['or', 'nested']));
     }
 
     /**
@@ -58,7 +58,7 @@ class QueryFilterParserTest extends TestCase
             [
                 'attribute' => 'id',
                 'operator' => 'IN',
-                'value' => [1234, 5678],
+                'value' => [[1234, 5678]],
                 'type' => 'and'
             ],
             [
@@ -90,7 +90,7 @@ class QueryFilterParserTest extends TestCase
             [
                 'attribute' => 'id',
                 'operator' => 'IN',
-                'value' => [1234, 5678],
+                'value' => [[1234, 5678]],
                 'type' => 'or'
             ],
             [

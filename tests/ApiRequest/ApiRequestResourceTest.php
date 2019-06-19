@@ -21,7 +21,7 @@ class ApiRequestResourceTest extends TestCase
         $phpunit = $this;
         $router = app()->router;
 
-        $router->group(['middleware' => 'request'], function($router) use($phpunit) {
+        $router->group(['middleware' => ['request.headers', 'request.middleware']], function($router) use($phpunit) {
             $router->get('multi-word-resource', function(Request $request) use($phpunit) {
                 $phpunit->assertEquals('multi_word_resource', $request->type());
                 $phpunit->assertEquals('multi-word-resource', $request->resource());

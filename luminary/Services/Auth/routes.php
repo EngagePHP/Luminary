@@ -18,7 +18,7 @@ $router->group(
 
         // User Route
         $router->group(
-            ['middleware' => ['jwt.auth', 'request', 'response']],
+            ['middleware' => ['jwt.auth', 'request.headers', 'request.middleware', 'response']],
             function ($router) {
                 $router->get('user', 'AuthController@user');
             }

@@ -16,7 +16,7 @@ class Application extends LaravelApplication
     /**
      * Laravel Lumen Version
      */
-    const VERSION = 5.5;
+    const VERSION = 5.6;
 
     /**
      * Additional bindings for luminary application

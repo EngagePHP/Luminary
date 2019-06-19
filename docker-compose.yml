@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   api:
-    image: engageops/docker-luminary:debug
+    image: engageops/docker-luminary:latest-debug
     environment:
       APP_ENV: testing
       APP_DEBUG: 'true'
@@ -10,14 +10,11 @@ services:
       QUEUE_DRIVER: array
       SESSION_DRIVER: cookie
       DB_CONNECTION: testing
+      XDEBUG_CONFIG: "idekey=luminary remote_host=${LOCAL_IP} remote_enable=1"
     volumes:
       - .:/var/www
-    expose:
-      - 80
-      - 8000
     ports:
       - 80:8000
-    links:
 # ------------------------------------------------------
 # Data Volumes
 # ------------------------------------------------------

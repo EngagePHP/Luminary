@@ -56,7 +56,7 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testDataAttributeMethodFailureResponse() :void
     {
-        app()->router->group(['middleware' => 'request'], function ($router) {
+        app()->router->group(['middleware' => ['request.headers', 'request.middleware']], function ($router) {
             $router->post('/api', function() {});
         });
 
@@ -102,7 +102,7 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testTypeAttributeMethodFailureResponse() :void
     {
-        app()->router->group(['middleware' => 'request'], function ($router) {
+        app()->router->group(['middleware' => ['request.headers', 'request.middleware']], function ($router) {
             $router->post('/api', function() {});
         });
 
@@ -147,7 +147,7 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testAcceptedAttributesMethodFailureResponse() :void
     {
-        app()->router->group(['middleware' => 'request'], function ($router) {
+        app()->router->group(['middleware' => ['request.headers', 'request.middleware']], function ($router) {
             $router->post('/api', function() {});
         });
 
@@ -201,7 +201,7 @@ class ApiRequestCreateMiddlewareTest extends TestCase
      */
     public function testForbiddenAttributeMethodFailureResponse() :void
     {
-        app()->router->group(['middleware' => 'request'], function ($router) {
+        app()->router->group(['middleware' => ['request.headers', 'request.middleware']], function ($router) {
             $router->post('/api', function() {});
         });
 

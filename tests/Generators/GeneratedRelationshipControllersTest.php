@@ -40,6 +40,7 @@ class GeneratedRelationshipControllersTest extends TestCase
     public function testIndexMethod() :void
     {
         $customer = $this->customers->random()->first()->id;
+
         $this->json('GET', 'customers/' . $customer . '/relationships/users', [], $this->headers());
         $response = json_decode($this->response->getContent(), true);
         $data = array_get($response, 'data');

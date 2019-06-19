@@ -79,7 +79,7 @@ class ServiceProvider extends LaravelServiceProvider
     public function loadRoutes()
     {
         app()->bootstrapRouter();
-        app()->router->group(['middleware' => ['request', 'response']], function ($router) {
+        app()->router->group(['middleware' => ['request.headers', 'request.middleware', 'response']], function ($router) {
             require __DIR__ . '/routes.php';
         });
     }
