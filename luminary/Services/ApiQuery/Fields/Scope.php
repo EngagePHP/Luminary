@@ -160,7 +160,7 @@ class Scope extends BaseScope
         return collect($this->includes())->map(
             function ($include) use ($model) {
                 $builder = $model->{$include}();
-                return $this->getForeignKey($builder);
+                return $this->getForeignKeyName($builder);
             }
         )->toArray();
     }
@@ -172,13 +172,13 @@ class Scope extends BaseScope
      * @param null $builder
      * @return mixed
      */
-    public function getForeignKey($builder = null)
+    public function getForeignKeyName($builder = null)
     {
         $key = null;
 
         switch (true) {
             case $builder instanceof BelongsTo:
-                $key = $builder->getForeignKey();
+                $key = $builder->getForeignKeyName();
                 break;
             case $builder instanceof HasMany:
                 $key = $builder->getForeignKeyName();
@@ -205,7 +205,7 @@ class Scope extends BaseScope
             return null;
         }
 
-        return $this->getForeignKey($builder);
+        return $this->getForeignKeyName($builder);
     }
 
     /**

@@ -2,7 +2,7 @@ version: "3.2"
 
 services:
   api:
-    image: engageops/docker-luminary:latest-debug
+    image: engageops/docker-luminary:latest
     environment:
       APP_ENV: testing
       APP_DEBUG: 'true'

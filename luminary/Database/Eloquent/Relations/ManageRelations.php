@@ -370,7 +370,7 @@ trait ManageRelations
      * @param Model $model
      * @return null|string
      */
-    public static function getForeignKey($relationship, Model $model)
+    public static function getForeignKeyName($relationship, Model $model)
     {
         $relation = static::getModelRelationship($relationship, $model);
 
@@ -396,7 +396,7 @@ trait ManageRelations
     public static function getRelationship(Model $model, $id, string $relationship, array $columns = [])
     {
         $primaryKey = $model->getQualifiedKeyName();
-        $get = array_filter(['id', static::getForeignKey($relationship, $model)]);
+        $get = array_filter(['id', static::getForeignKeyName($relationship, $model)]);
 
         $results = $model->with([
             $relationship => function ($query) use ($model, $columns) {

@@ -20,7 +20,7 @@ class IntegrationRequestTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->router = app()->router;

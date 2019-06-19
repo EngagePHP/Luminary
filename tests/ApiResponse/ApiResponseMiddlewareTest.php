@@ -11,7 +11,7 @@ class ApiResponseMiddlewareTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -1,5 +1,7 @@
 <?php
 
+use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
+
 $start = microtime(true);
 
 require_once __DIR__.'/../vendor/autoload.php';
@@ -16,7 +18,9 @@ require_once __DIR__.'/../vendor/autoload.php';
 */
 
 try {
-    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+    (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
+        __DIR__.'/../'
+    ))->bootstrap();
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
