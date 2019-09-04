@@ -9,13 +9,7 @@ services:
       CACHE_DRIVER: array
       QUEUE_DRIVER: array
       SESSION_DRIVER: cookie
-      DB_HOST: luminary-postgres
-      DB_USERNAME: root
-      DB_PASSWORD: secret
-      DB_DATABASE: luminary_test
-      DB_CONNECTION: pgsql
-      XDEBUG_CONFIG: "idekey=luminary remote_host=${LOCAL_IP}"
-      JWT_SECRET: IO587HhRfmBfDnzLNFKcQvH1lyOIBWID
+      DB_CONNECTION: testing
     volumes:
       - .:/var/www
     expose:
@@ -24,24 +18,6 @@ services:
     ports:
       - 80:8000
     links:
-      - postgres
-  # ------------------------------------------------------
-  # Database: PostgreSQL
-  # ------------------------------------------------------
-
-  postgres:
-    image: postgres:9.6-alpine
-    container_name: luminary-postgres
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=secret
-      - PGDATA=/var/lib/postgresql/data
-      - POSTGRES_DB=luminary_test
-    volumes:
-      - luminary_test:/var/lib/postgresql
-
 # ------------------------------------------------------
 # Data Volumes
 # ------------------------------------------------------
