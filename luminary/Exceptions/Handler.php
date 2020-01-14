@@ -33,7 +33,8 @@ class Handler extends ExceptionHandler
     protected $presenters = [
         MultiException::class => Presenters\MultiExceptionPresenter::class,
         HttpException::class => Presenters\HttpExceptionPresenter::class,
-        UnauthorizedException::class => Presenters\UnauthorizedPresenter::class
+        UnauthorizedException::class => Presenters\UnauthorizedPresenter::class,
+        ValidationException::class => Presenters\ValidationPresenter::class,
     ];
 
     /**
