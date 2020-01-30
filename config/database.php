@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'default'),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,6 +45,11 @@ return [
     */
 
     'connections' => [
+
+        'default' => [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+        ],
 
         'testing' => [
             'driver' => 'sqlite',
