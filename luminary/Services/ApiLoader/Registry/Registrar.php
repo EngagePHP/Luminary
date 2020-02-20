@@ -504,7 +504,8 @@ class Registrar
         $classes = $this->directory->make($path)->classes();
 
         $this->registry->validators = array_map(function ($class) use ($resource) {
-            return [$resource, basename($class, '.php'), $class];
+            $type = strtolower(substr(strrchr($class, '\\'), 1));
+            return [$resource, $type, $class];
         }, $classes);
     }
 
