@@ -36,7 +36,7 @@ class Scaffold implements CreatorInterface
         static::request(...$args);
         static::controllers(...$args);
         static::route(...$args);
-        static::tests(...$args);
+        //static::tests(...$args);
     }
 
     /**

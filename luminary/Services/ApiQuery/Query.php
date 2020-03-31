@@ -146,6 +146,26 @@ class Query
     }
 
     /**
+     * Return the includes array
+     *
+     * @return array
+     */
+    public function with() :array
+    {
+        return $this->query->with();
+    }
+
+    /**
+     * Return the includes array
+     *
+     * @return array
+     */
+    public function only() :array
+    {
+        return $this->query->queryOnly();
+    }
+
+    /**
      * Return the query pagination array
      *
      * @return array

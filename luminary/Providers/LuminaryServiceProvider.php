@@ -10,6 +10,7 @@ use Luminary\Services\Auth\ServiceProvider as AuthServiceProvider;
 use Luminary\EventHooks\ServiceProvider as EventServiceProvider;
 use Luminary\Services\Testing\ServiceProvider as TestingServiceProvider;
 use Luminary\Services\Filesystem\FilesystemServiceProvider;
+use Luminary\Services\Routing\ServiceProvider as RoutingServiceProvider;
 use Luminary\Services\FormRequests\ServiceProvider as FormReqeustsServiceProvider;
 use Tymon\JWTAuth\Providers\LumenServiceProvider as JWTAuthServiceProvider;
 
@@ -31,6 +32,7 @@ class LuminaryServiceProvider extends ServiceProvider
         AuthServiceProvider::class,
         JWTAuthServiceProvider::class,
         EventServiceProvider::class,
+        RoutingServiceProvider::class,
     ];
 
     /**

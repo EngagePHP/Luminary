@@ -23,6 +23,16 @@ return [
     | Prefix urls with a location. (useful for proxies)
     |
     */
-    'location' => env('URL_PREFIX', '')
+    'location' => env('URL_PREFIX', ''),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Dynamic Router
+    |--------------------------------------------------------------------------
+    |
+    | Set if a dynamic router is preferred
+    |
+    */
+
+    'dynamic_routing' => env('LUMINARY_DYNAMIC_ROUTER', false),
 ];
