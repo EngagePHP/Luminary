@@ -193,10 +193,13 @@ class RequestRouteMiddleware
     {
         if ($this->related) {
             $resource = $this->param('related');
+            $parentResource = $this->request->segment(1) ?: '';
         } else {
             $resource = $this->request->segment(1) ?: '';
+            $parentResource = $resource;
         }
 
         $this->request->setResource($resource);
+        $this->request->setParentResource($parentResource);
     }
 }

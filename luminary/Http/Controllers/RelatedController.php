@@ -8,7 +8,7 @@ use Luminary\Http\Requests\Index;
 use Luminary\Http\Requests\Show;
 use Luminary\Http\Requests\Store;
 use Luminary\Http\Requests\Update;
-use Luminary\Models\Repositories\Repository;
+use Luminary\Models\Repositories\RelatedRepository as Repository;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class RelatedController extends BaseController

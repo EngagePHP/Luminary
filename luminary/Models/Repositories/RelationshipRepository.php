@@ -22,8 +22,7 @@ class RelationshipRepository implements BaseRelationshipRepository
      */
     public static function all($parentId, string $relationship) :Collection
     {
-        $model = static::model();
-        $model = new $model;
+        $model = static::builder(['archived'])->getModel();
         $result = static::getRelationship($model, $parentId, $relationship, ['id']);
 
         return $result ?: static::getEmptyRelationship($relationship, $model->{$relationship}());
@@ -38,8 +37,7 @@ class RelationshipRepository implements BaseRelationshipRepository
      */
     public static function find($parentId, string $relationship) :Model
     {
-        $model = static::model();
-        $model = new $model;
+        $model = static::builder(['archived'])->getModel();
         $result = static::getRelationship($model, $parentId, $relationship, ['id']);
 
         return $result ?: static::getEmptyModel($model->{$relationship}());
@@ -55,7 +53,7 @@ class RelationshipRepository implements BaseRelationshipRepository
      */
     public static function create($parentId, string $relationship, $id) :bool
     {
-        $parent = static::model()::findOrFail($parentId);
+        $parent = static::builder()::findOrFail($parentId);
 
         static::createRelationships($parent, [$relationship => $id]);
 
@@ -72,7 +70,7 @@ class RelationshipRepository implements BaseRelationshipRepository
      */
     public static function update($parentId, string $relationship, $id) :bool
     {
-        $parent = static::model()::findOrFail($parentId);
+        $parent = static::builder()::findOrFail($parentId);
 
         static::updateRelationships($parent, [$relationship => $id]);
 
@@ -89,7 +87,7 @@ class RelationshipRepository implements BaseRelationshipRepository
      */
     public static function delete($parentId, string $relationship, $id = null) :bool
     {
-        $parent = static::model()::findOrFail($parentId);
+        $parent = static::builder()::findOrFail($parentId);
 
         static::deleteRelationships($parent, [$relationship => $id]);
 

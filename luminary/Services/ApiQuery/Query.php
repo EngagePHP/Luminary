@@ -70,6 +70,15 @@ class Query
     }
 
     /**
+     * Is the app set to dynamic routing
+     *
+     * @return bool
+     */
+    public function hasDynamicRouting(): bool
+    {
+        return config('luminary.dynamic_routing') !== false;
+    }
+    /**
      * Activate the query
      *
      * @return Query

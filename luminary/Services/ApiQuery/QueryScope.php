@@ -40,10 +40,12 @@ class QueryScope implements Scope
      * QueryScope constructor.
      *
      * @param Query $query
+     * @param string|null $namespace
      */
-    public function __construct(Query $query)
+    public function __construct(Query $query, string $namespace = null)
     {
         $this->query = $query;
+        $this->namespace = $namespace;
     }
 
     /**

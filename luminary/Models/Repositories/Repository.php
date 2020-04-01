@@ -21,29 +21,31 @@ class Repository implements RepositoryContract
      */
     public static function all() :Collection
     {
-        return static::model()::all();
+        return static::builder([], true)->getModel()->all();
     }
 
     /**
      * Find a record by id
      *
      * @param $id
+     * @param array $without
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public static function find($id) :Model
+    public static function find($id, $without = ['archived']) :Model
     {
-        return static::findAll((array) $id)->first();
+        return static::findAll((array) $id, $without)->first();
     }
 
     /**
      * Find multiple records by id
      *
-     * @param $ids
+     * @param array $ids
+     * @param array $without
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function findAll(array $ids) :Collection
+    public static function findAll(array $ids, $without = []) :Collection
     {
-        return static::model()::find((array) $ids);
+        return static::builder($without, true)->find((array) $ids);
     }
 
     /**
@@ -55,7 +57,7 @@ class Repository implements RepositoryContract
      */
     public static function create(array $data, array $relationships = []) :Model
     {
-        $model = static::model()::create($data);
+        $model = static::builder()->create($data);
 
         if(count($relationships)) {
             static::createRelationships($model, $relationships);
@@ -86,7 +88,7 @@ class Repository implements RepositoryContract
             }
         )->all();
 
-        $insert = static::model()::insert($data);
+        $insert = static::builder()::insert($data);
 
         return $insert ? (string) $now : false;
     }
@@ -101,7 +103,7 @@ class Repository implements RepositoryContract
      */
     public static function update($id, array $data, array $relationships = []) :Model
     {
-        $model = static::find($id);
+        $model = static::find($id, $without = ['archived', 'trashed']);
 
         $model->update($data);
 
@@ -121,7 +123,7 @@ class Repository implements RepositoryContract
      */
     public static function updateAll(array $ids, array $data) :bool
     {
-        return static::model()::whereIn('id', $ids)->update($data);
+        return static::builder(['archived', 'trashed'], true)->whereIn('id', $ids)->update($data);
     }
 
     /**
@@ -132,7 +134,7 @@ class Repository implements RepositoryContract
      */
     public static function delete($id) :bool
     {
-        return static::model()::destroy($id);
+        return static::builder(['archived'], true)->destroy($id);
     }
 
     /**
@@ -144,6 +146,6 @@ class Repository implements RepositoryContract
      */
     public static function deleteAll(array $ids) :bool
     {
-        return static::model()::destroy((array) $ids);
+        return static::builder(['archived'], true)->destroy((array) $ids);
     }
 }

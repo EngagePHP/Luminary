@@ -2,9 +2,6 @@
 
 namespace Luminary\Models\Archive;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-
 trait ArchiveModelTrait
 {
     /**

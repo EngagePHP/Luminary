@@ -22,8 +22,8 @@ class RelatedRepository implements BaseRelatedRepository
      */
     public static function all($parentId, string $relationship) :Collection
     {
-        $model = static::model();
-        $model = new $model;
+        $model = static::builder(['archived']);
+
         $result = static::getRelationship($model, $parentId, $relationship);
 
         return $result ?: static::getEmptyRelationship($relationship, $model->{$relationship}());
@@ -39,7 +39,7 @@ class RelatedRepository implements BaseRelatedRepository
      */
     public static function find($parentId, string $relationship, $relationshipId = null) :Model
     {
-        $model = static::model()::findOrFail($parentId);
+        $model = static::builder(['archived'])->findOrFail($parentId);
 
         $query = function($query) use($relationshipId){
             if(!is_null($relationshipId)) {
@@ -62,7 +62,7 @@ class RelatedRepository implements BaseRelatedRepository
      */
     public static function create($parentId, string $relationship, array $data) :Model
     {
-        $parent = static::model()::findOrFail($parentId);
+        $parent = static::builder()::findOrFail($parentId);
 
         $model = static::getModelRelationship($relationship, $parent)->getModel()->create($data);
 
@@ -84,7 +84,7 @@ class RelatedRepository implements BaseRelatedRepository
      */
     public static function update($parentId, string $relationship, $relationshipId, array $data) :Model
     {
-        $parent = static::model()::findOrFail($parentId);
+        $parent = static::builder()::findOrFail($parentId);
 
         $model = static::getModelRelationship($relationship, $parent)->find($relationshipId);
 
@@ -100,10 +100,11 @@ class RelatedRepository implements BaseRelatedRepository
      * @param string $relationship
      * @param $relationshipId
      * @return bool
+     * @throws \Exception
      */
     public static function delete($parentId, string $relationship, $relationshipId) :bool
     {
-        $parent = static::model()::findOrFail($parentId);
+        $parent = static::builder()::findOrFail($parentId);
 
         return static::getModelRelationship($relationship, $parent)->find($relationshipId)->delete();
     }

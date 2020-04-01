@@ -7,7 +7,7 @@ use Luminary\Http\Requests\Destroy;
 use Luminary\Http\Requests\Index;
 use Luminary\Http\Requests\Store;
 use Luminary\Http\Requests\Update;
-use Luminary\Models\Repositories\Repository;
+use Luminary\Models\Repositories\RelationshipRepository as Repository;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class RelationshipController extends BaseController
