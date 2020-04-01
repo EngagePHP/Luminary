@@ -3,6 +3,7 @@
 namespace Luminary\Database\Eloquent\Relations;
 
 use Closure;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -393,8 +394,12 @@ trait ManageRelations
      * @param array $columns
      * @return Collection|Model|null
      */
-    public static function getRelationship(Model $model, $id, string $relationship, array $columns = [])
+    public static function getRelationship($model, $id, string $relationship, array $columns = [])
     {
+        if($model instanceof Builder) {
+            return static::getBuilderRelationship($model, $id, $relationship, $columns);
+        }
+
         $primaryKey = $model->getQualifiedKeyName();
         $get = array_filter(['id', static::getForeignKey($relationship, $model)]);
 
@@ -402,7 +407,36 @@ trait ManageRelations
             $relationship => function ($query) use ($model, $columns) {
                 empty($columns) ?: static::addQuerySelect($model, $query, $columns);
             }
-        ])->where($primaryKey, $id)->first($get);
+        ]);
+
+        $results = $results->where($primaryKey, $id);
+        $results = $results->first($get);
+
+        return $results->getRelation($relationship);
+    }
+
+    /**
+     * Query a Models Relationship
+     *
+     * @param Model $model
+     * @param $id
+     * @param string $relationship
+     * @param array $columns
+     * @return Collection|Model|null
+     */
+    public static function getBuilderRelationship(Builder $builder, $id, string $relationship, array $columns = [])
+    {
+        $relationClass = static::getModelClassByMorphName($relationship);
+        $relationClass::applyApiQueryScope(null, $relationship);
+
+        $get = array_filter(['id', static::getForeignKey($relationship, $builder->getModel())]);
+        $model = $builder->find($id, $get);
+
+        $results = $model->load([
+            $relationship => function ($query) use ($model, $columns) {
+                empty($columns) ?: static::addQuerySelect($model, $query, $columns);
+            }
+        ]);
 
         return $results->getRelation($relationship);
     }
@@ -473,5 +507,20 @@ trait ManageRelations
     public static function getEmptyModel(Relation $relation)
     {
         return $relation->getModel();
+    }
+
+    /**
+     * Get the model class by morph name
+     *
+     * @param string $morphName
+     * @return mixed
+     */
+    public static function getModelClassByMorphName(string $morphName)
+    {
+        $morphMap = Relation::morphMap();
+
+        if($model = array_get($morphMap, $morphName)) {
+            return $model;
+        }
     }
 }

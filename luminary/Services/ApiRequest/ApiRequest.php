@@ -29,6 +29,13 @@ class ApiRequest extends Request
     public $type;
 
     /**
+     * Parent Resource
+     *
+     * @var string
+     */
+    public $parentResource;
+
+    /**
      * Resource
      *
      * @var string
@@ -179,6 +186,40 @@ class ApiRequest extends Request
     {
         $resource = str_replace('_', '-', $resource);
         $this->resource = $resource;
+
+        return $this;
+    }
+
+    /**
+     * Alias for getResource
+     *
+     * @return string
+     */
+    public function parentResource() :string
+    {
+        return $this->getParentResource();
+    }
+
+    /**
+     * Get the document resource
+     *
+     * @return string
+     */
+    public function getParentResource() :string
+    {
+        return $this->parentResource ?: '';
+    }
+
+    /**
+     * Set the document type parameter
+     *
+     * @param string $resource
+     * @return \Luminary\Services\ApiRequest\ApiRequest
+     */
+    public function setParentResource(string $resource) :ApiRequest
+    {
+        $resource = str_replace('_', '-', $resource);
+        $this->parentResource = $resource;
 
         return $this;
     }

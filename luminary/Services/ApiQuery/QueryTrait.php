@@ -2,6 +2,7 @@
 
 namespace Luminary\Services\ApiQuery;
 
+use Illuminate\Database\Eloquent\Model;
 use Luminary\Services\ApiQuery\Eloquent\Builder;
 
 trait QueryTrait
@@ -16,7 +17,7 @@ trait QueryTrait
         $apiQuery = app(Query::class);
 
         if (static::shouldApplyApiQuery($apiQuery)) {
-            static::addGlobalScope(new QueryScope($apiQuery));
+            static::applyApiQueryScope($apiQuery);
         }
     }
 
@@ -28,7 +29,7 @@ trait QueryTrait
      */
     public static function shouldApplyApiQuery(Query $apiQuery) :bool
     {
-        return ($apiQuery->isActive() && static::isParent());
+        return ($apiQuery->isActive() && static::isParent() && !$apiQuery->hasDynamicRouting());
     }
 
     /**
@@ -54,5 +55,17 @@ trait QueryTrait
         Builder::setPaginated(false);
 
         parent::clearBootedModels();
+    }
+
+    /**
+     * Apply the query scope
+     *
+     * @param Query|null $query
+     * @param string|null $namespace
+     */
+    public static function applyApiQueryScope(Query $query = null, string $namespace = null)
+    {
+        $query = $query ?: app(Query::class);
+        static::addGlobalScope(new QueryScope($query, $namespace));
     }
 }
