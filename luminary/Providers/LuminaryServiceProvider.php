@@ -31,8 +31,7 @@ class LuminaryServiceProvider extends ServiceProvider
         TestingServiceProvider::class,
         AuthServiceProvider::class,
         JWTAuthServiceProvider::class,
-        EventServiceProvider::class,
-        RoutingServiceProvider::class,
+        EventServiceProvider::class
     ];
 
     /**
