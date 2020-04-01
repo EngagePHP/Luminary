@@ -179,4 +179,6 @@ $api->registerSanitizers();
 $api->registerSeeders();
 $api->registerValidators();
 
+$app->register(\Luminary\Services\Routing\ServiceProvider::class);
+
 return $app;
