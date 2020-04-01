@@ -22,6 +22,12 @@ use Luminary\Services\Generators\Creators\Repositories\RelatedRepository;
 use Luminary\Services\Generators\Creators\Repositories\RelationshipRepository;
 use Luminary\Services\Generators\Creators\Repositories\Structure as RepositoryStructure;
 use Luminary\Services\Generators\Creators\Repositories\Repository;
+use Luminary\Services\Generators\Creators\RouteMiddleware\Registry;
+use Luminary\Services\Generators\Creators\RouteMiddleware\Structure as RouteMiddlewareStructure;
+use Luminary\Services\Generators\Creators\Requests\Structure as RequestStructure;
+use Luminary\Services\Generators\Creators\Validators\Validator;
+use Luminary\Services\Generators\Creators\Sanitizers\Sanitizer;
+use Luminary\Services\Generators\Creators\Authorizers\Authorizer;
 use Luminary\Services\Generators\Creators\Tests\ModelTest;
 
 class Scaffold implements CreatorInterface
@@ -42,7 +48,12 @@ class Scaffold implements CreatorInterface
         static::middleware(...$args);
         static::policy(...$args);
         static::repository(...$args);
-        static::tests(...$args);
+        //static::tests(...$args);
+
+        if(config('luminary.dynamic_routing') !== false) {
+            static::routeMiddleware(...$args);
+            static::request(...$args);
+        }
     }
 
     /**
@@ -159,5 +170,39 @@ class Scaffold implements CreatorInterface
         $singular = str_singular($name);
 
         ModelTest::create($singular.'Model', $directory)->link($target);
+    }
+
+    /**
+     * Scaffold the resource route middleware folder
+     *
+     * @param string $name
+     * @param string $path
+     * @return void
+     */
+    protected static function routeMiddleware(string $name, string $path) :void
+    {
+        RouteMiddlewareStructure::create($path);
+        Registry::create('registry', $path . '/Http/Middleware');
+    }
+
+    /**
+     * Scaffold the resource request folder
+     *
+     * @param string $name
+     * @param string $path
+     * @return void
+     */
+    protected static function request(string $name, string $path) :void
+    {
+        $requestsPath = $path.'/Http/Requests';
+        $name = studly_case(str_singular($name));
+        $relative_path = str_replace(app_path() . '/', 'Api/', $path);
+        $model = str_replace('/', '\\', $relative_path . '/Models/' . $name);
+
+        RequestStructure::create($path);
+        Validator::create('Store', $requestsPath . '/Http/Validators');
+        Validator::create('Update', $requestsPath . '/Http/Validators');
+        Authorizer::create('Auth', $requestsPath, $model);
+        Sanitizer::create('Sanitizer', $requestsPath);
     }
 }

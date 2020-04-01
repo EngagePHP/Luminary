@@ -40,10 +40,12 @@ class QueryScope implements Scope
      * QueryScope constructor.
      *
      * @param Query $query
+     * @param string|null $namespace
      */
-    public function __construct(Query $query)
+    public function __construct(Query $query, string $namespace = null)
     {
         $this->query = $query;
+        $this->namespace = $namespace;
     }
 
     /**
@@ -55,7 +57,12 @@ class QueryScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
+        $this->builder = $builder;
+        $this->model = $model;
+
         // Apply scopes available to parent
+        $this->scopeWith();
+        $this->scopeOnly();
         $this->applyScope($builder, $model);
         $this->eagerLoad($builder, $model);
         $this->scopeHasFilters();
@@ -195,6 +202,26 @@ class QueryScope implements Scope
     protected function scopeSearch() :void
     {
         (new Search\Scope($this))->apply($this->builder, $this->model);
+    }
+
+    /**
+     * Add with Scopes to the query
+     *
+     * @return void
+     */
+    protected function scopeWith(): void
+    {
+        (new With\Scope($this))->apply($this->builder, $this->model);
+    }
+
+    /**
+     * Add with Scopes to the query
+     *
+     * @return void
+     */
+    protected function scopeOnly(): void
+    {
+        (new Only\Scope($this))->apply($this->builder, $this->model);
     }
 
     /**

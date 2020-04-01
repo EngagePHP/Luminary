@@ -32,5 +32,16 @@ class EntityLoader extends AbstractApiLoader
         $registrar->registerSeeders('Database/Seeds');
         $registrar->registerEvents('Events/EventRegistrar.php');
         $registrar->registerMorphMap('Models');
+
+
+        // Http
+        if(config('luminary.dynamic_routing') !== false) {
+            $registrar->registerRoutes('Http/routes.php');
+            $registrar->registerCustomRoutes('Http/custom-routes.php');
+            $registrar->registerRouteMiddleware('Http/Middleware/registry.php');
+            $registrar->registerAuthorizer('Http/Requests/Auth.php');
+            $registrar->registerSanitizer('Http/Requests/Sanitizer.php');
+            $registrar->registerValidators('Http/Requests/Validators');
+        }
     }
 }

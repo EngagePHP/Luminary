@@ -105,6 +105,17 @@ $app->routeMiddleware([
 
 /*
 |--------------------------------------------------------------------------
+| Load Configurations
+|--------------------------------------------------------------------------
+|
+| Here we will can load registered provider configs for the application
+|
+*/
+$app->configure('luminary');
+$app->configure('cors');
+
+/*
+|--------------------------------------------------------------------------
 | Register Service Providers
 |--------------------------------------------------------------------------
 |
@@ -118,17 +129,6 @@ $app->register(Luminary\Providers\LuminaryServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 $app->register(Spatie\Permission\PermissionServiceProvider::class);
-
-/*
-|--------------------------------------------------------------------------
-| Load Configurations
-|--------------------------------------------------------------------------
-|
-| Here we will can load registered provider configs for the application
-|
-*/
-$app->configure('luminary');
-$app->configure('cors');
 
 /*
 |--------------------------------------------------------------------------
