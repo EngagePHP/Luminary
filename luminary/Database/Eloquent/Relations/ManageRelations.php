@@ -523,4 +523,28 @@ trait ManageRelations
             return $model;
         }
     }
+
+    /**
+     * Fill missing relationships for a resource update
+     *
+     * @param Model $model
+     * @param array $relationships
+     * @return array
+     */
+    public static function fillMissingRelationships(Model $model, $relationships)
+    {
+        return (new FillMissingRelationships($model, $relationships))->fill();
+    }
+
+    /**
+     * Fill missing relationships for a resource update
+     *
+     * @param Model $model
+     * @param array $relationships
+     * @return array
+     */
+    public static function fillMissingRelationshipAttributes(Model $model, $relationships)
+    {
+        return (new FillMissingRelationshipAttributes($model, $relationships))->fill();
+    }
 }

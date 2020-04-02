@@ -62,7 +62,7 @@ class RelatedRepository implements BaseRelatedRepository
      */
     public static function create($parentId, string $relationship, array $data) :Model
     {
-        $parent = static::builder()::findOrFail($parentId);
+        $parent = static::builder()->findOrFail($parentId);
 
         $model = static::getModelRelationship($relationship, $parent)->getModel()->create($data);
 
@@ -84,7 +84,7 @@ class RelatedRepository implements BaseRelatedRepository
      */
     public static function update($parentId, string $relationship, $relationshipId, array $data) :Model
     {
-        $parent = static::builder()::findOrFail($parentId);
+        $parent = static::builder()->findOrFail($parentId);
 
         $model = static::getModelRelationship($relationship, $parent)->find($relationshipId);
 
@@ -104,7 +104,7 @@ class RelatedRepository implements BaseRelatedRepository
      */
     public static function delete($parentId, string $relationship, $relationshipId) :bool
     {
-        $parent = static::builder()::findOrFail($parentId);
+        $parent = static::builder()->findOrFail($parentId);
 
         return static::getModelRelationship($relationship, $parent)->find($relationshipId)->delete();
     }

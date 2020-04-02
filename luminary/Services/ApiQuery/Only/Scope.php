@@ -21,7 +21,7 @@ class Scope extends BaseScope
         $this->onlyQuery()->each(function($only) use($builder, $model) {
             $methodName = camel_case('only_' . $only);
             if($builder->hasMacro($methodName)) {
-                $model->{$methodName}();
+                $builder->{$methodName}();
                 RemoveQuery::run($builder, $model, $only);
             }
         });

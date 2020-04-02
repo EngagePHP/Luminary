@@ -108,6 +108,7 @@ class Repository implements RepositoryContract
         $model->update($data);
 
         if(count($relationships)) {
+            $relationships = static::fillMissingRelationships($model, $relationships);
             static::updateRelationships($model, $relationships);
         }
 
