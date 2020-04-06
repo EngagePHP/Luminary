@@ -53,7 +53,7 @@ class RelationshipRepository implements BaseRelationshipRepository
      */
     public static function create($parentId, string $relationship, $id) :bool
     {
-        $parent = static::builder()::findOrFail($parentId);
+        $parent = static::builder()->findOrFail($parentId);
 
         static::createRelationships($parent, [$relationship => $id]);
 
@@ -70,9 +70,9 @@ class RelationshipRepository implements BaseRelationshipRepository
      */
     public static function update($parentId, string $relationship, $id) :bool
     {
-        $parent = static::builder()::findOrFail($parentId);
-
-        static::updateRelationships($parent, [$relationship => $id]);
+        $parent = static::builder()->findOrFail($parentId);
+        $relationships = static::fillMissingRelationshipAttributes($parent, [$relationship => $id]);
+        static::updateRelationships($parent, $relationships);
 
         return true;
     }
@@ -87,7 +87,7 @@ class RelationshipRepository implements BaseRelationshipRepository
      */
     public static function delete($parentId, string $relationship, $id = null) :bool
     {
-        $parent = static::builder()::findOrFail($parentId);
+        $parent = static::builder()->findOrFail($parentId);
 
         static::deleteRelationships($parent, [$relationship => $id]);
 
