@@ -15,7 +15,8 @@
         "doctrine/dbal": "^2.6",
         "fzaninotto/faker": "~1.4",
         "symfony/http-kernel": "~3.4",
-        "symfony/http-foundation": "~3.4"
+        "symfony/http-foundation": "~3.4",
+        "fico7489/laravel-pivot": "^3.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "3.*",
