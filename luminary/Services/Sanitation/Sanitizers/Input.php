@@ -73,13 +73,8 @@ class Input
 
         return filter_var(
             $input,
-            FILTER_SANITIZE_STRING,
-            [
-                'flags' => [
-                    FILTER_FLAG_NO_ENCODE_QUOTES,
-                    FILTER_FLAG_ENCODE_LOW
-                ]
-            ]
+            FILTER_SANITIZE_STRIPPED,
+            FILTER_FLAG_NO_ENCODE_QUOTES
         );
     }
 
@@ -259,9 +254,7 @@ class Input
         return filter_var(
             $input,
             FILTER_UNSAFE_RAW,
-            [
-                'flags' => FILTER_FLAG_STRIP_LOW
-            ]
+            FILTER_FLAG_STRIP_LOW
         );
     }
 }
