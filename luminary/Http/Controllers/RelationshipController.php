@@ -32,12 +32,12 @@ class RelationshipController extends BaseController
      *
      * @param \Luminary\Http\Requests\Store $request
      * @param int $id
-     * @param $related
+     * @param $relationship
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function store(Store $request, $id, $related)
+    public function store(Store $request, $id, $relationship)
     {
-        Repository::create($id, $related, $request->relationships());
+        Repository::create($id, $relationship, $request->relationships());
     }
 
     /**
@@ -45,12 +45,12 @@ class RelationshipController extends BaseController
      *
      * @param \Luminary\Http\Requests\Update $request
      * @param int $id
-     * @param $related
+     * @param $relationship
      * @return bool
      */
-    public function update(Update $request, $id, $related)
+    public function update(Update $request, $id, $relationship)
     {
-        Repository::update($id, $related, $request->relationships());
+        Repository::update($id, $relationship, $request->relationships());
     }
 
     /**
@@ -58,11 +58,11 @@ class RelationshipController extends BaseController
      *
      * @param \Luminary\Http\Requests\Destroy $request
      * @param int $id
-     * @param $related
+     * @param $relationship
      * @return bool
      */
-    public function destroy(Destroy $request, $id, $related)
+    public function destroy(Destroy $request, $id, $relationship)
     {
-        Repository::delete($id, $related, $request->relationships());
+        Repository::delete($id, $relationship, $request->relationships());
     }
 }
