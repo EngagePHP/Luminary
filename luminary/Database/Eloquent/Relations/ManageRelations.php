@@ -191,6 +191,7 @@ trait ManageRelations
 
         // Return Models for any method that is not sync and is an id or list of ids
         if ($modelSave  && ! $input instanceof Collection && ! $input instanceof Model) {
+            $input = array_keys($input);
             $input = static::getRelatedModels($relation, $input);
         }
 
