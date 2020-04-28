@@ -12,6 +12,17 @@ class Builder extends EloquentBuilder
     use PaginationBuilderTrait;
 
     /**
+     * Checks if a macro is registered.
+     *
+     * @param  string  $name
+     * @return bool
+     */
+    public function hasMacro($name)
+    {
+        return isset($this->localMacros[$name]);
+    }
+
+    /**
      * Get the current query value bindings in a flattened array.
      *
      * @return array

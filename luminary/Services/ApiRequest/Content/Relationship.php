@@ -33,11 +33,11 @@ class Relationship extends Related
             return [$id];
         }
 
-        $relationships = collect($relationships)->map(
-            function ($values) {
-                $id = array_get($values, 'id');
-
-                return is_null($id) ? array_pluck($values, 'id') : $id;
+        $relationships = collect($relationships)->mapWithKeys(
+            function ($value) {
+                return [
+                    array_get($value, 'id') => array_get($value, 'attributes', [])
+                ];
             }
         )->toArray();
 

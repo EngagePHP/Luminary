@@ -70,6 +70,15 @@ class Query
     }
 
     /**
+     * Is the app set to dynamic routing
+     *
+     * @return bool
+     */
+    public function hasDynamicRouting(): bool
+    {
+        return config('luminary.dynamic_routing') !== false;
+    }
+    /**
      * Activate the query
      *
      * @return Query
@@ -143,6 +152,26 @@ class Query
     public function includes() :array
     {
         return $this->query->include();
+    }
+
+    /**
+     * Return the includes array
+     *
+     * @return array
+     */
+    public function with() :array
+    {
+        return $this->query->with();
+    }
+
+    /**
+     * Return the includes array
+     *
+     * @return array
+     */
+    public function only() :array
+    {
+        return $this->query->queryOnly();
     }
 
     /**

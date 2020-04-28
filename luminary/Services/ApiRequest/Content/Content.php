@@ -47,10 +47,13 @@ class Content
         $relationships = array_get($this->content, 'data.relationships', []) ?: [];
         $relationships = collect($relationships)->map(
             function ($values) {
-                $data = array_get($values, 'data');
-                $id = array_get($data, 'id');
-
-                return is_null($id) ? array_pluck($data, 'id') : $id;
+                return collect(array_get($values, 'data'))->mapWithKeys(
+                    function($value, $key) {
+                        return [
+                            array_get($value, 'id') => array_get($value, 'attributes', [])
+                        ];
+                    }
+                )->all();
             }
         )->toArray();
 

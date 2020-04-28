@@ -27,6 +27,8 @@ class QueryCollection extends Collection
         'resource',
         'search',
         'sort',
+        'with',
+        'only'
     ];
 
     /**
@@ -134,6 +136,26 @@ class QueryCollection extends Collection
     public function include() :array
     {
         return (array) $this->get('include', []);
+    }
+
+    /**
+     * Return the includes array
+     *
+     * @return array
+     */
+    public function with() :array
+    {
+        return (array) $this->get('with', []);
+    }
+
+    /**
+     * Return the includes array
+     *
+     * @return array
+     */
+    public function queryOnly() :array
+    {
+        return (array) $this->get('only', []);
     }
 
     /**

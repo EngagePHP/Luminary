@@ -2,6 +2,7 @@
 
 namespace Luminary\Database\Eloquent;
 
+use Fico7489\Laravel\Pivot\Traits\PivotEventTrait;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Luminary\Services\ApiQuery\QueryTrait;
 use Luminary\Services\ApiResponse\ResponseModelTrait;
@@ -14,6 +15,7 @@ trait ModelTrait
     use QueryTrait;
     use ResponseModelTrait;
     use TimezoneModelTrait;
+    use PivotEventTrait;
 
     /**
      * Retrieve the model for a bound value.
