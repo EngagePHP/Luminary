@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Luminary\Services\ApiQuery\ServiceProvider as ApiQueryServiceProvider;
 use Luminary\Services\ApiRequest\ServiceProvider as ApiRequestServiceProvider;
 use Luminary\Services\ApiResponse\ServiceProvider as ApiResponseServiceProvider;
+use Luminary\Services\ApiSoftDeletes\ServiceProvider as ApiSoftDeletesServiceProvider;
 use Luminary\Services\Auth\ServiceProvider as AuthServiceProvider;
 use Luminary\EventHooks\ServiceProvider as EventServiceProvider;
 use Luminary\Services\Testing\ServiceProvider as TestingServiceProvider;
@@ -31,7 +32,8 @@ class LuminaryServiceProvider extends ServiceProvider
         TestingServiceProvider::class,
         AuthServiceProvider::class,
         JWTAuthServiceProvider::class,
-        EventServiceProvider::class
+        EventServiceProvider::class,
+        ApiSoftDeletesServiceProvider::class
     ];
 
     /**
