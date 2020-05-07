@@ -31,7 +31,7 @@ class Repository implements RepositoryContract
      * @param array $without
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public static function find($id, $without = ['archived']) :Model
+    public static function find($id, $without = ['archived','expired']) :Model
     {
         return static::findAll((array) $id, $without)->first();
     }
@@ -103,7 +103,7 @@ class Repository implements RepositoryContract
      */
     public static function update($id, array $data, array $relationships = []) :Model
     {
-        $model = static::find($id, $without = ['archived', 'trashed']);
+        $model = static::find($id, $without = ['archived', 'trashed', 'expired']);
 
         $model->update($data);
 
@@ -124,7 +124,7 @@ class Repository implements RepositoryContract
      */
     public static function updateAll(array $ids, array $data) :bool
     {
-        return static::builder(['archived', 'trashed'], true)->whereIn('id', $ids)->update($data);
+        return static::builder(['archived', 'trashed','expired'], true)->whereIn('id', $ids)->update($data);
     }
 
     /**
@@ -135,7 +135,7 @@ class Repository implements RepositoryContract
      */
     public static function delete($id) :bool
     {
-        static::builder(['archived'], true)->get()->each(function($model) {
+        static::builder(['archived','expired'], true)->get()->each(function($model) {
             $model->delete();
         });
 
@@ -151,6 +151,6 @@ class Repository implements RepositoryContract
      */
     public static function deleteAll(array $ids) :bool
     {
-        return static::builder(['archived'], true)->delete((array) $ids);
+        return static::builder(['archived','expired'], true)->delete((array) $ids);
     }
 }

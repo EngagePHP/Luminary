@@ -21,13 +21,25 @@ trait ArchiveModelTrait
     public $unarchived = false;
 
     /**
+     * Bool to keep observer
+     * from double booting
+     *
+     * @var bool
+     */
+    protected static $archiveObserved = false;
+
+    /**
      * Set the archived observer
      *
      * @return void
      */
     public static function bootArchiveModelTrait()
     {
-        static::observe(ArchiveObserver::class);
+        if(! static::$archiveObserved) {
+            static::observe(ArchiveObserver::class);
+            static::$archiveObserved = true;
+        }
+
         static::setModelArchivedScope();
     }
 
@@ -39,6 +51,21 @@ trait ArchiveModelTrait
     protected static function setModelArchivedScope() :void
     {
         static::addGlobalScope(new ArchiveModelScope);
+    }
+
+    /**
+     * Set the Expired Observables
+     */
+    public static function setArchivedObservables()
+    {
+        $observables = [
+            'archiving',
+            'archived',
+            'unarchiving',
+            'unarchived'
+        ];
+
+        static::addStaticObservableEvents($observables);
     }
 
     /**

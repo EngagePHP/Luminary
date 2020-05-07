@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Luminary\Models\Archive\ArchiveModelScope;
+use Luminary\Models\Expire\ExpireModelScope;
 use Luminary\Services\ApiQuery\QueryRepositoryTrait;
 
 trait RequestRepositoryTrait
@@ -100,7 +101,8 @@ trait RequestRepositoryTrait
     {
         $without = array_only([
             'archived' => ArchiveModelScope::class,
-            'trashed' => SoftDeletingScope::class
+            'trashed' => SoftDeletingScope::class,
+            'expired' => ExpireModelScope::class
         ], $without);
 
         return array_values($without);

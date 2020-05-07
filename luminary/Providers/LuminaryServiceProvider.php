@@ -3,6 +3,7 @@
 namespace Luminary\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Luminary\Models\LuminaryModelServiceProvider;
 use Luminary\Services\ApiQuery\ServiceProvider as ApiQueryServiceProvider;
 use Luminary\Services\ApiRequest\ServiceProvider as ApiRequestServiceProvider;
 use Luminary\Services\ApiResponse\ServiceProvider as ApiResponseServiceProvider;
@@ -33,7 +34,8 @@ class LuminaryServiceProvider extends ServiceProvider
         AuthServiceProvider::class,
         JWTAuthServiceProvider::class,
         EventServiceProvider::class,
-        ApiSoftDeletesServiceProvider::class
+        ApiSoftDeletesServiceProvider::class,
+        LuminaryModelServiceProvider::class,
     ];
 
     /**
