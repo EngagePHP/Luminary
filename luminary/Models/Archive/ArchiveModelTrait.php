@@ -42,6 +42,21 @@ trait ArchiveModelTrait
     }
 
     /**
+     * Set the Expired Observables
+     */
+    public static function setArchivedObservables()
+    {
+        $observables = [
+            'archiving',
+            'archived',
+            'unarchiving',
+            'unarchived'
+        ];
+
+        static::addStaticObservableEvents($observables);
+    }
+
+    /**
      * Register a archiving model event with the dispatcher.
      *
      * @param  \Closure|string  $callback
