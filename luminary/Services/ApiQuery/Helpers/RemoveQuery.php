@@ -58,6 +58,10 @@ class RemoveQuery
                 $column = $this->model->getArchivedAtColumn();
                 $columnQualified = $this->model->getQualifiedArchivedAtColumn();
                 break;
+            case 'expired':
+                $column = $this->model->getExpiredAtColumn();
+                $columnQualified = $this->model->getQualifiedExpiredAtColumn();
+                break;
         }
 
         return collect(compact('column','columnQualified'))

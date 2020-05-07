@@ -427,7 +427,7 @@ trait ManageRelations
      */
     public static function getBuilderRelationship(Builder $builder, $id, string $relationship, array $columns = [])
     {
-        $relationClass = static::getModelClassByMorphName($relationship);
+        $relationClass = static::getModelClassByMorphName($relationship) ?: static::getModelClassByRelationshipName($builder, $relationship);
         $relationClass::applyApiQueryScope(null, $relationship);
 
         $get = array_filter(['id', static::getForeignKey($relationship, $builder->getModel())]);
@@ -523,6 +523,23 @@ trait ManageRelations
         if($model = array_get($morphMap, $morphName)) {
             return $model;
         }
+    }
+
+    /**
+     * Find the model class by relation name
+     *
+     * @param $builder
+     * @param $name
+     * @return string
+     */
+    public static function getModelClassByRelationshipName($builder, $name)
+    {
+        $model = $builder->getModel();
+        $relation = $model->{$name}();
+
+        return $relation
+            ? get_class($relation->getRelated()->getModel())
+            : null;
     }
 
     /**
