@@ -21,25 +21,13 @@ trait ExpireModelTrait
     public $unexpired = false;
 
     /**
-     * Bool to keep observer
-     * from double booting
-     *
-     * @var bool
-     */
-    protected static $expireObserved = false;
-
-    /**
      * Set the expired observer
      *
      * @return void
      */
     public static function bootExpireModelTrait()
     {
-        if(! static::$expireObserved) {
-            static::observe(ExpireObserver::class);
-            static::$expireObserved = true;
-        }
-
+        static::observe(ExpireObserver::class);
         static::setModelExpiredScope();
     }
 

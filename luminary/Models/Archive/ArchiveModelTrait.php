@@ -21,25 +21,13 @@ trait ArchiveModelTrait
     public $unarchived = false;
 
     /**
-     * Bool to keep observer
-     * from double booting
-     *
-     * @var bool
-     */
-    protected static $archiveObserved = false;
-
-    /**
      * Set the archived observer
      *
      * @return void
      */
     public static function bootArchiveModelTrait()
     {
-        if(! static::$archiveObserved) {
-            static::observe(ArchiveObserver::class);
-            static::$archiveObserved = true;
-        }
-
+        static::observe(ArchiveObserver::class);
         static::setModelArchivedScope();
     }
 
