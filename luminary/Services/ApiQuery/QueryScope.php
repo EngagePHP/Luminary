@@ -55,7 +55,7 @@ class QueryScope implements Scope
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply($builder, Model $model)
     {
         $this->builder = $builder;
         $this->model = $model;
@@ -146,7 +146,7 @@ class QueryScope implements Scope
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param \Illuminate\Database\Eloquent\Model $model
      */
-    protected function eagerLoad(Builder $builder, Model $model) :void
+    protected function eagerLoad($builder, Model $model) :void
     {
         (new Includes\Scope($this))->apply($builder, $model);
     }

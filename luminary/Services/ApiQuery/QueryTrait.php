@@ -2,7 +2,6 @@
 
 namespace Luminary\Services\ApiQuery;
 
-use Illuminate\Database\Eloquent\Model;
 use Luminary\Services\ApiQuery\Eloquent\Builder;
 
 trait QueryTrait
@@ -67,5 +66,18 @@ trait QueryTrait
     {
         $query = $query ?: app(Query::class);
         static::addGlobalScope(new QueryScope($query, $namespace));
+    }
+
+    /**
+     * Apply the related query scope
+     *
+     * @param $builder
+     * @param Query|null $query
+     * @param string|null $namespace
+     */
+    public function applyRelatedQueryScope($builder, Query $query = null, string $namespace = null)
+    {
+        $query = $query ?: app(Query::class);
+        (new QueryScope($query, $namespace))->apply($builder, $this);
     }
 }
