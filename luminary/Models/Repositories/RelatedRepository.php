@@ -24,7 +24,7 @@ class RelatedRepository implements BaseRelatedRepository
     {
         $model = static::builder(['archived']);
 
-        $result = static::getRelationship($model, $parentId, $relationship);
+        $result = static::getRelationship($model, $parentId, $relationship, [], true);
 
         return $result ?: static::getEmptyRelationship($relationship, $model->{$relationship}());
     }
@@ -45,11 +45,13 @@ class RelatedRepository implements BaseRelatedRepository
             if(!is_null($relationshipId)) {
                 $query->whereId($relationshipId);
             }
+
+            $query->getModel()->applyRelatedQueryScope($query);
         };
 
-        $result = static::getModelRelationship($relationship, $model, $query)->first();
+        $result = static::getModelRelationship($relationship, $model, $query);
 
-        return $result ?: static::getEmptyModel($model->{$relationship}());
+        return $result->first() ?: static::getEmptyModel($model->{$relationship}());
     }
 
     /**

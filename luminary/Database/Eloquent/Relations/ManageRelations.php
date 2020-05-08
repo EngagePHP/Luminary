@@ -393,12 +393,15 @@ trait ManageRelations
      * @param $id
      * @param string $relationship
      * @param array $columns
+     * @param bool $dynamicRoute
      * @return Collection|Model|null
      */
-    public static function getRelationship($model, $id, string $relationship, array $columns = [])
+    public static function getRelationship($model, $id, string $relationship, array $columns = [], $dynamicRoute = false)
     {
-        if($model instanceof Builder) {
+        if($model instanceof Builder && $dynamicRoute === false) {
             return static::getBuilderRelationship($model, $id, $relationship, $columns);
+        } elseif ($model instanceof Builder && $dynamicRoute === true) {
+            return static::getDynamicRouteBuilderRelationship($model, $id, $relationship, $columns);
         }
 
         $primaryKey = $model->getQualifiedKeyName();
@@ -436,6 +439,30 @@ trait ManageRelations
         $results = $model->load([
             $relationship => function ($query) use ($model, $columns) {
                 empty($columns) ?: static::addQuerySelect($model, $query, $columns);
+            }
+        ]);
+
+        return $results->getRelation($relationship);
+    }
+
+    /**
+     * Query a Models Relationship
+     *
+     * @param Model $model
+     * @param $id
+     * @param string $relationship
+     * @param array $columns
+     * @return Collection|Model|null
+     */
+    public static function getDynamicRouteBuilderRelationship(Builder $builder, $id, string $relationship, array $columns = [])
+    {
+        $get = array_filter(['id', static::getForeignKey($relationship, $builder->getModel())]);
+        $model = $builder->find($id, $get);
+
+        $results = $model->load([
+            $relationship => function ($query) use ($model, $columns) {
+                empty($columns) ?: static::addQuerySelect($model, $query, $columns);
+                $query->getModel()->applyRelatedQueryScope($query);
             }
         ]);
 
