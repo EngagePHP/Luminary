@@ -124,6 +124,12 @@ trait ResponseModelTrait
      */
     public function newCollection(array $models = [])
     {
+        $query = $this->query();
+
+        if($query->isPaginated($this) && $collection = $query->getPaginatedCollection()) {
+            return $collection;
+        }
+
         return new Collection($models);
     }
 }

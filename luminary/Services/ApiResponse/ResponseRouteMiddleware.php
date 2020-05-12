@@ -36,6 +36,10 @@ class ResponseRouteMiddleware
             ResponseMiddleware::$relationshipResponse = true;
         }
 
+        if ($this->param('related')) {
+            ResponseMiddleware::$relatedResponse = true;
+        }
+
         return $next($request);
     }
 

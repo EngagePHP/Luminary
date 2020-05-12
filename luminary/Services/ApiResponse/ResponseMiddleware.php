@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Luminary\Services\ApiQuery\Pagination\Collection as PaginationCollection;
 use Luminary\Services\ApiResponse\Serializers\ArraySerializer;
+use Luminary\Services\ApiResponse\Serializers\CollectionRelatedSerializer;
 use Luminary\Services\ApiResponse\Serializers\CollectionRelationshipSerializer;
 use Luminary\Services\ApiResponse\Serializers\CollectionSerializer;
 use Luminary\Services\ApiResponse\Serializers\EmptySerializer;
+use Luminary\Services\ApiResponse\Serializers\ModelRelatedSerializer;
 use Luminary\Services\ApiResponse\Serializers\ModelRelationshipSerializer;
 use Luminary\Services\ApiResponse\Serializers\ModelSerializer;
 use Luminary\Services\ApiResponse\Serializers\SerializerInterface;
@@ -25,6 +26,14 @@ class ResponseMiddleware
      * @var bool
      */
     public static $relationshipResponse = false;
+
+    /**
+     * Set the bool for whether the response
+     * format should be for related resources
+     *
+     * @var bool
+     */
+    public static $relatedResponse = false;
 
     /**
      * Run the request filter.
@@ -67,6 +76,17 @@ class ResponseMiddleware
     }
 
     /**
+     * Tell if the current response for a related
+     * request.
+     *
+     * @return bool
+     */
+    public function isRelatedResponse() :bool
+    {
+        return static::$relatedResponse;
+    }
+
+    /**
      * Return the correct content serializer
      *
      * @param Response $response
@@ -79,14 +99,10 @@ class ResponseMiddleware
 
         switch (true) {
             case $original instanceof Collection:
-                return $this->isRelationshipResponse()
-                    ? new CollectionRelationshipSerializer($original, $request)
-                    : new CollectionSerializer($original);
+                return $this->getCollectionSerializer($original, $request);
                 break;
             case $original instanceof Model:
-                return $this->isRelationshipResponse()
-                    ? new ModelRelationshipSerializer($original, $request)
-                    : new ModelSerializer($original);
+                return $this->getModelSerializer($original, $request);
                 break;
             case is_bool($original):
             case is_null($original):
@@ -97,6 +113,46 @@ class ResponseMiddleware
                 return new ArraySerializer((array) $original);
                 break;
         }
+    }
+
+    /**
+     * Get the correct model serializer
+     *
+     * @param Model $model
+     * @param $request
+     * @return ModelRelatedSerializer|ModelRelationshipSerializer|ModelSerializer
+     */
+    public function getModelSerializer(Model $model, $request)
+    {
+        if($this->isRelationshipResponse()) {
+            return new ModelRelationshipSerializer($model, $request);
+        }
+
+        if($this->isRelatedResponse()) {
+            return new ModelRelatedSerializer($model, $request);
+        }
+
+        return new ModelSerializer($model);
+    }
+
+    /**
+     * Get the correct model serializer
+     *
+     * @param Collection $collection
+     * @param $request
+     * @return CollectionRelatedSerializer|CollectionRelationshipSerializer|CollectionSerializer
+     */
+    public function getCollectionSerializer(Collection $collection, $request)
+    {
+        if($this->isRelationshipResponse()) {
+            return new CollectionRelationshipSerializer($collection, $request);
+        }
+
+        if($this->isRelatedResponse()) {
+            return new CollectionRelatedSerializer($collection, $request);
+        }
+
+        return new CollectionSerializer($collection);
     }
 
     /**
