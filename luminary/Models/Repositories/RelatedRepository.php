@@ -49,9 +49,9 @@ class RelatedRepository implements BaseRelatedRepository
             $query->getModel()->applyRelatedQueryScope($query);
         };
 
-        $result = static::getModelRelationship($relationship, $model, $query);
+        $result = static::getModelRelationship($relationship, $model, $query)->first();
 
-        return $result->first() ?: static::getEmptyModel($model->{$relationship}());
+        return $result ?: static::getEmptyModel($model->{$relationship}());;
     }
 
     /**

@@ -7,9 +7,9 @@ interface SerializerInterface
     /**
      * Return the data property
      *
-     * @return array
+     * @return array|null
      */
-    public function data() :array;
+    public function data();
 
     /**
      * Set/Replace the data property
