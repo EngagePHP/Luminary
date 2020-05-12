@@ -72,7 +72,7 @@ class ModelSerializer extends AbstractSerializer
      *
      * @return array
      */
-    public function data() :array
+    public function data()
     {
         return [
             'type' => $this->type(),

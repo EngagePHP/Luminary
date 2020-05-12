@@ -19,6 +19,11 @@ trait BuilderTrait
     protected static $paginated;
 
     /**
+     * @var null|\Luminary\Services\ApiQuery\Pagination\Collection
+     */
+    protected static $paginatedCollection;
+
+    /**
      * Return and instance of paginator if paginate scope query
      * is paginated
      *
@@ -29,7 +34,12 @@ trait BuilderTrait
     {
         $collection = parent::get($columns);
 
-        return $this->isPaginated($this->getModel()) ? $this->paginateCollection($collection) : $collection;
+        if($this->isPaginated($this->getModel())) {
+            $collection = $this->paginateCollection($collection);
+            static::$paginatedCollection = $collection;
+        }
+
+        return $collection;
     }
 
     /**
@@ -53,9 +63,25 @@ trait BuilderTrait
         static::$paginated = $class;
     }
 
+    /**
+     * Is the current model paginated
+     *
+     * @param Model $model
+     * @return bool
+     */
     public static function isPaginated(Model $model) :bool
     {
         return static::$paginated ? $model instanceof static::$paginated : false;
+    }
+
+    /**
+     * Get the stored paginated collection
+     *
+     * @return mixed
+     */
+    public static function getPaginatedCollection()
+    {
+        return static::$paginatedCollection;
     }
 
     /**

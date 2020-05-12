@@ -125,7 +125,7 @@ abstract class AbstractSerializer implements SerializerInterface
      *
      * @return array
      */
-    public function data() :array
+    public function data()
     {
         return $this->data;
     }
