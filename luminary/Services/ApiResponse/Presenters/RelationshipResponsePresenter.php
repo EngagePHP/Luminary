@@ -39,6 +39,7 @@ class RelationshipResponsePresenter
             ],
             'links' => $s->links(),
             'data' => $s->data(),
+            'included' => $s->included(),
             'meta' => $s->responseMeta()
         ];
     }
