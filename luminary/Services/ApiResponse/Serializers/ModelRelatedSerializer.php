@@ -54,17 +54,6 @@ class ModelRelatedSerializer extends ModelSerializer
     }
 
     /**
-     * Parse the model and fill
-     * the class attributes
-     *
-     * @param \Luminary\Database\Eloquent\Model $data
-     */
-    public function fill($data) :void
-    {
-        $this->setType($data->getType())->setId($data->id);
-    }
-
-    /**
      * Return the resource self link
      *
      * @return string

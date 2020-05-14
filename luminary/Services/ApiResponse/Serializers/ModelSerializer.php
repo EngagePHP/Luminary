@@ -278,7 +278,7 @@ class ModelSerializer extends AbstractSerializer
     {
         return $models->map(
             function (Model $model) {
-                return new static($model);
+                return new ModelSerializer($model);
             }
         );
     }
