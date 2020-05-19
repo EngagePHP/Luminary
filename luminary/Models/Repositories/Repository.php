@@ -135,10 +135,7 @@ class Repository implements RepositoryContract
      */
     public static function delete($id) :bool
     {
-        static::builder(['archived','expired'], true)->get()->each(function($model) {
-            $model->delete();
-        });
-
+        static::find($id)->delete();
         return true;
     }
 
@@ -151,6 +148,10 @@ class Repository implements RepositoryContract
      */
     public static function deleteAll(array $ids) :bool
     {
-        return static::builder(['archived','expired'], true)->delete((array) $ids);
+        static::findAll($ids, ['archived','expired'])->each(function($model) {
+            $model->delete();
+        });
+
+        return true;
     }
 }
