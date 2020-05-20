@@ -63,7 +63,8 @@ class Repository implements RepositoryContract
             static::createRelationships($model, $relationships);
         }
 
-        return $model;
+        $with = array_keys($relationships);
+        return $model->newInstance()->with($with)->find($model->id);
     }
 
     /**
