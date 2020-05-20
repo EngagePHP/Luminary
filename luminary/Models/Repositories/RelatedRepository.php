@@ -72,7 +72,7 @@ class RelatedRepository implements BaseRelatedRepository
             static::createRelationships($parent, [$relationship => $model]);
         }
 
-        return $model;
+        return $model->newInstance()->find($model->id);
     }
 
     /**

@@ -52,7 +52,7 @@ class RelatedController extends BaseController
      */
     public function store(Store $request, $id, $related)
     {
-        return Repository::create($id, $related, $request->data(), $request->relationships());
+        return Repository::create($id, $related, $request->data());
     }
 
     /**
