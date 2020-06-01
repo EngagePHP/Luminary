@@ -39,7 +39,7 @@ class ResponsePresenter
             ],
             'links' => $s->links(),
             'data' => $s->data(),
-            'included' => $s->included(),
+            'included' => $s->processIncluded(),
             'meta' => $s->responseMeta()
         ];
     }
