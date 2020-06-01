@@ -162,6 +162,25 @@ abstract class AbstractSerializer implements SerializerInterface
     }
 
     /**
+     * Return all included relations
+     *
+     * @return array
+     */
+    public function processIncluded(): array
+    {
+        return collect($this->included())
+            ->transform(
+                function($include) {
+                    return $include instanceof ModelSerializer
+                        ? $include->data()
+                        : $include;
+                }
+            )->values()
+            ->unique()
+            ->all();
+    }
+
+    /**
      * Set/Replaced the included property
      *
      * @param array $included

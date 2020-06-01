@@ -336,7 +336,7 @@ class ModelSerializer extends AbstractSerializer
     protected function includeNestedRelations(Collection $relations) :Collection
     {
         $models = $relations->map(function ($model) {
-            return $model->flattenedRelations();
+            return $model->flattenedRelations(true);
         })->filter(function ($relation) {
             return ! empty($relation);
         })->flatten();
