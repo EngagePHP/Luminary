@@ -177,6 +177,7 @@ abstract class AbstractSerializer implements SerializerInterface
                 }
             )->values()
             ->unique()
+            ->values()
             ->all();
     }
 
