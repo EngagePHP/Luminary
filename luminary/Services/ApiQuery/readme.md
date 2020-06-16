@@ -96,6 +96,17 @@ the advanced filtering style is the most straightforward and easy to read.
 
 `GET /customers?filter[customers][and][]=created_at,>,03-21-2016&filter[customers][or][]=created_at,<,03-21-2017` *Will filter customers between a certain date*
 
+**Advanced WHERE BETWEEN Filters**
+`GET /customers?filter[customers][between][]=created_at,03-21-2016 00:00:00,03-21-2017 23:59:59` *Will filter customers between a date range*
+`GET /customers?filter[customers][or_between][]=created_at,03-21-2016 00:00:00,03-21-2017 23:59:59` *Will filter customers between a date range*
+
+**Advanced WHERE BETWEEN TWO COLUMNS Filters**
+`GET /customers?filter[customers][between][]=03-21-2016 00:00:00,date_start_column,date_end_column` *Will filter customers date between two columns*
+`GET /customers?filter[customers][or_between][]=03-21-2016 00:00:00,date_start_column,date_end_column` *Will filter customers date between two columns*
+
+**Advanced AND/OR WHERE INTERSECT Filters**
+`GET /customers?filter[customers][intersect][]=03-21-2016 00:00:00,03-21-2017 23:59:59,date_start_column,date_end_column` *Will filter customers with intersecting date ranges*
+`GET /customers?filter[customers][or_intersect][]=03-21-2016 00:00:00,03-21-2017 23:59:59,date_start_column,date_end_column` *Will filter customers with intersecting date ranges*
 **Advanced WHERE Nested Filters**
 
 Nested filters are equivalent to SQL clause like so: `WHERE (customers.created_at > '03-21-2016' || customers.created_at < '03-21-2017')`

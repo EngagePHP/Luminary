@@ -34,6 +34,7 @@ class Scope extends BaseScope
      */
     protected function sorting() :array
     {
-        return $this->query()->sorting($this->resource());
+        $resource = str_replace('_', '-', $this->resource());
+        return $this->query()->sorting($resource);
     }
 }
