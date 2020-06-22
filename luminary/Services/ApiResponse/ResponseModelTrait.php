@@ -30,7 +30,7 @@ trait ResponseModelTrait
      * Useful if type needs to be
      * different from the table
      *
-     * @var array“lo;]
+     * @var array
      */
     protected $type;
 

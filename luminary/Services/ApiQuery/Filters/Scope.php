@@ -17,11 +17,11 @@ class Scope extends BaseScope
      * @param null $filters
      * @return void
      */
-    public function apply($builder, Model $model, $filters = null) :void
+    public function apply($builder, Model $model, $filters = null): void
     {
         $this->builder = $builder;
         $this->model = $model;
-        $filters = ! is_null($filters) ? $filters : $this->filters();
+        $filters = !is_null($filters) ? $filters : $this->filters();
 
         collect($filters)->each(
             function ($filter, $type) {
@@ -37,7 +37,7 @@ class Scope extends BaseScope
      * @param array $filters
      * @return void
      */
-    protected function applyAndQueries(array $filters) :void
+    protected function applyAndQueries(array $filters): void
     {
         collect($filters)->each(
             function ($filter) {
@@ -52,7 +52,7 @@ class Scope extends BaseScope
      * @param array $query
      * @return void
      */
-    protected function applyAndQuery(array $query) :void
+    protected function applyAndQuery(array $query): void
     {
         $this->applyFilter(...array_values($query));
     }
@@ -64,10 +64,10 @@ class Scope extends BaseScope
      * @param string $boolean
      * @return void
      */
-    protected function applyBetweenQueries(array $filters, $boolean = 'and') :void
+    protected function applyBetweenQueries(array $filters, $boolean = 'and'): void
     {
         collect($filters)->each(
-            function ($filter) use($boolean) {
+            function ($filter) use ($boolean) {
                 $this->applyBetweenQuery($filter, $boolean);
             }
         );
@@ -80,23 +80,105 @@ class Scope extends BaseScope
      * @param string $boolean
      * @return void
      */
-    protected function applyBetweenQuery(array $query, $boolean = 'and') :void
+    protected function applyBetweenQuery(array $query, $boolean = 'and'): void
     {
         $value = array_get($query, 'value');
         $column = array_shift($value);
 
-        $this->builder->whereBetween($column, $value, $boolean);
+        strtotime($column)
+            ? $this->whereBetweenRaw(array_get($query, 'value'), $boolean)
+            : $this->builder->whereBetween($column, $value, $boolean);
     }
 
     /**
      * Apply `between` query filters
      *
-     * @param array $filters
+     * @param array $query
      * @return void
      */
-    protected function applyOrBetweenQueries(array $filters) :void
+    protected function applyOrBetweenQueries(array $query): void
     {
-        $this->applyBetweenQueries($filters, 'or');
+        $this->applyBetweenQueries($query, 'or');
+    }
+
+    /**
+     * Apply a where between raw query
+     *
+     * @param array $bindings
+     * @param string $boolean
+     */
+    protected function whereBetweenRaw(array $bindings, $boolean = 'and')
+    {
+        $embed = [];
+
+        $bindings = collect($bindings)
+            ->filter(
+                function($binding) use(&$embed) {
+                    $time = (strtotime($binding));
+                    $embed[] = $time ? '?' : '`' . $this->table() . '`.`' . $binding . '`';
+
+                    return $time;
+                }
+            )->all();
+
+        list($a,$b,$c) = $embed;
+
+        $this->builder->whereRaw("$a between $b and $c", $bindings, $boolean);
+    }
+
+    /**
+     * Apply `intersect` query filters
+     *
+     * @param array $filters
+     * @param string $boolean
+     * @return void
+     */
+    protected function applyIntersectQueries(array $filters, $boolean = 'and'): void
+    {
+        collect($filters)->each(
+            function ($filter) use ($boolean) {
+                $this->applyIntersectQuery($filter, $boolean);
+            }
+        );
+    }
+
+    /**
+     * Apply the intersect query
+     *
+     * @param array $query
+     * @param string $boolean
+     */
+    protected function applyIntersectQuery(array $query, $boolean = 'and'): void
+    {
+        $values = array_get($query, 'value');
+        $closure = function($query) use ($values) {
+            list($intersectStart, $intersectEnd, $columnStart, $columnEnd) = $values;
+
+            //(`start_at` <= @end AND `end_at` >= @start)
+            $query->where([
+                [$columnStart, '<=', $intersectEnd],
+                [$columnEnd, '>=', $intersectStart]
+            ])
+            // OR (`start_at` >= @end AND `start_at` <= @start AND `end_at` <= @start)
+            ->orWhere([
+                [$columnStart, '>=', $intersectEnd],
+                [$columnStart, '<=', $intersectStart],
+                [$columnEnd, '<=', $intersectStart]
+            ])
+            //OR (`end_at` <= @start AND `end_at` >= @end AND `start_at` <= @end)
+            ->orWhere([
+                [$columnEnd, '<=', $intersectStart],
+                [$columnEnd, '>=', $intersectEnd],
+                [$columnStart, '<=', $intersectEnd]
+            ])
+            //OR (start_at >= @end AND start_at <= @start)
+            ->orWhere([
+                [$columnStart, '>=', $intersectEnd],
+                [$columnStart, '<=', $intersectStart]
+            ]);
+        };
+
+        $this->builder->where($closure, null, null, $boolean);
     }
 
     /**
@@ -106,7 +188,7 @@ class Scope extends BaseScope
      * @param string $boolean
      * @return void
      */
-    protected function applyNestedQueries(array $filters, $boolean = 'and') :void
+    protected function applyNestedQueries(array $filters, $boolean = 'and'): void
     {
         collect($filters)->each(
             function ($filter) use($boolean) {
@@ -121,7 +203,7 @@ class Scope extends BaseScope
      * @param array $filters
      * @return void
      */
-    protected function applyOrNestedQueries(array $filters) :void
+    protected function applyOrNestedQueries(array $filters): void
     {
         $this->applyNestedQueries($filters, 'or');
     }
@@ -133,7 +215,7 @@ class Scope extends BaseScope
      * @param string $boolean
      * @return void
      */
-    protected function applyNestedQuery(array $query, $boolean = 'and') :void
+    protected function applyNestedQuery(array $query, $boolean = 'and'): void
     {
         $bool = array_get($query, 'attribute');
         $queries = array_get($query, 'value');
@@ -143,7 +225,7 @@ class Scope extends BaseScope
         };
         $args = [$closure, null, null, $bool];
 
-        $boolean == 'or' ? $this->builder->orWhere(...$args) : $this->builder->where(...$args);
+        $boolean == 'or' ? $this->builder->orWhere(...$args):  $this->builder->where(...$args);
     }
 
     /**
@@ -152,7 +234,7 @@ class Scope extends BaseScope
      * @param array $filters
      * @return void
      */
-    protected function applyOrQueries(array $filters) :void
+    protected function applyOrQueries(array $filters): void
     {
         collect($filters)->each(
             function ($filter) {
@@ -167,7 +249,7 @@ class Scope extends BaseScope
      * @param array $query
      * @return void
      */
-    protected function applyOrQuery(array $query) :void
+    protected function applyOrQuery(array $query): void
     {
         $this->applyFilter(...array_values($query));
     }
@@ -181,7 +263,7 @@ class Scope extends BaseScope
      * @param string $type
      * @return void
      */
-    protected function applyFilter(string $attribute, string $operator, $value, string $type) :void
+    protected function applyFilter(string $attribute, string $operator, $value, string $type): void
     {
         $builder = $this->builder;
         $columns = $this->getQueryColumns($builder);
@@ -214,7 +296,7 @@ class Scope extends BaseScope
      * @param string $field
      * @return string
      */
-    public function getFullyQualifiedColumn(array $columns, string $field) :string
+    public function getFullyQualifiedColumn(array $columns, string $field): string
     {
         $column = collect($columns)->first(
             function ($column) use ($field) {
@@ -233,7 +315,7 @@ class Scope extends BaseScope
             }
         );
 
-        return $column ? head(explode(' as', $column)) : $this->table() . '.' . $field;
+        return $column ? head(explode(' as', $column)) :  $this->table() . '.' . $field;
     }
 
     /**
@@ -243,7 +325,7 @@ class Scope extends BaseScope
      * @param $builder
      * @return array
      */
-    public function getQueryColumns($builder) :array
+    public function getQueryColumns($builder): array
     {
         if ($builder instanceof Relation) {
             $builder = $builder->getQuery();
@@ -258,7 +340,7 @@ class Scope extends BaseScope
      *
      * @return array
      */
-    protected function filters() :array
+    protected function filters(): array
     {
         $resource = $this->resource();
         $resource = snake_case($resource);

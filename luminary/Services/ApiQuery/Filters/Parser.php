@@ -9,7 +9,7 @@ class Parser
      *
      * @var array
      */
-    protected $filterTypes = ['and', 'or', 'between', 'or_between', 'nested', 'or_nested', 'has'];
+    protected $filterTypes = ['and', 'or', 'between', 'or_between', 'nested', 'or_nested', 'has', 'intersect', 'or_intersect'];
 
     /**
      * Parse a query array to return the
@@ -74,6 +74,38 @@ class Parser
         return array_map(
             function (array $item) {
                 return Composer::formatOrBetween('between', $item);
+            },
+            $query
+        );
+    }
+
+    /**
+     * Parse an `between` query
+     *
+     * @param array $query
+     * @return array
+     */
+    public function parseIntersectQuery(array $query)
+    {
+        return array_map(
+            function (array $item) {
+                return Composer::formatIntersect('intersect', $item);
+            },
+            $query
+        );
+    }
+
+    /**
+     * Parse an `between` query
+     *
+     * @param array $query
+     * @return array
+     */
+    public function parseOrIntersectQuery(array $query)
+    {
+        return array_map(
+            function (array $item) {
+                return Composer::formatOrIntersect('intersect', $item);
             },
             $query
         );

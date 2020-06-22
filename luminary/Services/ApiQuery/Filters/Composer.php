@@ -18,7 +18,7 @@ class Composer
      * @param array $query
      * @return array|null
      */
-    public static function format(string $type, array $query) :array
+    public static function format(string $type, array $query)
     {
         if (empty($query)) {
             return null;
@@ -80,6 +80,40 @@ class Composer
             'operator' => null,
             'value' => $query,
             'type' => 'or_between'
+        ];
+    }
+
+    /**
+     * Return the formatting for a between query
+     *
+     * @param $type
+     * @param $query
+     * @return array
+     */
+    public static function formatIntersect($type, $query)
+    {
+        return [
+            'attribute' => $type,
+            'operator' => null,
+            'value' => $query,
+            'type' => 'intersect'
+        ];
+    }
+
+    /**
+     * Return the formatting for an or between query
+     *
+     * @param $type
+     * @param $query
+     * @return array
+     */
+    public static function formatOrIntersect($type, $query)
+    {
+        return [
+            'attribute' => $type,
+            'operator' => null,
+            'value' => $query,
+            'type' => 'or_intersect'
         ];
     }
 
