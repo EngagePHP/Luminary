@@ -111,7 +111,7 @@ class Scope extends BaseScope
      */
     protected function fields()
     {
-        $resource = $this->resource();
+        $resource = str_replace('-', '_', $this->resource());
         $fields = $this->query()->fields($resource);
         $required = [];
 
