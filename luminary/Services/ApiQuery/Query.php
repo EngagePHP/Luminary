@@ -226,6 +226,17 @@ class Query
     }
 
     /**
+     * Return the query sorting array
+     *
+     * @param string|null $resource
+     * @return array
+     */
+    public function grouping(string $resource = null) :array
+    {
+        return $this->query->grouping($resource);
+    }
+
+    /**
      * Return the query collection as
      * an array
      *
