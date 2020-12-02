@@ -67,7 +67,9 @@ abstract class AbstractPresenter implements PresenterInterface
      */
     public function status() :int
     {
-        if($status = $this->exception->status) {
+        $status = property_exists($this->exception, 'status') ? $status = $this->exception->status : null;
+
+        if($status) {
             return (int) $status;
         } else if($code = $this->exception->getCode()) {
             return (int) $code;
