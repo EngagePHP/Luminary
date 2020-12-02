@@ -27,6 +27,7 @@ class QueryCollection extends Collection
         'resource',
         'search',
         'sort',
+        'group',
         'with',
         'only'
     ];
@@ -193,6 +194,7 @@ class QueryCollection extends Collection
     /**
      * Return the sorting array
      *
+     * @param string|null $resource
      * @return array
      */
     public function sorting(string $resource = null) :array
@@ -211,6 +213,18 @@ class QueryCollection extends Collection
                 return ! is_array($value);
             }
         )->all();
+    }
+
+    /**
+     * Return the grouping array
+     *
+     * @param string|null $resource
+     * @return array
+     */
+    public function grouping(string $resource = null) :array
+    {
+        $group = $this->get('group', []);
+        return is_null($resource) ? $group : (array) collect($group)->get($resource, []);
     }
 
     /**

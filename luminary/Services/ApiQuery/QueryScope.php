@@ -85,6 +85,7 @@ class QueryScope implements Scope
         $this->scopeFields();
         $this->scopeFilters();
         $this->scopeSorting();
+        $this->scopeGrouping();
     }
 
     /**
@@ -232,5 +233,15 @@ class QueryScope implements Scope
     protected function scopeSorting() :void
     {
         (new Sorting\Scope($this))->apply($this->builder, $this->model);
+    }
+
+    /**
+     * Sort the results
+     *
+     * @return void
+     */
+    protected function scopeGrouping() :void
+    {
+        (new Grouping\Scope($this))->apply($this->builder, $this->model);
     }
 }

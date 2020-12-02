@@ -35,6 +35,20 @@ You can sort resource collections as follows:
 `GET /customers?include=users&sort=name,-zipcode,users.first_name,users.last_name`
 This will sort customers based on name ASC and zipcode DESC, and their related users by first_name and last_name ASC
 
+
+## Grouping
+
+You can sort resource collections as follows:
+
+**Parent Collection**
+
+`GET /customers?group[customers]=name` *Will group by name*
+
+**Related Collection Grouping**
+
+`GET /customers?include=users&group[customers]=name&group[users]=first_name,last_name`
+Will group customers buy name and users by first name,last name
+
 ## Pagination
 
 pagination will only affect the parent collection, and works as follows:
