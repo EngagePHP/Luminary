@@ -32,7 +32,7 @@ class Scope extends BaseScope
      */
     protected function grouping() :array
     {
-        $resource = str_replace('_', '-', $this->resource());
+        $resource = $this->resource();
         return $this->query()->grouping($resource);
     }
 }
