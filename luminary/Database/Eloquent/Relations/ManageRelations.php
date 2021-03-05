@@ -382,7 +382,8 @@ trait ManageRelations
                 return str_singular($relationship) . '_id';
                 break;
             default:
-                return null;
+                $parentKey = $relation->getQualifiedParentKeyName();
+                return substr($parentKey, strpos($parentKey, ".") + 1);
         }
     }
 
