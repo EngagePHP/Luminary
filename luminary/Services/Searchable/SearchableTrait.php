@@ -40,11 +40,7 @@ trait SearchableTrait
                 ->getModel()
                 ->scopeSearchRestricted($subQuery, $search, null, $threshold, $entireText, $entireTextOnly);
 
-            $raw = array_reduce($subQuery->getBindings(), function($sql, $binding){
-                return preg_replace('/\?/', is_numeric($binding) ? $binding : "'".$binding."'" , $sql, 1);
-            }, $subQuery->toSql());
-
-            $query->from(DB::raw("($raw) as searchSub"));
+            $query->from($subQuery, 'searchSub');
         });
     }
 }
