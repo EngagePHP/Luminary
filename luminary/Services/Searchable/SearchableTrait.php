@@ -5,6 +5,8 @@ namespace Luminary\Services\Searchable;
 use Illuminate\Support\Facades\DB;
 use Nicolaslopezj\Searchable\SearchableTrait as BaseSearchable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Expression;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
  * Trait SearchableTrait
@@ -40,11 +42,40 @@ trait SearchableTrait
                 ->getModel()
                 ->scopeSearchRestricted($subQuery, $search, null, $threshold, $entireText, $entireTextOnly);
 
-            $raw = array_reduce($subQuery->getBindings(), function($sql, $binding){
-                return preg_replace('/\?/', is_numeric($binding) ? $binding : "'".$binding."'" , $sql, 1);
-            }, $subQuery->toSql());
-
-            $query->from(DB::raw("($raw) as searchSub"));
+            $this->fromRaw($query, $subQuery, 'searchSub');
         });
+    }
+
+    /**
+     * Create the from raw subquery
+     *
+     * @param QueryBuilder $query
+     * @param QueryBuilder $fromQuery
+     * @param string $as
+     */
+    protected function fromRaw(QueryBuilder $query, Builder $fromQuery, string $as)
+    {
+        $sql = $fromQuery->toSql();
+        $bindings = $fromQuery->getBindings();
+        $this->addFromQueryBinding($query);
+
+        $query->from(new Expression('('.$sql.') as '.$as));
+        $query->addBinding($bindings, 'from');
+    }
+
+    /**
+     * Add from query bindings for
+     * from subquery
+     *
+     * @param QueryBuilder $query
+     */
+    protected function addFromQueryBinding(QueryBuilder $query)
+    {
+        $bindings = $query->bindings;
+
+        if(is_null(array_get($bindings, 'from'))) {
+            $bindings['from'] = [];
+            $query->bindings = $bindings;
+        }
     }
 }
