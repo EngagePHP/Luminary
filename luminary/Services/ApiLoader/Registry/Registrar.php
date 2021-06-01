@@ -494,7 +494,8 @@ class Registrar
      */
     public function registerValidators(string $path) :void
     {
-        $resource = strtolower(basename($this->path()));
+        $baseName = basename($this->path());
+        $resource = snake_case($baseName, '-');
         $path = $this->path($path);
 
         if (! $this->isDirectory($path)) {
