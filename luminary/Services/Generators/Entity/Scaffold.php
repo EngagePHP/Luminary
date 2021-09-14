@@ -200,8 +200,8 @@ class Scaffold implements CreatorInterface
         $model = str_replace('/', '\\', $relative_path . '/Models/' . $name);
 
         RequestStructure::create($path);
-        Validator::create('Store', $requestsPath . '/Http/Validators');
-        Validator::create('Update', $requestsPath . '/Http/Validators');
+        Validator::create('Store', $requestsPath . '/Validators');
+        Validator::create('Update', $requestsPath . '/Validators');
         Authorizer::create('Auth', $requestsPath, $model);
         Sanitizer::create('Sanitizer', $requestsPath);
     }
